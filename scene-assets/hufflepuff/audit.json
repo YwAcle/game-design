@@ -1,0 +1,26 @@
+{
+  "file": "scene-assets/hufflepuff/scene.glb",
+  "ok": true,
+  "errors": [],
+  "warnings": [
+    "Container/resource checks only; no Draco decoding, topology, or visual validation"
+  ],
+  "remoteUris": [],
+  "localUris": [],
+  "bytes": 4119140,
+  "sha256": "6230fdfa11140bb2e631dafbedbbec3c2311870b4cda94bbe7c5a9917a9ce221",
+  "meshes": 5,
+  "primitives": 6,
+  "meshTriangles": 189188,
+  "triangleCountScope": "mesh primitives only; instances not multiplied",
+  "materials": 6,
+  "images": 4,
+  "unlitMaterials": 4,
+  "extensions": [
+    "KHR_draco_mesh_compression",
+    "KHR_materials_emissive_strength",
+    "KHR_materials_unlit"
+  ],
+  "usesDraco": true,
+  "requiresDraco": true
+}

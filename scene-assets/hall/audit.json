@@ -1,0 +1,26 @@
+{
+  "file": "scene-assets/hall/great-hall.glb",
+  "ok": true,
+  "errors": [],
+  "warnings": [
+    "Container/resource checks only; no Draco decoding, topology, or visual validation"
+  ],
+  "remoteUris": [],
+  "localUris": [],
+  "bytes": 7144108,
+  "sha256": "6feddb9caa62e45cc9bc709de010e3f507ffdbca3ee59fc13a728ab1e651ade4",
+  "meshes": 7,
+  "primitives": 9,
+  "meshTriangles": 493525,
+  "triangleCountScope": "mesh primitives only; instances not multiplied",
+  "materials": 9,
+  "images": 6,
+  "unlitMaterials": 6,
+  "extensions": [
+    "KHR_draco_mesh_compression",
+    "KHR_materials_emissive_strength",
+    "KHR_materials_unlit"
+  ],
+  "usesDraco": true,
+  "requiresDraco": true
+}

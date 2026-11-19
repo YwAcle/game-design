@@ -1,0 +1,26 @@
+{
+  "file": "scene-assets/arena/dueling-arena.glb",
+  "ok": true,
+  "errors": [],
+  "warnings": [
+    "Container/resource checks only; no Draco decoding, topology, or visual validation"
+  ],
+  "remoteUris": [],
+  "localUris": [],
+  "bytes": 7630360,
+  "sha256": "b94b67a5cab212cae107fa50c882153ccde4143736aead61bbe7ff0a595a6c65",
+  "meshes": 6,
+  "primitives": 7,
+  "meshTriangles": 407898,
+  "triangleCountScope": "mesh primitives only; instances not multiplied",
+  "materials": 7,
+  "images": 5,
+  "unlitMaterials": 5,
+  "extensions": [
+    "KHR_draco_mesh_compression",
+    "KHR_materials_emissive_strength",
+    "KHR_materials_unlit"
+  ],
+  "usesDraco": true,
+  "requiresDraco": true
+}

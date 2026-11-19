@@ -1,0 +1,44 @@
+{
+  "room": "slytherin",
+  "glbBytes": 18974104,
+  "triangles": 248634,
+  "meshes": 5,
+  "materials": 8,
+  "embeddedImages": 4,
+  "bakedUnlitMaterials": [
+    "Baked | architecture",
+    "Baked | details",
+    "Baked | floor",
+    "Baked | furniture"
+  ],
+  "isolatedGlowMaterials": [
+    "Glow | green leaded panes",
+    "Glow | fire gold",
+    "Glow | hearth fire",
+    "Glow | opal lamp"
+  ],
+  "externalUris": [],
+  "cameraFovDegrees": [
+    58.7155,
+    44.0959,
+    47.5199
+  ],
+  "heroCamera": {
+    "name": "主视角",
+    "position": [
+      0,
+      4.15,
+      9.6
+    ],
+    "target": [
+      0,
+      1.7,
+      -3
+    ],
+    "fov": 58.7155
+  },
+  "spawnClear": true,
+  "sourceNegativeTransforms": [],
+  "sha256": "e964f849deea24b7ca3374fa1f6610e1a780397758c6d7a669a05619a89eae25",
+  "runtimeBrowserCheck": "Owned by project-level verification, not this source audit."
+}

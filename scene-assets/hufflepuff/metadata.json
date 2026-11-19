@@ -1,0 +1,219 @@
+{
+  "id": "hufflepuff",
+  "name": "赫奇帕奇休息室",
+  "lighting": "baked",
+  "background": "#21180d",
+  "exposure": 1.0,
+  "cameras": [
+    {
+      "name": "暖阳植物客厅",
+      "position": [
+        -0.15000000596046448,
+        3.75,
+        7.3
+      ],
+      "target": [
+        0.0,
+        1.649999976158142,
+        -1.7000000476837158
+      ],
+      "fov": 50.43432779375878
+    },
+    {
+      "name": "茶点与黄绒沙发",
+      "position": [
+        5.6,
+        2.45,
+        3.9
+      ],
+      "target": [
+        0,
+        1.4,
+        0.2
+      ],
+      "fov": 52
+    },
+    {
+      "name": "圆窗与壁炉",
+      "position": [
+        -4.2,
+        2.8,
+        -1.8
+      ],
+      "target": [
+        0,
+        2.6,
+        -4.8
+      ],
+      "fov": 48
+    }
+  ],
+  "spawn": {
+    "position": [
+      0,
+      1.65,
+      5.8
+    ],
+    "target": [
+      0,
+      1.65,
+      -2
+    ]
+  },
+  "bounds": {
+    "minX": -6.1,
+    "maxX": 6.1,
+    "minZ": -3.55,
+    "maxZ": 7.45
+  },
+  "obstacles": [
+    {
+      "minX": -4.95,
+      "maxX": -1.32,
+      "minZ": -1.72,
+      "maxZ": 0.75
+    },
+    {
+      "minX": 1.32,
+      "maxX": 4.95,
+      "minZ": -1.86,
+      "maxZ": 0.46
+    },
+    {
+      "minX": -2.7,
+      "maxX": -0.9,
+      "minZ": -3.8,
+      "maxZ": -2.3
+    },
+    {
+      "minX": -1.02,
+      "maxX": 1.02,
+      "minZ": -0.58,
+      "maxZ": 1.48
+    },
+    {
+      "minX": 1.45,
+      "maxX": 2.55,
+      "minZ": 1.9,
+      "maxZ": 3.1
+    },
+    {
+      "minX": -5.6,
+      "maxX": -4.0,
+      "minZ": 1.5,
+      "maxZ": 3.1
+    },
+    {
+      "minX": 4.0,
+      "maxX": 5.6,
+      "minZ": 1.2,
+      "maxZ": 2.8
+    },
+    {
+      "minX": -6.35,
+      "maxX": -4.8,
+      "minZ": -3.9,
+      "maxZ": -2.65
+    },
+    {
+      "minX": 4.8,
+      "maxX": 6.35,
+      "minZ": -3.9,
+      "maxZ": -2.65
+    },
+    {
+      "minX": -6.3,
+      "maxX": -5,
+      "minZ": 5,
+      "maxZ": 6.7
+    },
+    {
+      "minX": 5,
+      "maxX": 6.3,
+      "minZ": 5,
+      "maxZ": 6.7
+    },
+    {
+      "minX": -5.69,
+      "maxX": -5.11,
+      "minZ": -3.09,
+      "maxZ": -2.51
+    },
+    {
+      "minX": 4.91,
+      "maxX": 5.49,
+      "minZ": -3.04,
+      "maxZ": -2.46
+    },
+    {
+      "minX": -5.29,
+      "maxX": -4.71,
+      "minZ": 3.21,
+      "maxZ": 3.79
+    },
+    {
+      "minX": 5.31,
+      "maxX": 5.89,
+      "minZ": 3.41,
+      "maxZ": 3.99
+    },
+    {
+      "minX": -6.39,
+      "maxX": -5.81,
+      "minZ": -0.08999999999999997,
+      "maxZ": 0.49
+    },
+    {
+      "minX": 5.81,
+      "maxX": 6.39,
+      "minZ": -0.08999999999999997,
+      "maxZ": 0.49
+    },
+    {
+      "minX": -5.09,
+      "maxX": -4.51,
+      "minZ": 6.31,
+      "maxZ": 6.89
+    },
+    {
+      "minX": 4.51,
+      "maxX": 5.09,
+      "minZ": 6.31,
+      "maxZ": 6.89
+    }
+  ],
+  "artisticLimitations": [
+    "Original stylized reconstruction from the selected official promotional image; inferred reverse walls and dimensions.",
+    "Statue, portraits, textiles and foliage are original simplified geometry or illustrations, not game assets.",
+    "Fine hand-painted linework and sculptural complexity remain less detailed than the game reference."
+  ],
+  "referenceAspect": 1.7777777777777777,
+  "revision": "sculpture-curved-enclosure-v2",
+  "triangles": 189188,
+  "meshGroups": [
+    "floor",
+    "architecture",
+    "furniture",
+    "details",
+    "glow"
+  ],
+  "bakeSamples": 20,
+  "atlases": {
+    "floor": [
+      2048,
+      2048
+    ],
+    "architecture": [
+      2048,
+      2048
+    ],
+    "furniture": [
+      2048,
+      2048
+    ],
+    "details": [
+      2048,
+      2048
+    ]
+  }
+}

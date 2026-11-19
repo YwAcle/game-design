@@ -1,0 +1,166 @@
+{
+  "id": "potions",
+  "title": "魔药课教室",
+  "lighting": "baked",
+  "background": "#181311",
+  "exposure": 1.0,
+  "cameras": [
+    {
+      "name": "药剂课全景",
+      "position": [
+        0.1,
+        2.95,
+        4.9
+      ],
+      "target": [
+        0,
+        2.24,
+        -2.6
+      ],
+      "horizontalFov": 85.42,
+      "fov": 54.88
+    },
+    {
+      "name": "炼制工作台",
+      "position": [
+        3.65,
+        2.05,
+        2.4
+      ],
+      "target": [
+        -1.2,
+        1.45,
+        -0.7
+      ],
+      "horizontalFov": 71.51,
+      "fov": 44.1
+    },
+    {
+      "name": "瓶罐与石窗",
+      "position": [
+        -3.5,
+        2.12,
+        -1.45
+      ],
+      "target": [
+        0.5,
+        2.5,
+        -4.5
+      ],
+      "horizontalFov": 67.38,
+      "fov": 41.11
+    }
+  ],
+  "spawn": {
+    "position": [
+      0.65,
+      1.65,
+      0.64
+    ],
+    "target": [
+      0.65,
+      1.65,
+      -2.8
+    ]
+  },
+  "bounds": {
+    "minX": -4.03,
+    "maxX": 4.03,
+    "minZ": -4.48,
+    "maxZ": 5.05
+  },
+  "obstacles": [
+    {
+      "minX": -4.99,
+      "maxX": -4.12,
+      "minZ": -5.18,
+      "maxZ": 5.15
+    },
+    {
+      "minX": 4.12,
+      "maxX": 4.99,
+      "minZ": -5.18,
+      "maxZ": 5.15
+    },
+    {
+      "minX": -4.8,
+      "maxX": -1.45,
+      "minZ": -5.42,
+      "maxZ": -4.62
+    },
+    {
+      "minX": 1.45,
+      "maxX": 4.8,
+      "minZ": -5.42,
+      "maxZ": -4.62
+    },
+    {
+      "minX": -3.265,
+      "maxX": 2.9650000000000003,
+      "minZ": 1.0550000000000002,
+      "maxZ": 2.685
+    },
+    {
+      "minX": -3.6399999999999997,
+      "maxX": -0.4599999999999998,
+      "minZ": -1.37,
+      "maxZ": 0.07000000000000003
+    },
+    {
+      "minX": 1.2049999999999998,
+      "maxX": 3.635,
+      "minZ": -2.23,
+      "maxZ": -0.87
+    },
+    {
+      "minX": -2.515,
+      "maxX": 1.815,
+      "minZ": -4.33,
+      "maxZ": -3.0700000000000003
+    }
+  ],
+  "artisticLimitations": [
+    "Original interpretation of the selected official promotional image, not ripped game assets.",
+    "Unseen reverse wall, depth, floor plan and walk routes are original extrapolations.",
+    "Promotional reference has denser painterly edge strokes; this model uses authored texture studies and actual geometric detail."
+  ],
+  "sourceReference": {
+    "page": "https://www.harrypottermagicawakened.com/global/",
+    "image": "https://www.harrypottermagicawakened.com/pc/gw/20230516102258/img/v2/map6_a177a0c.jpg",
+    "type": "official promotional scene image",
+    "inspected": "2026-11-17"
+  },
+  "triangles": 195870,
+  "meshGroups": [
+    "floor",
+    "architecture",
+    "furniture",
+    "details",
+    "glow"
+  ],
+  "bakeSamples": 12,
+  "atlases": {
+    "floor": [
+      2048,
+      2048
+    ],
+    "architecture": [
+      2048,
+      2048
+    ],
+    "furniture": [
+      4096,
+      4096
+    ],
+    "details": [
+      4096,
+      4096
+    ]
+  },
+  "sourceCoordinatesPreserved": [
+    "Generated->PaintCoord",
+    "Object->LocalCoord"
+  ],
+  "gltfUnlitMaterials": 4,
+  "cameraRefinementNote": "Source cameras aligned to viewer bounds and polar limit after browser review; the saved Blender preview uses the preceding camera position, 0.24 m farther back for potions / 0.30 m for divination. Geometry and baked lighting are unchanged."
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "name": "官网首页·黑湖渡船",
+    "file": "assets/lake.webp",
+    "source": "https://www.harrypottermagicawakened.com/pc/gw/20201020114844/img/bg_1159d29.jpg"
+  },
+  {
+    "name": "霍格沃茨廊桥",
+    "file": "assets/bridge.webp",
+    "source": "https://nie.res.netease.com/r/pic/20230719/c190fca5-8fbf-4ea2-a29a-b3c33bfb87d0.jpg"
+  },
+  {
+    "name": "天文塔",
+    "file": "assets/astronomy.webp",
+    "source": "https://nie.res.netease.com/r/pic/20230719/c12ae1c2-d8bb-4d84-a5d1-8b3a19327d71.jpg"
+  },
+  {
+    "name": "舞会入口",
+    "file": "assets/ballroom.webp",
+    "source": "https://nie.res.netease.com/r/pic/20230719/2e22dfca-8f23-4e9a-b371-e845fbb13efa.jpg"
+  },
+  {
+    "name": "学生宿舍",
+    "file": "assets/dormitory.webp",
+    "source": "https://nie.res.netease.com/r/pic/20230719/feec4152-95d3-49af-9e2e-931ccb14e818.jpg"
+  },
+  {
+    "name": "霍格沃茨录取通知书",
+    "file": "assets/letter.webp",
+    "source": "https://nie.res.netease.com/r/pic/20230719/6cbd57f8-c944-4154-988b-f0a22ead9980.jpg"
+  },
+  {
+    "name": "跨年烟花秀",
+    "file": "assets/fireworks.webp",
+    "source": "https://nie.res.netease.com/r/pic/20221019/215e9b90-c4ef-4c90-a024-6e3e00c7ac9a.jpg"
+  }
+]

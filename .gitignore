@@ -1,0 +1,8 @@
+/node_modules/
+/dist/
+/PACKAGE_CONTENTS.json
+*.zip
+*.blend[0-9]
+__pycache__/
+.DS_Store
+Thumbs.db

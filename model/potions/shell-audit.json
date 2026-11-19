@@ -1,0 +1,13 @@
+{
+  "scene": "potions",
+  "meshObjects": 2202,
+  "uniqueMeshes": 1153,
+  "closedMeshes": 1029,
+  "intentionallyOpenMeshes": 124,
+  "inwardClosedMeshes": [],
+  "negativeTransforms": [],
+  "zeroAreaFaces": 0,
+  "spawnClearForRadius025": true,
+  "centralRouteClearForRadius025": true,
+  "verticalFovVerified": true
+}

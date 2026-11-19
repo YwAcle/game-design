@@ -1,0 +1,8 @@
+{
+  "scene": "potions",
+  "playerRadius": 0.25,
+  "spawnClear": true,
+  "centralRouteClear": true,
+  "sampledRoutePoints": 63,
+  "cameraVerticalFovCorrect": true
+}

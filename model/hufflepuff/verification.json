@@ -1,0 +1,26 @@
+{
+  "scene": "hufflepuff",
+  "objects": 4305,
+  "meshObjects": 2598,
+  "sourcePolygons": 55580,
+  "negativeTransforms": [],
+  "nonFiniteGeometry": [],
+  "packedImageCount": 8,
+  "cameraFov": 50.43432779375878,
+  "sourceAspect": 1.7777777777777777,
+  "spawnClear": true,
+  "reachableNavigationCells": 5507,
+  "navigationCellMetres": 0.1,
+  "navigationRadiusMetres": 0.3,
+  "reachableX": [
+    -5.7,
+    5.7
+  ],
+  "reachableZ": [
+    -3.2,
+    7.1000000000000005
+  ],
+  "limitations": [
+    "Metadata path sampling verifies conservative rectangles, not a physical collision simulation. Browser walkthrough remains separate."
+  ]
+}

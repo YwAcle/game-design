@@ -1,0 +1,74 @@
+{
+  "flames": [
+    [
+      -12.01,
+      4.65,
+      9.6
+    ],
+    [
+      -12.01,
+      4.65,
+      0
+    ],
+    [
+      -12.01,
+      4.65,
+      -9.6
+    ],
+    [
+      12.01,
+      4.65,
+      9.6
+    ],
+    [
+      12.01,
+      4.65,
+      0
+    ],
+    [
+      12.01,
+      4.65,
+      -9.6
+    ]
+  ],
+  "closedMeshes": 217,
+  "invertedClosedMeshes": 0,
+  "source": "Dueling_Club.blend",
+  "courtBounds": {
+    "x": 9.1,
+    "z": 12.0,
+    "cornerSum": 20.1
+  },
+  "triangles": 407898,
+  "meshGroups": [
+    "floor",
+    "architecture",
+    "seating",
+    "cloth",
+    "details",
+    "glow"
+  ],
+  "bakeSamples": 20,
+  "atlases": {
+    "floor": [
+      4096,
+      4096
+    ],
+    "architecture": [
+      4096,
+      4096
+    ],
+    "seating": [
+      4096,
+      4096
+    ],
+    "cloth": [
+      2048,
+      2048
+    ],
+    "details": [
+      2048,
+      2048
+    ]
+  }
+}

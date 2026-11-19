@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#14201c"><title>旧地重游 · 魔法留声</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2314211f'/%3E%3Cpath d='M32 8L48 24L32 56L16 24Z' fill='none' stroke='%23c4ab76' stroke-width='2'/%3E%3C/svg%3E"><link rel="stylesheet" href="app.css"></head>
+<body>
+<main id="scene" aria-label="霍格沃茨三维场景"></main><div class="vignette" aria-hidden="true"></div>
+<div id="loading" role="status"><span class="loading-star">✧</span><p class="eyebrow">HOGWARTS · WELCOME HOME</p><h1>门后的灯，为你而亮</h1><p id="load-label">正在打开旧日的房间…</p><div class="load-track"><div id="load-bar"></div></div><span id="load-percent">0%</span><button id="retry" hidden>重新加载</button><a class="loading-back" href="../#places">← 返回回忆录</a></div>
+<div id="interface">
+<header><a class="wordmark" href="../#places" aria-label="回到回忆录"><span class="crest">✧</span><span>魔法留声<small>HOGWARTS, ALWAYS</small></span></a><div class="top-actions"><button id="effects" class="magic-control" aria-pressed="true">微光 · 开</button><button id="help" class="icon-button" aria-label="操作说明">?</button><button id="hide-ui" class="icon-button" aria-label="隐藏界面">⌑</button></div></header>
+<nav class="journey-nav" aria-label="旧地重游导航"><a href="../#places">← 回忆录</a></nav>
+<aside class="viewpoints" aria-label="观景位置"><span class="eyebrow">LOOK AROUND</span><div id="view-buttons"></div></aside>
+<footer><div class="title-block"><p class="eyebrow">A PLACE TO REMEMBER</p><h1><span id="room-name">旧地重游</span><span id="room-english"></span></h1><p class="description" id="room-description"></p></div><div class="walk-panel"><button id="explore" disabled><span class="diamond">◇</span><span id="explore-label">开始漫游</span><span>→</span></button><p id="control-hint">拖动旋转 · 滚轮缩放 · 漫游后 WASD 行走</p></div><label class="quality-label">画质<select id="quality" aria-label="画质"><option value="high">精细</option><option value="balanced" selected>均衡</option></select></label></footer>
+<div class="bottom-line"><span id="room-caption">魔法留声 / 旧地重游</span><span>留一点时间，慢慢看</span></div>
+</div>
+<div id="crosshair" hidden aria-hidden="true"></div><button id="restore-ui" hidden>显示界面 · H</button>
+<div id="touch-pad" aria-label="移动控制"><button data-key="KeyW" aria-label="前进">↑</button><div><button data-key="KeyA" aria-label="向左">←</button><button data-key="KeyS" aria-label="后退">↓</button><button data-key="KeyD" aria-label="向右">→</button></div></div>
+<dialog id="help-dialog"><button id="close-help" aria-label="关闭操作说明">×</button><p class="eyebrow">WELCOME BACK</p><h2>在熟悉的光里漫步</h2><p>拖动画面旋转，滚轮拉近。点击「开始漫游」后，鼠标转头，WASD 或方向键行走，Shift 加快。按 Esc 退出漫游。</p><div class="key-guide"><span><kbd>W A S D</kbd> 行走</span><span><kbd>Shift</kbd> 加快</span><span><kbd>R</kbd> 返回全景</span><span><kbd>H</kbd> 隐藏界面</span></div><p>浏览器不允许锁定鼠标时，按住画面拖动也能环顾。触屏进入漫游后，使用左下角方向键移动。右侧可以切换观景点，上方可以去其他房间，或把此刻写进回忆。</p><p class="fine-print">参考《哈利·波特：魔法觉醒》官方宣传画面的原创三维习作，非原游戏资产。参考镜头外的空间为自行补全。</p><a href="../REFERENCES.md" target="_blank" rel="noopener">查看场景参考 ↗</a></dialog>
+<script type="module" src="app.js"></script></body></html>

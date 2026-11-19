@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101e1c">
+  <meta name="description" content="献给每一位曾相信魔法的你。一间属于《哈利波特：魔法觉醒》玩家的回忆收藏室。">
+  <title>魔法留声 · Hogwarts, Always</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2314211f'/%3E%3Cpath d='m35 8-17 28h13l-4 20 19-30H33z' fill='%23d7ba7d'/%3E%3C/svg%3E">
+  <link rel="preload" as="image" href="assets/lake.webp">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <svg class="svg-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5Z"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+      <symbol id="i-feather" viewBox="0 0 24 24"><path d="M4 21 16 9M7 17c-1-7 4-14 13-14 0 9-4 15-11 15M10 14h6M13 11V6"/></symbol>
+      <symbol id="i-sound" viewBox="0 0 24 24"><path d="m11 5-5 4H3v6h3l5 4ZM15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></symbol>
+      <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.4 4.6a5.5 5.5 0 0 0-7.8 0l-.6.6-.6-.6a5.5 5.5 0 0 0-7.8 7.8L12 21l8.4-8.6a5.5 5.5 0 0 0 0-7.8Z"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 14A9 9 0 0 1 10 3.5 9 9 0 1 0 20.5 14Z"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+      <symbol id="i-castle" viewBox="0 0 64 64"><path d="M12 52V30h11v22m18 0V30h11v22M8 30l9-15 10 15m10 0 10-15 9 15M25 52V22h14v30M22 22 32 5l10 17M7 53h50M29 53V41a3 3 0 0 1 6 0v12M16 36v4m32-4v4M31 28v5M32 5V1"/></symbol>
+    </defs>
+  </svg>
+
+  <a class="skip-link" href="#memories">跳到回忆收藏室</a>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="魔法留声，回到首页">
+      <span class="brand-mark"><svg><use href="#i-castle"/></svg></span>
+      <span><strong>魔法留声</strong><small>HOGWARTS, ALWAYS</small></span>
+    </a>
+    <nav class="main-nav" aria-label="主导航">
+      <a class="active" href="#home">重返霍格沃茨</a>
+      <a href="#places">旧地重游</a>
+      <a href="#memories">回忆收藏室</a>
+    </nav>
+    <div class="header-actions">
+      <button class="sound-button" id="sound-toggle" aria-pressed="false" title="播放原创氛围钟琴">
+        <svg class="icon"><use href="#i-sound"/></svg><span>环境音</span><span class="sound-status">关</span>
+      </button>
+      <span class="header-divider"></span>
+      <button class="header-write" data-open-write><svg class="icon"><use href="#i-feather"/></svg><span>写下回忆</span></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home" aria-label="重返霍格沃茨">
+      <div class="scene-stage" aria-hidden="true">
+        <img class="scene-image is-current" src="assets/lake.webp" alt="" data-scene-image="0" fetchpriority="high">
+        <img class="scene-image" src="assets/bridge.webp" alt="" data-scene-image="1" loading="lazy">
+        <img class="scene-image" src="assets/astronomy.webp" alt="" data-scene-image="2" loading="lazy">
+        <img class="scene-image" src="assets/dormitory.webp" alt="" data-scene-image="3" loading="lazy">
+      </div>
+      <div class="scene-shade" aria-hidden="true"></div>
+      <div class="lumos-glow" aria-hidden="true"></div>
+      <canvas id="magic-canvas" aria-hidden="true"></canvas>
+      <div class="hero-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
+      <div class="hero-content">
+        <p class="eyebrow"><span></span> A HOME FOR EVERY WIZARD</p>
+        <p class="hero-pretitle">献给每一位，曾相信魔法的你</p>
+        <h1>故事会落幕，<br>魔法<span class="title-gold">永不散场</span><span class="title-period">。</span></h1>
+        <p class="hero-description">还记得第一次，收到那封录取通知书吗？<br>把走过的路、遇见的人，和没说完的故事，留在这里。</p>
+        <div class="hero-buttons">
+<a class="button button-ghost" href="./world/">探索霍格沃茨地图 ↗</a>
+          <a class="button button-gold" href="#memories"><svg class="icon"><use href="#i-feather"/></svg>打开回忆册<svg class="icon arrow"><use href="#i-arrow"/></svg></a>
+          <a class="button button-ghost" href="#places"><svg class="icon"><use href="#i-castle"/></svg>走进霍格沃茨</a>
+        </div>
+        <p class="hero-dates"><span>2021.09.09</span><span class="date-line"></span><span>ALWAYS</span><span class="date-caption">有些相遇，永远不会结束</span></p>
+      </div>
+
+      <button class="golden-snitch" id="snitch" aria-label="抓住金色飞贼" title="嘘，金色飞贼！">
+        <svg viewBox="0 0 180 80" aria-hidden="true"><defs><linearGradient id="wing"><stop stop-color="#c6b77e" stop-opacity=".08"/><stop offset="1" stop-color="#efdfad" stop-opacity=".9"/></linearGradient><radialGradient id="ball"><stop stop-color="#f4df91"/><stop offset="1" stop-color="#8d632c"/></radialGradient></defs><g class="snitch-wing wing-left"><path d="M79 42Q47-1 2 13q18 24 77 34" fill="url(#wing)"/><path d="M76 41 7 15m66 23L20 14m49 22L34 16m29 18L47 19"/></g><g class="snitch-wing wing-right"><path d="M101 42q32-43 77-29-18 24-77 34" fill="url(#wing)"/><path d="m104 41 69-26m-66 23 53-24m-49 22 35-20m-29 18 16-15"/></g><circle cx="90" cy="46" r="14" fill="url(#ball)"/><path d="M85 33q-9 16 9 26m-16-15 22-3m-21 12 23-4"/><circle cx="86" cy="41" r="2" fill="#fff4c5" stroke="none"/></svg>
+      </button>
+      <div class="hero-side-note" aria-hidden="true">THE MAGIC WE KEEP</div>
+
+      <div class="scene-bottom">
+        <div class="scene-caption" aria-live="polite">
+          <span class="scene-index" id="scene-number">01</span><span class="caption-divider"></span>
+          <div><p id="scene-name">黑湖 · 初见霍格沃茨</p><small id="scene-subtitle">那一晚，远处的灯火是我们的未来。</small></div>
+        </div>
+        <div class="scene-picker" role="group" aria-label="切换回忆场景">
+          <button class="scene-thumb is-selected" data-scene="0" aria-pressed="true" aria-label="黑湖，初见霍格沃茨"><img src="assets/lake.webp" alt=""><span>黑湖初见</span></button>
+          <button class="scene-thumb" data-scene="1" aria-pressed="false" aria-label="霍格沃茨廊桥"><img src="assets/bridge.webp" alt=""><span>廊桥日落</span></button>
+          <button class="scene-thumb" data-scene="2" aria-pressed="false" aria-label="天文塔"><img src="assets/astronomy.webp" alt=""><span>天文塔夜</span></button>
+          <button class="scene-thumb" data-scene="3" aria-pressed="false" aria-label="学生宿舍"><img src="assets/dormitory.webp" alt=""><span>等你回寝</span></button>
+        </div>
+        <button class="spell-button" id="lumos-toggle" aria-pressed="false"><svg class="icon"><use href="#i-star"/></svg><span><strong>Lumos</strong><small>点亮魔杖</small></span></button>
+      </div>
+      <a class="scroll-cue" href="#places"><span>往下翻，还有我们的故事</span><span class="scroll-line"></span></a>
+    </section>
+
+    <div class="memory-ribbon"><span class="ribbon-star">✦</span><p>我们在这里上过学，交过朋友，也认真地相信过魔法。</p><span class="ribbon-star">✦</span></div>
+
+    <section class="places section-wrap" id="places">
+      <div class="section-heading">
+        <div><p class="eyebrow">CHAPTER 01 <span class="small-line"></span> PLACES WE CALLED HOME</p><h2>有些地方，<em>闭上眼就能回去。</em></h2></div>
+        <p class="section-aside">不必赶课程，也不必等组队。<br>这一次，我们慢慢走。</p>
+      </div>
+      <div class="journey-grid">
+        <a class="journey-card" href="hall/" aria-label="走进烛光礼堂">
+          <img src="assets/hall.webp" alt="礼堂里的悬浮烛火、长桌与高窗" loading="lazy">
+          <span class="journey-index">01 / THE GREAT HALL</span><span class="journey-badge">可自由漫游</span>
+          <span class="journey-copy"><small>还记得，长桌旁的那个位置吗？</small><strong>烛光礼堂</strong><span>穿过石拱与烛光，把脚步放慢一些。</span><b>走进礼堂 <span>↗</span></b></span>
+        </a>
+        <a class="journey-card" href="arena/" aria-label="走进决斗场">
+          <img src="assets/arena.webp" alt="高窗与看台环绕的决斗场，红蓝魔咒在中央交汇" loading="lazy">
+          <span class="journey-index">02 / DUELING CLUB</span><span class="journey-badge">可自由漫游</span>
+          <span class="journey-copy"><small>那些并肩作战的日子，仍有回响。</small><strong>决斗场</strong><span>重返看台与场地，看看魔咒留下的光。</span><b>走进决斗场 <span>↗</span></b></span>
+        </a>
+      </div>
+      <p class="journey-note">点击走进场景 · 拖动画面环顾 · 开启漫游后使用 WASD，触屏使用方向键</p>
+      <div class="illustration-heading"><span>相册里的旧时光</span><small>点击回望插画</small></div>
+      <div class="places-grid illustration-grid">
+        <button class="place-card" data-visit="1"><img src="assets/bridge.webp" alt="夕阳照进霍格沃茨长廊，远处群山染成金色" loading="lazy"><span class="place-number">I</span><span class="place-copy"><small>THE COVERED BRIDGE</small><strong>再等一场廊桥日落</strong><span>下课后的风，还记得你的名字。</span></span><span class="place-arrow"><svg class="icon"><use href="#i-arrow"/></svg></span></button>
+        <button class="place-card" data-visit="2"><img src="assets/astronomy.webp" alt="天文塔内的巨型天球仪和窗外蓝紫色星空" loading="lazy"><span class="place-number">II</span><span class="place-copy"><small>THE ASTRONOMY TOWER</small><strong>去天文塔，看一次星星</strong><span>总有一颗，照着那年的我们。</span></span><span class="place-arrow"><svg class="icon"><use href="#i-arrow"/></svg></span></button>
+        <button class="place-card" data-visit="3"><img src="assets/dormitory.webp" alt="暖光中的学生宿舍，沙发和壁炉前留着一个位置" loading="lazy"><span class="place-number">III</span><span class="place-copy"><small>OUR COMMON ROOM</small><strong>壁炉旁，给你留了位置</strong><span>「回来啦？就差你了。」</span></span><span class="place-arrow"><svg class="icon"><use href="#i-arrow"/></svg></span></button>
+      </div>
+    </section>
+
+    <section class="house-section" id="houses">
+      <div class="house-inner section-wrap">
+        <div class="house-intro"><p class="eyebrow">ONCE A WIZARD, ALWAYS A WIZARD</p><h2>毕业以后，<br>你仍属于这里。</h2><p id="house-message" aria-live="polite">选一次自己的学院，让回忆有个归处。</p></div>
+        <div class="house-options" role="group" aria-label="选择你的学院">
+          <button class="house-option" data-house="gryffindor" aria-pressed="false"><span class="house-shield gryffindor"><span>G</span><svg class="shield-star"><use href="#i-star"/></svg></span><strong>格兰芬多</strong><small>勇气，始终闪耀</small></button>
+          <button class="house-option" data-house="slytherin" aria-pressed="false"><span class="house-shield slytherin"><span>S</span><svg class="shield-star"><use href="#i-star"/></svg></span><strong>斯莱特林</strong><small>野心，自有回响</small></button>
+          <button class="house-option" data-house="ravenclaw" aria-pressed="false"><span class="house-shield ravenclaw"><span>R</span><svg class="shield-star"><use href="#i-star"/></svg></span><strong>拉文克劳</strong><small>智慧，永远自由</small></button>
+          <button class="house-option" data-house="hufflepuff" aria-pressed="false"><span class="house-shield hufflepuff"><span>H</span><svg class="shield-star"><use href="#i-star"/></svg></span><strong>赫奇帕奇</strong><small>温柔，也有力量</small></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="memories section-wrap" id="memories">
+      <div class="section-heading">
+        <div><p class="eyebrow">CHAPTER 02 <span class="small-line"></span> THINGS WE NEVER FORGET</p><h2>把舍不得，<em>写进回忆里。</em></h2><p class="section-description">一次并肩作战，一场没跳完的舞，或是一个再熟悉不过的名字。</p></div>
+        <button class="button button-outline" data-open-write><svg class="icon"><use href="#i-feather"/></svg>写下我的回忆</button>
+      </div>
+      <div class="memory-toolbar">
+        <div class="memory-filters" role="group" aria-label="筛选回忆"><button class="is-active" data-filter="all" aria-pressed="true">全部回忆<span id="memory-count">3</span></button><button data-filter="mine" aria-pressed="false">我写的故事</button><button data-filter="favorites" aria-pressed="false"><svg class="icon"><use href="#i-heart"/></svg>我的珍藏</button></div>
+        <div class="backup-actions"><button class="backup-button" id="import-button">↥ 导入回忆</button><input type="file" id="import-file" accept=".json,application/json" hidden>
+        <button class="backup-button" id="backup-button"><svg class="icon"><use href="#i-download"/></svg>备份回忆</button></div>
+      </div>
+      <div class="memory-grid" id="memory-grid" aria-live="polite"></div>
+      <div class="empty-state" id="empty-state" hidden><svg class="icon"><use href="#i-feather"/></svg><h3>回忆册，还留着空白的一页。</h3><p id="empty-message">把你的第一个故事，轻轻放进来。</p><button class="button button-outline" data-open-write>写下第一个故事</button></div>
+      <p class="local-note"><span class="status-dot"></span>你的故事保存在当前浏览器，只有你能看见。记得下载一份，留在身边。旧网页的 JSON 备份可以通过「导入回忆」带回这里。</p>
+    </section>
+
+    <section class="closing"><span class="closing-line"></span><svg class="closing-star"><use href="#i-star"/></svg><p>「只是换个地方，继续相信魔法。」</p><small>HOGWARTS WILL ALWAYS BE THERE TO WELCOME YOU HOME.</small><a href="#home">回到故事开始的地方 <span>↑</span></a></section>
+  </main>
+
+  <footer class="site-footer"><a class="footer-brand" href="#home">魔法留声 <span>HOGWARTS, ALWAYS</span></a><p>玩家自发的回忆纪念 · 非官方项目</p><button id="about-button">关于这间收藏室 <span>↗</span></button></footer>
+
+  <dialog class="write-dialog" id="write-dialog" aria-labelledby="write-title">
+    <div class="dialog-inner"><button class="close-button" data-close aria-label="关闭写回忆窗口"><svg class="icon"><use href="#i-close"/></svg></button><p class="eyebrow">A LETTER TO HOGWARTS</p><svg class="dialog-feather"><use href="#i-feather"/></svg><h2 id="write-title">亲爱的霍格沃茨，</h2><p class="dialog-description">有些话，想再对你说一次。</p>
+      <form id="memory-form">
+        <div class="form-row"><label>你的巫师名字<input id="author-input" name="author" maxlength="24" placeholder="让我们记得你" autocomplete="nickname" required></label><label>你的学院<select name="house" id="house-input"><option value="">还没想好</option><option value="gryffindor">格兰芬多</option><option value="slytherin">斯莱特林</option><option value="ravenclaw">拉文克劳</option><option value="hufflepuff">赫奇帕奇</option></select></label></div>
+        <label>故事发生的地方<select name="scene" id="scene-input"><option value="">留在回忆册</option><option value="hall">烛光礼堂</option><option value="arena">决斗场</option></select></label>
+        <label>给这段回忆起个名字<input name="title" maxlength="32" placeholder="比如：那个总在等我上线的人" required></label>
+        <label>想留住的故事<textarea name="body" id="memory-body" rows="5" maxlength="400" placeholder="我还记得，那一天……" required></textarea></label><div class="textarea-meta"><span>不必写得漂亮，真实就很好。</span><span id="character-count">0 / 400</span></div>
+        <fieldset class="cover-picker"><legend>挑一张回忆封面</legend><label><input type="radio" name="cover" value="letter" checked><img src="assets/letter.webp" alt="录取通知书"></label><label><input type="radio" name="cover" value="bridge"><img src="assets/bridge.webp" alt="廊桥日落"></label><label><input type="radio" name="cover" value="ballroom"><img src="assets/ballroom.webp" alt="舞会入口"></label><label><input type="radio" name="cover" value="fireworks"><img src="assets/fireworks.webp" alt="烟花之夜"></label><label><input type="radio" name="cover" value="hall"><img src="assets/hall.webp" alt="烛光礼堂"></label><label><input type="radio" name="cover" value="arena"><img src="assets/arena.webp" alt="决斗场"></label></fieldset>
+        <p class="form-error" id="form-error" role="alert" hidden></p><button class="button button-gold submit-memory" type="submit"><svg class="icon"><use href="#i-feather"/></svg>把这一页，留给时光<svg class="icon arrow"><use href="#i-arrow"/></svg></button>
+      </form><p class="dialog-footnote">只保存在你的浏览器里，不会公开发布。</p>
+    </div>
+  </dialog>
+
+  <dialog class="detail-dialog" id="detail-dialog" aria-labelledby="detail-title"><button class="close-button" data-close aria-label="关闭回忆"><svg class="icon"><use href="#i-close"/></svg></button><img class="detail-cover" id="detail-cover" src="assets/letter.webp" alt="回忆插画"><div class="detail-content"><p class="eyebrow" id="detail-category"></p><h2 id="detail-title"></h2><p class="detail-body" id="detail-body"></p><div class="detail-signature"><span id="detail-author"></span><span id="detail-date"></span></div><a class="memory-return button button-outline" id="memory-return" hidden></a><div class="detail-actions"><button class="button button-gold" id="postcard-button"><svg class="icon"><use href="#i-download"/></svg>保存为纪念卡片</button><button class="text-button" id="delete-memory" hidden>删除这段回忆</button></div></div></dialog>
+
+  <dialog class="about-dialog" id="about-dialog" aria-labelledby="about-title"><div class="dialog-inner"><button class="close-button" data-close aria-label="关闭关于窗口"><svg class="icon"><use href="#i-close"/></svg></button><p class="eyebrow">KEEP A LITTLE MAGIC</p><h2 id="about-title">给我们的魔法时光，<br>留一盏灯。</h2><p>这是一间为《哈利波特：魔法觉醒》玩家做的私人回忆收藏室。你可以重访熟悉的场景，收藏记忆碎片，或写下只属于自己的故事。</p><p>页面里的初始故事是「回忆灵感」示例，并非其他玩家的真实投稿。你的故事保存在当前浏览器；清理浏览器数据会影响保存内容，请使用「备份回忆」下载文字，或将故事保存为纪念卡片。</p><p>首页相册插画来自游戏官方网站的公开展示素材；八处可漫游场景是参考电影与游戏画面制作的原创三维习作，权利归原权利人所有。本项目为玩家纪念原型，与网易、Warner Bros. 及 J.K. Rowling 无关联。</p><a class="about-source" href="https://www.harrypottermagicawakened.com/cn/" target="_blank" rel="noopener noreferrer">查看游戏官方美术参考 ↗</a><p class="render-note" id="render-note"></p><button class="text-button" id="motion-toggle" aria-pressed="false">关闭动态魔法效果</button></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
+

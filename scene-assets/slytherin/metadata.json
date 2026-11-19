@@ -1,0 +1,186 @@
+{
+  "id": "slytherin",
+  "title": "斯莱特林公共休息室",
+  "cameras": [
+    {
+      "name": "主视角",
+      "position": [
+        0,
+        4.15,
+        9.6
+      ],
+      "target": [
+        0,
+        1.7,
+        -3
+      ],
+      "fov": 58.7155
+    },
+    {
+      "name": "炉火与书桌",
+      "position": [
+        -5.8,
+        2.5,
+        3.5
+      ],
+      "target": [
+        0.8,
+        1.8,
+        -3.2
+      ],
+      "fov": 44.0959
+    },
+    {
+      "name": "反向全景",
+      "position": [
+        5.5,
+        2.75,
+        -4.65
+      ],
+      "target": [
+        -0.6,
+        2.1,
+        2.4
+      ],
+      "fov": 47.5199
+    }
+  ],
+  "spawn": {
+    "position": [
+      0,
+      1.65,
+      5.8
+    ],
+    "target": [
+      0,
+      1.65,
+      -3.2
+    ]
+  },
+  "bounds": {
+    "minX": -7.3,
+    "maxX": 7.3,
+    "minZ": -5.25,
+    "maxZ": 9.8
+  },
+  "obstacles": [
+    {
+      "minX": -2.55,
+      "maxX": 2.55,
+      "minZ": -6.15,
+      "maxZ": -4.3
+    },
+    {
+      "minX": -3.54,
+      "maxX": -1.7599999999999998,
+      "minZ": -2.075,
+      "maxZ": 1.175
+    },
+    {
+      "minX": 1.785,
+      "maxX": 3.4349999999999996,
+      "minZ": -1.92,
+      "maxZ": 1.52
+    },
+    {
+      "minX": -0.95,
+      "maxX": 0.95,
+      "minZ": -1.95,
+      "maxZ": 1.55
+    },
+    {
+      "minX": -6.475,
+      "maxX": -4.025,
+      "minZ": 2.5,
+      "maxZ": 4.0
+    },
+    {
+      "minX": 3.95,
+      "maxX": 5.3500000000000005,
+      "minZ": 1.5999999999999999,
+      "maxZ": 3.0
+    },
+    {
+      "minX": 5.15,
+      "maxX": 7.25,
+      "minZ": -3.1799999999999997,
+      "maxZ": -1.38
+    },
+    {
+      "minX": 5.14,
+      "maxX": 8.12,
+      "minZ": -5.880000000000001,
+      "maxZ": -4.58
+    },
+    {
+      "minX": -7.55,
+      "maxX": -5.6499999999999995,
+      "minZ": -5.8500000000000005,
+      "maxZ": -4.95
+    },
+    {
+      "minX": -8.15,
+      "maxX": -7.15,
+      "minZ": -2.25,
+      "maxZ": 0.25
+    },
+    {
+      "minX": -7.3999999999999995,
+      "maxX": -6.2,
+      "minZ": -2.3,
+      "maxZ": -1.1
+    },
+    {
+      "minX": 7.15,
+      "maxX": 8.15,
+      "minZ": 2.75,
+      "maxZ": 5.25
+    },
+    {
+      "minX": 6.2,
+      "maxX": 7.3999999999999995,
+      "minZ": -2.3,
+      "maxZ": -1.1
+    }
+  ],
+  "lighting": "baked",
+  "background": "#0a1511",
+  "exposure": 0.933,
+  "triangles": 248634,
+  "artisticLimitations": [
+    "Original interpretation of one official promotional image; reverse wall, dimensions and hidden surfaces are inferred.",
+    "No official game meshes, characters, logos or texture assets are included.",
+    "Carved heraldry, portraits and tapestry are original simplified decorative designs.",
+    "Baked illumination is static; no physically simulated flickering or moving shadows."
+  ],
+  "fov": 58.7155,
+  "meshGroups": [
+    "floor",
+    "architecture",
+    "furniture",
+    "details",
+    "glow"
+  ],
+  "bakeSamples": 18,
+  "atlases": {
+    "floor": [
+      2048,
+      2048
+    ],
+    "architecture": [
+      3072,
+      3072
+    ],
+    "furniture": [
+      3072,
+      3072
+    ],
+    "details": [
+      2048,
+      2048
+    ]
+  },
+  "glbBytes": 18974104,
+  "technicalReference": "itsLucas02/3d-room aca0dc0348716cc6755a3f9e98d8954fc07b65d9: separation of baked base lighting and local illumination; independent implementation, no copied assets/code.",
+  "refinement": "Original reference-guided V2: revised architecture, camera, furnishing silhouettes and authored painted surfaces."
+}

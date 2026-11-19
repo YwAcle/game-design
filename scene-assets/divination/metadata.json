@@ -1,0 +1,179 @@
+{
+  "id": "divination",
+  "title": "占卜课教室",
+  "lighting": "baked",
+  "background": "#231314",
+  "exposure": 1.0,
+  "cameras": [
+    {
+      "name": "占卜课全景",
+      "position": [
+        0.12,
+        2.83,
+        5.15
+      ],
+      "target": [
+        0,
+        2.04,
+        -2.6
+      ],
+      "horizontalFov": 84.55,
+      "fov": 54.17
+    },
+    {
+      "name": "水晶球与绣毯",
+      "position": [
+        -0.3,
+        1.85,
+        2.55
+      ],
+      "target": [
+        3.0,
+        1.0,
+        -0.2
+      ],
+      "horizontalFov": 69.39,
+      "fov": 42.55
+    },
+    {
+      "name": "高窗与翼椅",
+      "position": [
+        -2.0,
+        2.2,
+        -1.5
+      ],
+      "target": [
+        0.3,
+        1.8,
+        -4.0
+      ],
+      "horizontalFov": 67.38,
+      "fov": 41.11
+    }
+  ],
+  "spawn": {
+    "position": [
+      0,
+      1.65,
+      4.8
+    ],
+    "target": [
+      0,
+      1.65,
+      -3.1
+    ]
+  },
+  "bounds": {
+    "minX": -4.95,
+    "maxX": 4.95,
+    "minZ": -5.3,
+    "maxZ": 5.3
+  },
+  "obstacles": [
+    {
+      "minX": -5.4,
+      "maxX": -0.87,
+      "minZ": -1.15,
+      "maxZ": 5.65
+    },
+    {
+      "minX": 0.87,
+      "maxX": 5.4,
+      "minZ": -1.15,
+      "maxZ": 5.65
+    },
+    {
+      "minX": -5.1,
+      "maxX": -3.0999999999999996,
+      "minZ": -3.51,
+      "maxZ": -1.5999999999999999
+    },
+    {
+      "minX": 3.12,
+      "maxX": 5.12,
+      "minZ": -3.7399999999999998,
+      "maxZ": -1.8299999999999998
+    },
+    {
+      "minX": -0.77,
+      "maxX": 0.77,
+      "minZ": -3.7,
+      "maxZ": -2.5
+    },
+    {
+      "minX": -5.1,
+      "maxX": -3.95,
+      "minZ": -5.4,
+      "maxZ": -4.35
+    },
+    {
+      "minX": 3.95,
+      "maxX": 5.1,
+      "minZ": -5.4,
+      "maxZ": -4.35
+    },
+    {
+      "minX": -2.06,
+      "maxX": -1.24,
+      "minZ": -5.22,
+      "maxZ": -4.37
+    },
+    {
+      "minX": 1.25,
+      "maxX": 3.05,
+      "minZ": -5.4,
+      "maxZ": -4.35
+    }
+  ],
+  "artisticLimitations": [
+    "Original interpretation of the selected official promotional image, not ripped game assets.",
+    "Unseen reverse wall, depth, floor plan and walk routes are original extrapolations.",
+    "Promotional reference has denser painterly edge strokes; this model uses authored texture studies and actual geometric detail."
+  ],
+  "sourceReference": {
+    "page": "https://www.harrypottermagicawakened.com/global/",
+    "image": "https://www.harrypottermagicawakened.com/pc/gw/20230516102258/img/v2/map8_f1502e7.jpg",
+    "type": "official promotional scene image",
+    "inspected": "2026-11-17"
+  },
+  "navigationSurface": "Ground-level central aisle and rear floor; raised side platforms are blocked by collision rectangles",
+  "platformHeights": [
+    0.24,
+    0.34
+  ],
+  "crystalTreatment": "Layered unlit alpha glass with cloudy interior volumes; artistic approximation without dynamic refraction",
+  "cameraRefinementNote": "Source cameras aligned to viewer bounds and polar limit after browser review; the saved Blender preview uses the preceding camera position, 0.24 m farther back for potions / 0.30 m for divination. Geometry and baked lighting are unchanged.",
+  "triangles": 545172,
+  "meshGroups": [
+    "floor",
+    "architecture",
+    "furniture",
+    "textile",
+    "glow",
+    "crystal"
+  ],
+  "bakeSamples": 12,
+  "atlases": {
+    "floor": [
+      2048,
+      2048
+    ],
+    "architecture": [
+      2048,
+      2048
+    ],
+    "furniture": [
+      4096,
+      4096
+    ],
+    "textile": [
+      2048,
+      2048
+    ]
+  },
+  "sourceCoordinatesPreserved": [
+    "Generated->PaintCoord",
+    "Object->LocalCoord"
+  ],
+  "gltfUnlitMaterials": 7
+}

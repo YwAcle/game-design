@@ -1,0 +1,10 @@
+{
+  "hall": "../hall/?grounds=hall",
+  "divination": "../interior/?scene=divination&grounds=tower",
+  "potions": "../interior/?scene=potions&grounds=dungeon",
+  "slytherin": "../interior/?scene=slytherin&grounds=dungeon",
+  "gryffindor": "../interior/?scene=gryffindor&grounds=houses",
+  "ravenclaw": "../interior/?scene=ravenclaw&grounds=houses",
+  "hufflepuff": "../interior/?scene=hufflepuff&grounds=kitchen",
+  "arena": "../arena/?grounds=arena"
+}

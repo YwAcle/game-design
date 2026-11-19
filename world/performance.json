@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-19",
+  "method": "Local HTTP, cold Chromium cache. Walk from Black Lake. Count rendered WebGL frames over 7 s. Sample summed Chromium renderer RSS every 180 ms, excluding GPU process. Narrow viewport uses emulated touch on the same Linux GPU.",
+  "samples": [
+    {
+      "viewport": [
+        1280,
+        800
+      ],
+      "dpr": 1,
+      "chromium": "134.0.6998.35",
+      "firstVisibleMs": 990,
+      "rendererRSSPeakMiB": 311,
+      "renderer": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 5090/PCIe/SSE2, OpenGL ES 3.2)",
+      "seconds": 7.0164,
+      "frames": 422,
+      "fps": 60.1,
+      "medianDrawCalls": 249,
+      "medianTriangles": 1320518,
+      "jsHeapMiB": "51.0"
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "dpr": 1.75,
+      "chromium": "134.0.6998.35",
+      "firstVisibleMs": 972,
+      "rendererRSSPeakMiB": 299,
+      "renderer": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 5090/PCIe/SSE2, OpenGL ES 3.2)",
+      "seconds": 7.0164,
+      "frames": 422,
+      "fps": 60.1,
+      "medianDrawCalls": 169,
+      "medianTriangles": 1193782,
+      "jsHeapMiB": "57.5"
+    }
+  ]
+}

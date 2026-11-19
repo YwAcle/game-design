@@ -1,0 +1,13 @@
+{
+  "room": "gryffindor",
+  "objects": 1731,
+  "meshObjects": 1719,
+  "negativeScaleObjects": [],
+  "packedImages": 11,
+  "sourceFile": "gryffindor.blend",
+  "revision": "reference-guided V2",
+  "cameraAspect": [
+    16,
+    9
+  ]
+}

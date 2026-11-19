@@ -1,0 +1,26 @@
+{
+  "file": "scene-assets/ravenclaw/scene.glb",
+  "ok": true,
+  "errors": [],
+  "warnings": [
+    "Container/resource checks only; no Draco decoding, topology, or visual validation"
+  ],
+  "remoteUris": [],
+  "localUris": [],
+  "bytes": 3145360,
+  "sha256": "75a518d42fb607c57add2afc76b448126a80d26d47e7baa8ca20c9fcc5e5de4e",
+  "meshes": 5,
+  "primitives": 6,
+  "meshTriangles": 200689,
+  "triangleCountScope": "mesh primitives only; instances not multiplied",
+  "materials": 6,
+  "images": 4,
+  "unlitMaterials": 4,
+  "extensions": [
+    "KHR_draco_mesh_compression",
+    "KHR_materials_emissive_strength",
+    "KHR_materials_unlit"
+  ],
+  "usesDraco": true,
+  "requiresDraco": true
+}

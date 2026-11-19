@@ -1,0 +1,13 @@
+{
+  "scene": "divination",
+  "meshObjects": 1720,
+  "uniqueMeshes": 1182,
+  "closedMeshes": 682,
+  "intentionallyOpenMeshes": 500,
+  "inwardClosedMeshes": [],
+  "negativeTransforms": [],
+  "zeroAreaFaces": 0,
+  "spawnClearForRadius025": true,
+  "centralRouteClearForRadius025": true,
+  "verticalFovVerified": true
+}

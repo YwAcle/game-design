@@ -1,0 +1,165 @@
+{
+  "id": "ravenclaw",
+  "name": "拉文克劳休息室",
+  "lighting": "baked",
+  "background": "#111827",
+  "exposure": 1.0,
+  "cameras": [
+    {
+      "name": "星穹会客室",
+      "position": [
+        -0.44999998807907104,
+        3.799999952316284,
+        7.3
+      ],
+      "target": [
+        0.0,
+        1.899999976158142,
+        -1.7000000476837158
+      ],
+      "fov": 50.43432779375878
+    },
+    {
+      "name": "天球仪与长榻",
+      "position": [
+        4.7,
+        2.8,
+        4.6
+      ],
+      "target": [
+        -0.6,
+        1.8,
+        -0.6
+      ],
+      "fov": 52
+    },
+    {
+      "name": "雕像与藏书",
+      "position": [
+        -3.7,
+        2.2,
+        -2.6
+      ],
+      "target": [
+        0,
+        2.8,
+        -4.9
+      ],
+      "fov": 48
+    }
+  ],
+  "spawn": {
+    "position": [
+      0,
+      1.65,
+      5.8
+    ],
+    "target": [
+      0,
+      1.65,
+      -2
+    ]
+  },
+  "bounds": {
+    "minX": -6.1,
+    "maxX": 6.1,
+    "minZ": -3.55,
+    "maxZ": 7.45
+  },
+  "obstacles": [
+    {
+      "minX": -4.52,
+      "maxX": -1.18,
+      "minZ": -2.26,
+      "maxZ": -0.44
+    },
+    {
+      "minX": 1.41,
+      "maxX": 4.79,
+      "minZ": -1.65,
+      "maxZ": 0.35
+    },
+    {
+      "minX": -1.2,
+      "maxX": 1.2,
+      "minZ": -0.55,
+      "maxZ": 1.85
+    },
+    {
+      "minX": -4.4,
+      "maxX": -3.0,
+      "minZ": 1.5,
+      "maxZ": 2.9
+    },
+    {
+      "minX": -5.4,
+      "maxX": -3.8,
+      "minZ": 1.5,
+      "maxZ": 3.2
+    },
+    {
+      "minX": 4.0,
+      "maxX": 6.35,
+      "minZ": -4.25,
+      "maxZ": -3.0
+    },
+    {
+      "minX": -6.1,
+      "maxX": -4.5,
+      "minZ": -4.2,
+      "maxZ": -2.8
+    },
+    {
+      "minX": -3.55,
+      "maxX": -2.0,
+      "minZ": -4.8,
+      "maxZ": -3.1
+    },
+    {
+      "minX": -6.2,
+      "maxX": -3.5,
+      "minZ": 4.7,
+      "maxZ": 7.9
+    },
+    {
+      "minX": 3.5,
+      "maxX": 6.2,
+      "minZ": 4.7,
+      "maxZ": 7.9
+    }
+  ],
+  "artisticLimitations": [
+    "Original stylized reconstruction from the selected official promotional image; inferred reverse walls and dimensions.",
+    "Statue, portraits, textiles and foliage are original simplified geometry or illustrations, not game assets.",
+    "Fine hand-painted linework and sculptural complexity remain less detailed than the game reference."
+  ],
+  "referenceAspect": 1.7777777777777777,
+  "revision": "sculpture-curved-enclosure-v2",
+  "triangles": 200689,
+  "meshGroups": [
+    "floor",
+    "architecture",
+    "furniture",
+    "details",
+    "glow"
+  ],
+  "bakeSamples": 20,
+  "atlases": {
+    "floor": [
+      2048,
+      2048
+    ],
+    "architecture": [
+      2048,
+      2048
+    ],
+    "furniture": [
+      2048,
+      2048
+    ],
+    "details": [
+      2048,
+      2048
+    ]
+  }
+}

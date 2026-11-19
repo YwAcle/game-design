@@ -1,0 +1,426 @@
+{
+  "verifiedAt": "2026-11-18T00:13:10",
+  "edition": "Eight-scene art refinement V2",
+  "tests": {
+    "passed": 27,
+    "failed": 0
+  },
+  "build": "passed",
+  "scenes": {
+    "hall": "烛光礼堂",
+    "arena": "决斗场",
+    "potions": "魔药课教室",
+    "divination": "占卜课教室",
+    "gryffindor": "格兰芬多休息室",
+    "slytherin": "斯莱特林休息室",
+    "ravenclaw": "拉文克劳休息室",
+    "hufflepuff": "赫奇帕奇休息室"
+  },
+  "assets": {
+    "arena": {
+      "bytes": 7630360,
+      "sha256": "b94b67a5cab212cae107fa50c882153ccde4143736aead61bbe7ff0a595a6c65",
+      "unlitMaterials": 5,
+      "meshes": 6,
+      "audit": {
+        "file": "scene-assets/arena/dueling-arena.glb",
+        "ok": true,
+        "errors": [],
+        "warnings": [
+          "Container/resource checks only; no Draco decoding, topology, or visual validation"
+        ],
+        "remoteUris": [],
+        "localUris": [],
+        "bytes": 7630360,
+        "sha256": "b94b67a5cab212cae107fa50c882153ccde4143736aead61bbe7ff0a595a6c65",
+        "meshes": 6,
+        "primitives": 7,
+        "meshTriangles": 407898,
+        "triangleCountScope": "mesh primitives only; instances not multiplied",
+        "materials": 7,
+        "images": 5,
+        "unlitMaterials": 5,
+        "extensions": [
+          "KHR_draco_mesh_compression",
+          "KHR_materials_emissive_strength",
+          "KHR_materials_unlit"
+        ],
+        "usesDraco": true,
+        "requiresDraco": true
+      }
+    },
+    "divination": {
+      "bytes": 5222540,
+      "sha256": "b93e4c6f0fd2c329427ff1d5c86b90a2107f39f4615f18b29e19dd9bbdbe6f73",
+      "unlitMaterials": 7,
+      "meshes": 6,
+      "audit": {
+        "file": "scene-assets/divination/scene.glb",
+        "ok": true,
+        "errors": [],
+        "warnings": [
+          "Container/resource checks only; no Draco decoding, topology, or visual validation"
+        ],
+        "remoteUris": [],
+        "localUris": [],
+        "bytes": 5222540,
+        "sha256": "b93e4c6f0fd2c329427ff1d5c86b90a2107f39f4615f18b29e19dd9bbdbe6f73",
+        "meshes": 6,
+        "primitives": 9,
+        "meshTriangles": 545172,
+        "triangleCountScope": "mesh primitives only; instances not multiplied",
+        "materials": 9,
+        "images": 4,
+        "unlitMaterials": 7,
+        "extensions": [
+          "KHR_draco_mesh_compression",
+          "KHR_materials_emissive_strength",
+          "KHR_materials_unlit"
+        ],
+        "usesDraco": true,
+        "requiresDraco": true
+      }
+    },
+    "gryffindor": {
+      "bytes": 15342804,
+      "sha256": "78ccfd572efa8cd0793cc4f5da4a3911c2f3deaeefd8f9ad69d40ddcb10c3157",
+      "unlitMaterials": 4,
+      "meshes": 5,
+      "audit": {
+        "file": "scene-assets/gryffindor/scene.glb",
+        "ok": true,
+        "errors": [],
+        "warnings": [
+          "Container/resource checks only; no Draco decoding, topology, or visual validation"
+        ],
+        "remoteUris": [],
+        "localUris": [],
+        "bytes": 15342804,
+        "sha256": "78ccfd572efa8cd0793cc4f5da4a3911c2f3deaeefd8f9ad69d40ddcb10c3157",
+        "meshes": 5,
+        "primitives": 8,
+        "meshTriangles": 204850,
+        "triangleCountScope": "mesh primitives only; instances not multiplied",
+        "materials": 8,
+        "images": 4,
+        "unlitMaterials": 4,
+        "extensions": [
+          "KHR_materials_emissive_strength",
+          "KHR_materials_unlit"
+        ],
+        "usesDraco": false,
+        "requiresDraco": false
+      }
+    },
+    "hall": {
+      "bytes": 7144108,
+      "sha256": "6feddb9caa62e45cc9bc709de010e3f507ffdbca3ee59fc13a728ab1e651ade4",
+      "unlitMaterials": 6,
+      "meshes": 7,
+      "audit": {
+        "file": "scene-assets/hall/great-hall.glb",
+        "ok": true,
+        "errors": [],
+        "warnings": [
+          "Container/resource checks only; no Draco decoding, topology, or visual validation"
+        ],
+        "remoteUris": [],
+        "localUris": [],
+        "bytes": 7144108,
+        "sha256": "6feddb9caa62e45cc9bc709de010e3f507ffdbca3ee59fc13a728ab1e651ade4",
+        "meshes": 7,
+        "primitives": 9,
+        "meshTriangles": 493525,
+        "triangleCountScope": "mesh primitives only; instances not multiplied",
+        "materials": 9,
+        "images": 6,
+        "unlitMaterials": 6,
+        "extensions": [
+          "KHR_draco_mesh_compression",
+          "KHR_materials_emissive_strength",
+          "KHR_materials_unlit"
+        ],
+        "usesDraco": true,
+        "requiresDraco": true
+      }
+    },
+    "hufflepuff": {
+      "bytes": 4119140,
+      "sha256": "6230fdfa11140bb2e631dafbedbbec3c2311870b4cda94bbe7c5a9917a9ce221",
+      "unlitMaterials": 4,
+      "meshes": 5,
+      "audit": {
+        "file": "scene-assets/hufflepuff/scene.glb",
+        "ok": true,
+        "errors": [],
+        "warnings": [
+          "Container/resource checks only; no Draco decoding, topology, or visual validation"
+        ],
+        "remoteUris": [],
+        "localUris": [],
+        "bytes": 4119140,
+        "sha256": "6230fdfa11140bb2e631dafbedbbec3c2311870b4cda94bbe7c5a9917a9ce221",
+        "meshes": 5,
+        "primitives": 6,
+        "meshTriangles": 189188,
+        "triangleCountScope": "mesh primitives only; instances not multiplied",
+        "materials": 6,
+        "images": 4,
+        "unlitMaterials": 4,
+        "extensions": [
+          "KHR_draco_mesh_compression",
+          "KHR_materials_emissive_strength",
+          "KHR_materials_unlit"
+        ],
+        "usesDraco": true,
+        "requiresDraco": true
+      }
+    },
+    "potions": {
+      "bytes": 4082292,
+      "sha256": "1fa5ece4bef987b881287cc9252d56910df2125ca8ba163499166ea86d12b226",
+      "unlitMaterials": 4,
+      "meshes": 5,
+      "audit": {
+        "file": "scene-assets/potions/scene.glb",
+        "ok": true,
+        "errors": [],
+        "warnings": [
+          "Container/resource checks only; no Draco decoding, topology, or visual validation"
+        ],
+        "remoteUris": [],
+        "localUris": [],
+        "bytes": 4082292,
+        "sha256": "1fa5ece4bef987b881287cc9252d56910df2125ca8ba163499166ea86d12b226",
+        "meshes": 5,
+        "primitives": 6,
+        "meshTriangles": 195870,
+        "triangleCountScope": "mesh primitives only; instances not multiplied",
+        "materials": 6,
+        "images": 4,
+        "unlitMaterials": 4,
+        "extensions": [
+          "KHR_draco_mesh_compression",
+          "KHR_materials_emissive_strength",
+          "KHR_materials_unlit"
+        ],
+        "usesDraco": true,
+        "requiresDraco": true
+      }
+    },
+    "ravenclaw": {
+      "bytes": 3145360,
+      "sha256": "75a518d42fb607c57add2afc76b448126a80d26d47e7baa8ca20c9fcc5e5de4e",
+      "unlitMaterials": 4,
+      "meshes": 5,
+      "audit": {
+        "file": "scene-assets/ravenclaw/scene.glb",
+        "ok": true,
+        "errors": [],
+        "warnings": [
+          "Container/resource checks only; no Draco decoding, topology, or visual validation"
+        ],
+        "remoteUris": [],
+        "localUris": [],
+        "bytes": 3145360,
+        "sha256": "75a518d42fb607c57add2afc76b448126a80d26d47e7baa8ca20c9fcc5e5de4e",
+        "meshes": 5,
+        "primitives": 6,
+        "meshTriangles": 200689,
+        "triangleCountScope": "mesh primitives only; instances not multiplied",
+        "materials": 6,
+        "images": 4,
+        "unlitMaterials": 4,
+        "extensions": [
+          "KHR_draco_mesh_compression",
+          "KHR_materials_emissive_strength",
+          "KHR_materials_unlit"
+        ],
+        "usesDraco": true,
+        "requiresDraco": true
+      }
+    },
+    "slytherin": {
+      "bytes": 18974104,
+      "sha256": "e964f849deea24b7ca3374fa1f6610e1a780397758c6d7a669a05619a89eae25",
+      "unlitMaterials": 4,
+      "meshes": 5,
+      "audit": {
+        "file": "scene-assets/slytherin/scene.glb",
+        "ok": true,
+        "errors": [],
+        "warnings": [
+          "Container/resource checks only; no Draco decoding, topology, or visual validation"
+        ],
+        "remoteUris": [],
+        "localUris": [],
+        "bytes": 18974104,
+        "sha256": "e964f849deea24b7ca3374fa1f6610e1a780397758c6d7a669a05619a89eae25",
+        "meshes": 5,
+        "primitives": 8,
+        "meshTriangles": 248634,
+        "triangleCountScope": "mesh primitives only; instances not multiplied",
+        "materials": 8,
+        "images": 4,
+        "unlitMaterials": 4,
+        "extensions": [
+          "KHR_materials_emissive_strength",
+          "KHR_materials_unlit"
+        ],
+        "usesDraco": false,
+        "requiresDraco": false
+      }
+    }
+  },
+  "performance": {
+    "cacheDisabledDuringTest": true,
+    "externalRequestsBlocked": [],
+    "failedResponses": [],
+    "normalLoadErrors": [],
+    "results": [
+      {
+        "drawCalls": 28,
+        "durationMs": 3511,
+        "fps": 1.1,
+        "frames": 4,
+        "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Laptop GPU (0x000028E0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "hidden": false,
+        "id": "hall",
+        "renderSize": [
+          1440,
+          900
+        ],
+        "triangles": 493887,
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
+      },
+      {
+        "drawCalls": 34,
+        "durationMs": 4186,
+        "fps": 1.2,
+        "frames": 5,
+        "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Laptop GPU (0x000028E0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "hidden": false,
+        "id": "arena",
+        "renderSize": [
+          1440,
+          900
+        ],
+        "triangles": 409835,
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
+      },
+      {
+        "drawCalls": 22,
+        "durationMs": 4404,
+        "fps": 1.1,
+        "frames": 5,
+        "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Laptop GPU (0x000028E0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "hidden": false,
+        "id": "potions",
+        "renderSize": [
+          1440,
+          900
+        ],
+        "triangles": 195885,
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
+      },
+      {
+        "drawCalls": 25,
+        "durationMs": 4007,
+        "fps": 1,
+        "frames": 4,
+        "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Laptop GPU (0x000028E0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "hidden": false,
+        "id": "divination",
+        "renderSize": [
+          1440,
+          900
+        ],
+        "triangles": 545187,
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
+      },
+      {
+        "drawCalls": 24,
+        "durationMs": 4431,
+        "fps": 1.1,
+        "frames": 5,
+        "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Laptop GPU (0x000028E0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "hidden": false,
+        "id": "gryffindor",
+        "renderSize": [
+          1440,
+          900
+        ],
+        "triangles": 204865,
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
+      },
+      {
+        "drawCalls": 24,
+        "durationMs": 4414,
+        "fps": 1.1,
+        "frames": 5,
+        "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Laptop GPU (0x000028E0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "hidden": false,
+        "id": "slytherin",
+        "renderSize": [
+          1440,
+          900
+        ],
+        "triangles": 248649,
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
+      },
+      {
+        "drawCalls": 22,
+        "durationMs": 3966,
+        "fps": 1,
+        "frames": 4,
+        "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Laptop GPU (0x000028E0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "hidden": false,
+        "id": "ravenclaw",
+        "renderSize": [
+          1440,
+          900
+        ],
+        "triangles": 200704,
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
+      },
+      {
+        "drawCalls": 22,
+        "durationMs": 3970,
+        "fps": 1,
+        "frames": 4,
+        "gpu": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Laptop GPU (0x000028E0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "hidden": false,
+        "id": "hufflepuff",
+        "renderSize": [
+          1440,
+          900
+        ],
+        "triangles": 189203,
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36"
+      }
+    ],
+    "assessment": {
+      "status": "inconclusive",
+      "reason": "自动采样仅 1.0–1.2 FPS；与交互检查读数不一致。document.hidden=false 不能证明窗口在系统前台。Tabbit 前台操作受 preserve 策略限制，电脑界面工具初始化失败，未取得可复核的前台基准。保留原始结果，不据此声称流畅或稳定帧率。"
+    }
+  },
+  "checks": {
+    "eightModelsVisible": true,
+    "cameraPresets": "24 presets viewed and saved",
+    "walk": "All eight walked; interior collision, hall aisle and arena bounds tested",
+    "memoryRoundTrip": "Create hufflepuff story, refresh, follow return link, delete only QA story",
+    "failureRetry": "Abort potions GLB, verify failed UI and retry, restore request and reload successfully",
+    "touch": "CDP touch emulation moved divination from z4.8 to z4.3758",
+    "narrow": "390x844 all rooms and homepage checked; no overflow",
+    "review": "Independent static review; missing Gryffindor side-table/cushion footprints repaired and regression tested",
+    "archive": "See sibling Hogwarts_Memories_Refined_Package_Check.json"
+  },
+  "limitations": [
+    "实体手机、平板及 macOS 未测试。",
+    "鼠标锁定成功捕获未验证；键盘行走与拖动后备已测试。",
+    "离线检查禁用缓存并阻断非本机请求，没有切换系统飞行模式。",
+    "性能验收未形成可靠结论：自动采样为 1.0–1.2 FPS，前台状态未能确认；不能声称稳定或流畅运行。",
+    "GLB 审计覆盖容器和资源引用，不等同于完整 glTF 规范或全部网格拓扑验证。",
+    "美术为原创重建，结构比例、手绘、雕刻与道具密度仍有差异，见 Visual_Review.md。"
+  ]
+}

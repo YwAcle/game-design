@@ -1,0 +1,44 @@
+{
+  "room": "gryffindor",
+  "glbBytes": 15342804,
+  "triangles": 204850,
+  "meshes": 5,
+  "materials": 8,
+  "embeddedImages": 4,
+  "bakedUnlitMaterials": [
+    "Baked | architecture",
+    "Baked | details",
+    "Baked | floor",
+    "Baked | furniture"
+  ],
+  "isolatedGlowMaterials": [
+    "Glow | cloudy leaded panes",
+    "Glow | fire gold",
+    "Glow | hearth fire",
+    "Glow | opal lamp"
+  ],
+  "externalUris": [],
+  "cameraFovDegrees": [
+    58.7155,
+    44.0959,
+    47.5199
+  ],
+  "heroCamera": {
+    "name": "主视角",
+    "position": [
+      0,
+      3.04,
+      9.4
+    ],
+    "target": [
+      0,
+      3.18,
+      -3.0
+    ],
+    "fov": 58.7155
+  },
+  "spawnClear": true,
+  "sourceNegativeTransforms": [],
+  "sha256": "78ccfd572efa8cd0793cc4f5da4a3911c2f3deaeefd8f9ad69d40ddcb10c3157",
+  "runtimeBrowserCheck": "Owned by project-level verification, not this source audit."
+}

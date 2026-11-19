@@ -1,0 +1,40 @@
+{
+  "sample": "山谷廊桥 · 固定机位起步",
+  "method": "Linux Chromium cold cache, local HTTP, approximately seven seconds of walking. Mobile viewport emulated on the same RTX 5090.",
+  "samples": [
+    {
+      "viewport": [
+        1280,
+        800
+      ],
+      "dpr": 1,
+      "chromium": "134.0.6998.35",
+      "firstVisibleMs": 857,
+      "rendererRSSPeakMiB": 319,
+      "renderer": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 5090/PCIe/SSE2, OpenGL ES 3.2)",
+      "seconds": 7.016400000000001,
+      "frames": 422,
+      "fps": 60.1,
+      "medianDrawCalls": 84,
+      "medianTriangles": 518056,
+      "jsHeapMiB": "54.2"
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "dpr": 1.75,
+      "chromium": "134.0.6998.35",
+      "firstVisibleMs": 894,
+      "rendererRSSPeakMiB": 319,
+      "renderer": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 5090/PCIe/SSE2, OpenGL ES 3.2)",
+      "seconds": 7.0164,
+      "frames": 422,
+      "fps": 60.1,
+      "medianDrawCalls": 93,
+      "medianTriangles": 550894,
+      "jsHeapMiB": "54.2"
+    }
+  ]
+}

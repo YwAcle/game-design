@@ -1,0 +1,198 @@
+{
+  "id": "gryffindor",
+  "title": "格兰芬多公共休息室",
+  "cameras": [
+    {
+      "name": "主视角",
+      "position": [
+        0,
+        3.04,
+        9.4
+      ],
+      "target": [
+        0,
+        3.18,
+        -3.0
+      ],
+      "fov": 58.7155
+    },
+    {
+      "name": "炉火与书桌",
+      "position": [
+        -5.8,
+        2.5,
+        3.5
+      ],
+      "target": [
+        0.8,
+        1.8,
+        -3.2
+      ],
+      "fov": 44.0959
+    },
+    {
+      "name": "反向全景",
+      "position": [
+        5.5,
+        2.75,
+        -4.65
+      ],
+      "target": [
+        -0.6,
+        2.1,
+        2.4
+      ],
+      "fov": 47.5199
+    }
+  ],
+  "spawn": {
+    "position": [
+      0,
+      1.65,
+      5.8
+    ],
+    "target": [
+      0,
+      1.65,
+      -3.2
+    ]
+  },
+  "bounds": {
+    "minX": -7.3,
+    "maxX": 7.3,
+    "minZ": -5.9,
+    "maxZ": 9.8
+  },
+  "obstacles": [
+    {
+      "minX": -2.55,
+      "maxX": 2.55,
+      "minZ": -6.15,
+      "maxZ": -4.3
+    },
+    {
+      "minX": -3.95,
+      "maxX": -1.9500000000000002,
+      "minZ": -1.945,
+      "maxZ": 1.305
+    },
+    {
+      "minX": 2.0999999999999996,
+      "maxX": 3.7,
+      "minZ": -1.47,
+      "maxZ": 1.43
+    },
+    {
+      "minX": -1.8,
+      "maxX": 1.8,
+      "minZ": -0.48000000000000004,
+      "maxZ": 1.32
+    },
+    {
+      "minX": -2.2,
+      "maxX": -0.28,
+      "minZ": -3.925,
+      "maxZ": -2.2750000000000004
+    },
+    {
+      "minX": 0.43000000000000005,
+      "maxX": 2.23,
+      "minZ": -3.4699999999999998,
+      "maxZ": -1.8699999999999999
+    },
+    {
+      "minX": 5.05,
+      "maxX": 7.55,
+      "minZ": -5.8500000000000005,
+      "maxZ": -4.95
+    },
+    {
+      "minX": -6.6000000000000005,
+      "maxX": -4.2,
+      "minZ": 2.3,
+      "maxZ": 4.7
+    },
+    {
+      "minX": -8.15,
+      "maxX": -7.15,
+      "minZ": -2.25,
+      "maxZ": 0.25
+    },
+    {
+      "minX": -7.3999999999999995,
+      "maxX": -6.2,
+      "minZ": -2.3,
+      "maxZ": -1.1
+    },
+    {
+      "minX": 7.15,
+      "maxX": 8.15,
+      "minZ": 2.75,
+      "maxZ": 5.25
+    },
+    {
+      "minX": 6.2,
+      "maxX": 7.3999999999999995,
+      "minZ": -2.3,
+      "maxZ": -1.1
+    },
+    {
+      "minX": -2.8449999999999998,
+      "maxX": -1.9949999999999999,
+      "minZ": -3.5549999999999997,
+      "maxZ": -2.705
+    },
+    {
+      "minX": -4.5,
+      "maxX": -3.2,
+      "minZ": 2.3,
+      "maxZ": 3.4000000000000004
+    },
+    {
+      "minX": 3.15,
+      "maxX": 4.45,
+      "minZ": 1.7499999999999998,
+      "maxZ": 2.8499999999999996
+    }
+  ],
+  "lighting": "baked",
+  "background": "#181109",
+  "exposure": 0.812,
+  "triangles": 204850,
+  "artisticLimitations": [
+    "Original interpretation of one official promotional image; reverse wall, dimensions and hidden surfaces are inferred.",
+    "No official game meshes, characters, logos or texture assets are included.",
+    "Carved heraldry, portraits and tapestry are original simplified decorative designs.",
+    "Baked illumination is static; no physically simulated flickering or moving shadows."
+  ],
+  "fov": 58.7155,
+  "meshGroups": [
+    "floor",
+    "architecture",
+    "furniture",
+    "details",
+    "glow"
+  ],
+  "bakeSamples": 18,
+  "atlases": {
+    "floor": [
+      2048,
+      2048
+    ],
+    "architecture": [
+      3072,
+      3072
+    ],
+    "furniture": [
+      3072,
+      3072
+    ],
+    "details": [
+      2048,
+      2048
+    ]
+  },
+  "glbBytes": 15342804,
+  "technicalReference": "itsLucas02/3d-room aca0dc0348716cc6755a3f9e98d8954fc07b65d9: separation of baked base lighting and local illumination; independent implementation, no copied assets/code.",
+  "refinement": "Original reference-guided V2: revised architecture, camera, furnishing silhouettes and authored painted surfaces."
+}

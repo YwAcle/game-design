@@ -1,0 +1,36 @@
+[
+  {
+    "viewport": [
+      1280,
+      800
+    ],
+    "dpr": 1,
+    "chromium": "134.0.6998.35",
+    "firstVisibleMs": 1109,
+    "rendererRSSPeakMiB": 400,
+    "renderer": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 5090/PCIe/SSE2, OpenGL ES 3.2)",
+    "seconds": 7.0165,
+    "frames": 422,
+    "fps": 60.1,
+    "medianDrawCalls": 83,
+    "medianTriangles": 571539,
+    "jsHeapMiB": "82.4"
+  },
+  {
+    "viewport": [
+      390,
+      844
+    ],
+    "dpr": 1.75,
+    "chromium": "134.0.6998.35",
+    "firstVisibleMs": 1003,
+    "rendererRSSPeakMiB": 371,
+    "renderer": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 5090/PCIe/SSE2, OpenGL ES 3.2)",
+    "seconds": 7.0164,
+    "frames": 422,
+    "fps": 60.1,
+    "medianDrawCalls": 75,
+    "medianTriangles": 570019,
+    "jsHeapMiB": "82.4"
+  }
+]

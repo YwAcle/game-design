@@ -1,0 +1,8 @@
+{
+  "scene": "divination",
+  "playerRadius": 0.25,
+  "spawnClear": true,
+  "centralRouteClear": true,
+  "sampledRoutePoints": 139,
+  "cameraVerticalFovCorrect": true
+}

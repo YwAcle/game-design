@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#141913"><title>烛光礼堂 · The Great Hall</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23141913'/%3E%3Cpath d='M32 8L48 24L32 56L16 24Z' fill='none' stroke='%23c4ab76' stroke-width='2'/%3E%3C/svg%3E"><link rel="stylesheet" href="./app.css"></head>
+<body>
+<main id="scene" aria-label="霍格沃茨礼堂三维场景"></main>
+<div class="vignette" aria-hidden="true"></div>
+<div id="loading" role="status"><span class="loading-star">✧</span><p class="eyebrow">HOGWARTS · AFTER HOURS</p><h1>烛火将为你点亮</h1><p id="load-label">正在打开礼堂…</p><div class="load-track"><div id="load-bar"></div></div><span id="load-percent">0%</span><button id="retry" hidden>重新加载</button><a class="loading-back" href="../#places">← 返回回忆录</a></div>
+<div id="interface">
+<header><a class="wordmark" href="../#places" aria-label="回到回忆录"><span class="crest">✧</span><span>魔法留声<small>HOGWARTS, ALWAYS</small></span></a><div class="top-actions"><span class="scene-label"><i></i> 礼堂 · 夜</span><button id="help" class="icon-button" aria-label="操作说明">?</button><button id="hide-ui" class="icon-button" aria-label="隐藏界面">⌑</button></div></header>
+<nav class="journey-nav" aria-label="旧地重游导航"><a href="../#places">← 回忆录</a><span class="journey-nav-divider"></span><a href="../hall/" aria-current="page">礼堂</a><a href="../arena/" >决斗场</a><a class="write-moment" href="../?write=hall#memories">写下此刻 <span>✎</span></a></nav>
+<aside class="viewpoints" aria-label="观景位置"><span class="eyebrow">LOOK AROUND</span><button data-view="aisle" class="active"><b>01</b><span>礼堂中轴</span></button><button data-view="feast"><b>02</b><span>长桌与烛火</span></button><button data-view="window"><b>03</b><span>高窗与星空</span></button></aside>
+<footer><div class="title-block"><p class="eyebrow">A PLACE TO REMEMBER</p><h1>礼堂<span>THE GREAT HALL</span></h1><p class="description">穿过长桌之间，重回烛光下的霍格沃茨。</p></div><div class="walk-panel"><button id="explore" disabled><span class="diamond">◇</span><span id="explore-label">进入礼堂</span><span>→</span></button><p id="control-hint">拖动环顾 · 开启漫游后 WASD 行走 · Esc 退出</p></div><label class="quality-label">画质<select id="quality" aria-label="画质"><option value="high">精细</option><option value="balanced" selected>均衡</option></select></label></footer>
+<div class="bottom-line"><span>魔法留声 / 01 / THE GREAT HALL</span><span>《魔法觉醒》画风习作</span></div>
+</div>
+<div id="crosshair" hidden aria-hidden="true"></div><button id="restore-ui" hidden>显示界面 · H</button>
+<div id="touch-pad" aria-label="移动控制"><button data-key="KeyW" aria-label="前进">↑</button><div><button data-key="KeyA" aria-label="向左">←</button><button data-key="KeyS" aria-label="后退">↓</button><button data-key="KeyD" aria-label="向右">→</button></div></div>
+<dialog id="help-dialog"><button id="close-help" aria-label="关闭操作说明">×</button><p class="eyebrow">WELCOME BACK</p><h2>在烛光中漫步</h2><p>拖动画面即可环顾。点击「进入礼堂」后，用鼠标转头、WASD 或方向键行走；按 Esc 释放鼠标，即可使用上方的返回、切换地点与写回忆入口。</p><div class="key-guide"><span><kbd>W A S D</kbd> 行走</span><span><kbd>Shift</kbd> 加快</span><span><kbd>R</kbd> 回到入口</span><span><kbd>H</kbd> 隐藏界面</span></div><p>右侧三个观景点可以快速切换视角。触屏设备可拖动画面，并使用左下角方向键移动。</p><p class="fine-print">以《哈利·波特：魔法觉醒》为主要视觉参考的原创场景习作。当前开放礼堂区域。</p><a href="./REFERENCES.md" target="_blank" rel="noopener">查看画面与技术参考 ↗</a></dialog>
+<script type="module" src="./app.js"></script></body></html>

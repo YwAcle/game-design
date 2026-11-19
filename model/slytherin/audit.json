@@ -1,0 +1,25 @@
+{
+  "file": "C:\\Users\\ibing\\Documents\\Codex\\2026-11-17\\thread-01a1e753-683c-7822-b366-ac7d951da82e\\outputs\\hogwarts-refined\\scene-assets\\slytherin\\scene.glb",
+  "ok": true,
+  "errors": [],
+  "warnings": [
+    "Container/resource checks only; no Draco decoding, topology, or visual validation"
+  ],
+  "remoteUris": [],
+  "localUris": [],
+  "bytes": 18974104,
+  "sha256": "e964f849deea24b7ca3374fa1f6610e1a780397758c6d7a669a05619a89eae25",
+  "meshes": 5,
+  "primitives": 8,
+  "meshTriangles": 248634,
+  "triangleCountScope": "mesh primitives only; instances not multiplied",
+  "materials": 8,
+  "images": 4,
+  "unlitMaterials": 4,
+  "extensions": [
+    "KHR_materials_emissive_strength",
+    "KHR_materials_unlit"
+  ],
+  "usesDraco": false,
+  "requiresDraco": false
+}

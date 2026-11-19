@@ -1,0 +1,13 @@
+{
+  "room": "slytherin",
+  "objects": 2943,
+  "meshObjects": 2925,
+  "negativeScaleObjects": [],
+  "packedImages": 6,
+  "sourceFile": "slytherin.blend",
+  "revision": "reference-guided V2",
+  "cameraAspect": [
+    16,
+    9
+  ]
+}

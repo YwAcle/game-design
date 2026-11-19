@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-19",
+  "scene": "魁地奇球场",
+  "method": "Linux Chromium 冷缓存，本地 HTTP，从球场机位沿草地步行约 7 秒。390 × 844 为同一桌面 GPU 上的手机尺寸模拟。",
+  "samples": [
+    {
+      "viewport": [
+        1280,
+        800
+      ],
+      "dpr": 1,
+      "chromium": "134.0.6998.35",
+      "firstVisibleMs": 894,
+      "rendererRSSPeakMiB": 340,
+      "renderer": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 5090/PCIe/SSE2, OpenGL ES 3.2)",
+      "seconds": 7.016400000000001,
+      "frames": 422,
+      "fps": 60.1,
+      "medianDrawCalls": 223,
+      "medianTriangles": 399782,
+      "jsHeapMiB": "61.0"
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "dpr": 1.75,
+      "chromium": "134.0.6998.35",
+      "firstVisibleMs": 893,
+      "rendererRSSPeakMiB": 340,
+      "renderer": "ANGLE (NVIDIA Corporation, NVIDIA GeForce RTX 5090/PCIe/SSE2, OpenGL ES 3.2)",
+      "seconds": 7.0163,
+      "frames": 422,
+      "fps": 60.1,
+      "medianDrawCalls": 213,
+      "medianTriangles": 399116,
+      "jsHeapMiB": "54.2"
+    }
+  ]
+}
