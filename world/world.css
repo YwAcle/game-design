@@ -50,3 +50,20 @@ dialog{
 .memory-actions:has(:not([hidden])){margin-top:8px}
 .memory-actions button{padding:5px 9px;margin-top:0}
 .memory-actions a{color:var(--gold);font-size:12px;text-underline-offset:3px}
+
+#house-door {
+  --door-accent: #d5b47a;
+  margin: auto;
+  inset: 0;
+  width: min(390px, calc(100% - 32px));
+  height: fit-content;
+  max-height: calc(100dvh - 32px);
+  border: 1px solid var(--door-accent);
+  background: #192522;
+}
+#house-door[data-house="gryffindor"] { --door-accent: #cd8c72; }
+#house-door[data-house="ravenclaw"] { --door-accent: #a3bacd; }
+#house-door[data-house="slytherin"] { --door-accent: #9dbc92; }
+#house-door h2, #door-enter { color: var(--door-accent); }
+#house-door p { line-height: 1.7; margin: 16px 0; }
+#door-enter { display: inline-block; padding: 10px 0; }

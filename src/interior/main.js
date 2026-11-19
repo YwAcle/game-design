@@ -9,7 +9,8 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 import {ShaderPass} from 'three/addons/postprocessing/ShaderPass.js';
 import {FXAAShader} from 'three/addons/shaders/FXAAShader.js';
 import {SCENES,INTERIORS} from '../shared/scenes.js';
-import {bindSceneShell,groundsEntrance} from '../shared/scene-shell.js';
+import {sceneViewFromQuery} from '../shared/memory-data.js';
+import {bindSceneShell,groundsEntrance,nearestView} from '../shared/scene-shell.js';
 import {canStand,movePlayer,inputVector,acceptNavigationKey} from './navigation.js';
 import './style.css';
 
@@ -35,7 +36,10 @@ if(!INTERIORS.includes(id)){
 }else{
   document.title=entry.name+' · 魔法留声';$('#room-name').textContent=entry.name;$('#room-english').textContent=entry.english;
   $('#room-description').textContent=entry.description;$('#room-caption').textContent='魔法留声 / '+entry.english;
-  $('#scene').setAttribute('aria-label',entry.name+'三维场景');bindSceneShell(stopWalk,id);
+  $('#scene').setAttribute('aria-label',entry.name+'三维场景');
+  bindSceneShell(stopWalk, id, () => state.mode === 'view' || !meta
+    ? String(state.view ?? 0)
+    : nearestView(camera.position, meta.cameras.map(({position}, index) => [String(index), position])));
   try{await init();}catch(error){fail(error);}
 }
 
@@ -82,7 +86,11 @@ async function init(){
     const number=document.createElement('b');number.textContent=String(index+1).padStart(2,'0');
     const label=document.createElement('span');label.textContent=view.name;button.append(number,label);button.onclick=()=>setView(index);$('#view-buttons').append(button);
   });
-  setView(0);bindControls();if(groundsEntrance(id))await startWalk(false);progress(94,'正在点亮房间…');await renderer.compileAsync(scene,camera);
+  const savedView = sceneViewFromQuery(location.search, id);
+  setView(savedView === null ? 0 : Number(savedView));
+  bindControls();
+  if (savedView === null && groundsEntrance(id)) await startWalk(false);
+  progress(94,'正在点亮房间…');await renderer.compileAsync(scene,camera);
   state.ready=true;state.loadMs=Math.round(performance.now()-start);state.assetTriangles=meta.triangles;
   $('#explore').disabled=false;progress(100,'欢迎回来');$('#loading').classList.add('done');$('#loading').setAttribute('aria-hidden','true');
   renderer.setAnimationLoop(animate);

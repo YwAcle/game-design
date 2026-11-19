@@ -35,3 +35,7 @@
 - Three.js r180 的 Reflector 用镜像相机、斜裁切面和纹理矩阵渲染水上物体。本项目直接使用该组件，固定镜头复用倒影，转身或移动时更新。反射缓冲为 768 × 512，水面的波纹单独逐帧绘制。[源码](https://github.com/mrdoob/three.js/blob/r180/examples/jsm/objects/Reflector.js)
 - Water2 展示了反射、折射与多方向法线的组合。黑湖沿用了多层水纹和随视角变化的反射权重，水深取自现有地形网格。[源码](https://github.com/mrdoob/three.js/blob/r180/examples/jsm/objects/Water2.js)
 - Evan Wallace 的 WebGL Water 展示了入射角如何影响折射和反射。jbouny 的月夜海面演示用波谱产生水面法线和位移。黑湖选了适合缓风的短浪，离线生成可无缝重复的法线贴图。[WebGL Water](https://github.com/evanw/webgl-water/blob/master/renderer.js) · [FFT Ocean](https://github.com/jbouny/fft-ocean)
+
+## 学院入口与室外道具 · 2026 年 11 月 19 日
+
+查阅 Three.js r180 的两个 MIT 示例。标签示例将 HTML 标签和场景坐标绑定。学院入口复用项目已有的三维投影和 HTML 链接，门前动作采用原生对话框。植被示例用实例化网格批量摆放几何。新增树干和冠层沿用项目的 Blender 集合合批，树木的形体和色面在可编辑模型中各自调整。[HTML 标签源码](https://github.com/mrdoob/three.js/blob/0af9729d0c143a86a1d725d6e2c3ad83301f3f34/examples/css2d_label.html) · [植被实例化源码](https://github.com/mrdoob/three.js/blob/0af9729d0c143a86a1d725d6e2c3ad83301f3f34/examples/webgl_instancing_scatter.html) · [版本许可](https://github.com/mrdoob/three.js/blob/0af9729d0c143a86a1d725d6e2c3ad83301f3f34/LICENSE)

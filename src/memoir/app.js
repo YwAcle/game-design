@@ -1,4 +1,4 @@
-import {validMemory, mergeBackup, memoryDestination, outdoorFromQuery, sceneFromQuery, readStoredState, writeStoredState, STORAGE_KEY} from '../shared/memory-data.js';
+import {validMemory, mergeBackup, memoryDestination, outdoorFromQuery, sceneFromQuery, sceneViewFromQuery, readStoredState, writeStoredState, STORAGE_KEY} from '../shared/memory-data.js';
 import {initSceneCatalog} from './scene-catalog.js';
 'use strict';
 initSceneCatalog();
@@ -92,6 +92,8 @@ initSceneCatalog();
   const landmark = query.get('landmark');
   const landmarkFilter = $('[data-filter="landmark"]');
   let outdoor = outdoorFromQuery(query);
+  const writingScene = sceneFromQuery(query);
+  let writingView = sceneViewFromQuery(query, writingScene);
   let filter = 'all';
   function renderMemories() {
     const grid = $('#memory-grid');
@@ -219,6 +221,7 @@ initSceneCatalog();
     const fromWorld = data.get('scene') === 'outdoor' && outdoor;
     const memory = { id: `memory-${id}`, author: String(data.get('author')).trim(), title: String(data.get('title')).trim(), body: String(data.get('body')).trim(), house: data.get('house'), cover: data.get('cover'), scene: fromWorld ? '' : data.get('scene'), created: new Date().toISOString() };
     if (fromWorld) memory.outdoor = outdoor;
+    if (writingView && memory.scene === writingScene) memory.view = writingView;
     const error = $('#form-error');
     if (!validMemory(memory)) {
       error.textContent = '请写下巫师名字、回忆标题和故事，内容不能只有空格。';
@@ -237,12 +240,13 @@ initSceneCatalog();
       outdoor = null;
       history.replaceState(null, '', location.pathname + '#memories');
     }
+    writingView = null;
     $('#character-count').textContent = '0 / 400';
     $('#write-dialog').close();
     $('[data-filter="mine"]').click();
     $('#memories').scrollIntoView({ behavior: motionReduced() ? 'instant' : 'smooth' });
     toast('你和霍格沃茨的这一页，已经好好收进回忆册。');
-    if (fromWorld) openMemory(memory.id);
+    if (fromWorld || memory.view) openMemory(memory.id);
   });
 
   let openedMemoryId = null;
@@ -605,16 +609,15 @@ initSceneCatalog();
     landmarkFilter.click();
   }
 
-  const arrival = sceneFromQuery(query);
-  if (outdoor || arrival) {
+  if (outdoor || writingScene) {
     if (outdoor) {
       const option = element('option', '', outdoor.name);
       option.value = 'outdoor';
       $('#scene-input').append(option);
       $('#scene-input').value = 'outdoor';
     } else {
-      $('#scene-input').value = arrival;
-      $(`[name="cover"][value="${arrival}"]`).checked = true;
+      $('#scene-input').value = writingScene;
+      $(`[name="cover"][value="${writingScene}"]`).checked = true;
       history.replaceState(null, '', location.pathname + '#memories');
     }
     $('#house-input').value = state.house;

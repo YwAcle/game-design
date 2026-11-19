@@ -5,17 +5,21 @@ import {EffectComposer} from 'three/addons/postprocessing/EffectComposer.js';
 import {RenderPass} from 'three/addons/postprocessing/RenderPass.js';
 import {UnrealBloomPass} from 'three/addons/postprocessing/UnrealBloomPass.js';
 import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
-import {movePlayer,inputVector,acceptNavigationKey} from './navigation.js';
+import {movePlayer,inputVector,acceptNavigationKey,ARRIVAL_STOPS} from './navigation.js';
 import './style.css';
 import '../shared/scene-shell.css';
-import {bindSceneShell,groundsEntrance} from '../shared/scene-shell.js';
+import {sceneViewFromQuery} from '../shared/memory-data.js';
+import {bindSceneShell,groundsEntrance,nearestView,sceneWriteURL} from '../shared/scene-shell.js';
 
 const $=s=>document.querySelector(s),keys=new Set();
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const state=window.__hall={ready:false,error:null,frames:0,fps:0,drawCalls:0,triangles:0,mode:'view',camera:null};
 let renderer,scene,camera,composer,bloom,flameMesh,dust,walk=false,drag=false,lastX=0,lastY=0,yaw=-Math.PI/2,pitch=.135,hidden=false;
 let target=null,elapsed=0,previous=performance.now(),frameTimes=[];
-const bookmarks={aisle:{x:-5.9,y:1.8,z:0,yaw:-Math.PI/2,pitch:.095},feast:{x:-5.85,y:1.72,z:3.9,yaw:-1.88,pitch:.06},window:{x:19.9,y:1.85,z:0,yaw:-Math.PI/2,pitch:.53}};
+const arrival = groundsEntrance('hall') && new URLSearchParams(location.search).get('route') === 'arrival';
+let arrivalStop = 0;
+const seat = ARRIVAL_STOPS.at(-1);
+const bookmarks={arrival:{x:seat.x,y:1.8,z:seat.z,yaw:-1.67,pitch:.22},aisle:{x:-5.9,y:1.8,z:0,yaw:-Math.PI/2,pitch:.095},feast:{x:-5.85,y:1.72,z:3.9,yaw:-1.88,pitch:.06},window:{x:19.9,y:1.85,z:0,yaw:-Math.PI/2,pitch:.53}};
 function progress(value,label){$('#load-bar').style.width=`${value}%`;$('#load-percent').textContent=`${Math.round(value)}%`;$('#load-label').textContent=label;}
 function fail(error){renderer?.setAnimationLoop(null);walk=false;keys.clear();state.error=String(error);$('#loading').removeAttribute('aria-hidden');$('#loading').classList.remove('done');$('#loading h1').textContent='礼堂暂未打开';$('#load-label').textContent='场景加载失败，请检查本地服务后重试。';$('#load-percent').textContent='';$('#retry').hidden=false;console.error(error);}
 $('#retry').onclick=()=>location.reload();
@@ -49,10 +53,29 @@ async function init(){
   });
   scene.add(gltf.scene);progress(88,'正在点亮悬浮蜡烛…');
   addFlames(meta.flames);addDust();addRays();
-  bindControls();bindSceneShell(stopWalk);if(groundsEntrance("hall"))await startWalk(false);await renderer.compileAsync(scene,camera);progress(100,'欢迎回到霍格沃茨');
+  bindControls();
+  bindSceneShell(stopWalk, 'hall', () => nearestView(camera.position,
+    Object.entries(bookmarks).map(([id, {x, y, z}]) => [id, [x, y, z]])));
+  const savedView = sceneViewFromQuery(location.search, 'hall');
+  if (savedView) setView(savedView);
+  else if (groundsEntrance('hall')) await startWalk(false);
+  if (arrival) {
+    $('#arrival-write').href = sceneWriteURL('hall', 'arrival');
+    updateArrival();
+  }
+  await renderer.compileAsync(scene,camera);progress(100,'欢迎回到霍格沃茨');
   state.loadMs=Math.round(performance.now()-start);state.assetTriangles=meta.triangles;state.ready=true;$('#explore').disabled=false;
   $('#loading').classList.add('done');$('#loading').setAttribute('aria-hidden','true');renderer.setAnimationLoop(animate);draco.dispose();
 }
+function updateArrival() {
+  const message = $('#arrival-step');
+  const write = $('#arrival-write');
+  const next = ARRIVAL_STOPS[arrivalStop];
+  message.textContent = next ? next.label : '你已经走到了长桌旁';
+  write.hidden = Boolean(next);
+  message.parentElement.hidden = false;
+}
+
 function addFlames(positions){
   const geometry=new THREE.PlaneGeometry(.40,.64);
   const material=new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,uniforms:{time:{value:0}},vertexShader:`attribute float phase; varying vec2 vUv; varying float vPhase; void main(){vUv=uv;vPhase=phase;vec4 p=modelViewMatrix*instanceMatrix*vec4(0.,0.,0.,1.);p.xy+=position.xy;gl_Position=projectionMatrix*p;}`,fragmentShader:`varying vec2 vUv; varying float vPhase; uniform float time; void main(){vec2 p=(vUv-.5)*2.;p.x+=sin(time*4.+vPhase)*.08*p.y;float core=exp(-dot(p*vec2(2.8,1.6),p*vec2(2.8,1.6))*2.);float glow=exp(-dot(p,p)*4.);float pulse=.9+.1*sin(time*5.+vPhase);gl_FragColor=vec4(vec3(1.,.42,.08)*(core*2.+glow*.55)*pulse,glow*.65);}`});
@@ -120,6 +143,11 @@ function animate(now){
   if(!$('#help-dialog').open&&walk&&keys.size){
     const direction=inputVector(keys,yaw),speed=(keys.has('ShiftLeft')||keys.has('ShiftRight'))?3.8:2.1;
     const p=movePlayer(camera.position,{x:direction.x*speed*dt,z:direction.z*speed*dt});camera.position.x=p.x;camera.position.z=p.z;
+    const stop = arrival && ARRIVAL_STOPS[arrivalStop];
+    if (stop && Math.hypot(stop.x - p.x, stop.z - p.z) <= 1.25) {
+      arrivalStop++;
+      updateArrival();
+    }
   }
   if(!reduced){flameMesh.material.uniforms.time.value=elapsed;dust.material.uniforms.time.value=elapsed;}
   renderer.info.reset();composer.render();state.frames++;
