@@ -36,16 +36,16 @@
     {
       "name": "雕像与藏书",
       "position": [
-        -3.7,
-        2.2,
-        -2.6
+        -1.95,
+        2.7,
+        0.12
       ],
       "target": [
         0,
-        2.8,
-        -4.9
+        2.1,
+        -4.72
       ],
-      "fov": 48
+      "fov": 55
     }
   ],
   "spawn": {
@@ -130,18 +130,19 @@
   ],
   "artisticLimitations": [
     "Original stylized reconstruction from the selected official promotional image; inferred reverse walls and dimensions.",
-    "Statue, portraits, textiles and foliage are original simplified geometry or illustrations, not game assets.",
+    "Rowena statue adapted from the user-provided Meshy model. Portraits, textiles and foliage are original simplified geometry or illustrations.",
     "Fine hand-painted linework and sculptural complexity remain less detailed than the game reference."
   ],
   "referenceAspect": 1.7777777777777777,
-  "revision": "sculpture-curved-enclosure-v2",
-  "triangles": 200689,
+  "revision": "user-statue-v3",
+  "triangles": 269181,
   "meshGroups": [
     "floor",
     "architecture",
     "furniture",
     "details",
-    "glow"
+    "glow",
+    "statue"
   ],
   "bakeSamples": 20,
   "atlases": {
@@ -158,6 +159,10 @@
       2048
     ],
     "details": [
+      2048,
+      2048
+    ],
+    "statue": [
       2048,
       2048
     ]

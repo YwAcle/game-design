@@ -15,7 +15,11 @@ def normalize(path):
         if tex:pbr['baseColorTexture']=tex
         ex=mat.setdefault('extensions',{});ex.pop('KHR_materials_emissive_strength',None);ex['KHR_materials_unlit']={};used.add('KHR_materials_unlit');count+=1
         # Open decorative leaves and curtain surfaces are intentionally visible both sides.
-        mat['doubleSided']='details' in mat.get('name','')
+        mat['doubleSided'] = mat['name'] == 'Baked | details'
+        if mat['name'] == 'Baked | statue':
+            # Match the statue's original color map to the room's subdued lighting.
+            pbr['baseColorFactor'] = [.68, .71, .78, 1]
+            mat['doubleSided'] = True
     data['extensionsUsed']=sorted(used)
     raw=json.dumps(data,separators=(',',':')).encode();raw+=b' '*((-len(raw))%4);chunks[0]=(chunks[0][0],raw)
     out=b''.join(struct.pack('<II',len(x),k)+x for k,x in chunks);p.write_bytes(struct.pack('<4sII',b'glTF',2,len(out)+12)+out)

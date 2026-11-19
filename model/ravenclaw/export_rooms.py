@@ -1,4 +1,4 @@
-"""Bake inspected source into four atlases; preserve editable source separately."""
+"""Bake inspected source into atlases while preserving the editable source separately."""
 import bpy, os, sys, math, json, time, bmesh
 from pathlib import Path
 HERE=Path(__file__).resolve().parent
@@ -16,9 +16,12 @@ for o in S.objects:
     if o.type in ['CURVE','FONT']:o.select_set(True)
 if bpy.context.selected_objects:
     bpy.context.view_layer.objects.active=bpy.context.selected_objects[0];bpy.ops.object.convert(target='MESH')
-groups={k:[] for k in ['floor','architecture','furniture','details','glow']}
+groups={k:[] for k in ['floor','architecture','furniture','details','glow','statue']}
 for o in S.objects:
     if o.type!='MESH' or not len(o.data.vertices):continue
+    if o.name == 'Ravenclaw Statue | Meshy':
+        groups['statue'].append(o)
+        continue
     o.data=o.data.copy()
     bpy.context.view_layer.objects.active=o
     for mod in list(o.modifiers):bpy.ops.object.modifier_apply(modifier=mod.name)
@@ -45,12 +48,17 @@ for key,objects in groups.items():
     for o in objects:o.select_set(True)
     bpy.context.view_layer.objects.active=objects[0];bpy.ops.object.join();o=bpy.context.object;o.name=ID+'_'+key;joined[key]=o
     print('JOINED',key,len(o.data.polygons),flush=True)
-    if key=='glow':continue
+    if key in ('glow','statue'):continue
     bpy.ops.object.mode_set(mode='EDIT');bpy.ops.mesh.select_all(action='SELECT');bpy.ops.uv.smart_project(angle_limit=math.radians(68),island_margin=.0015,area_weight=.6,correct_aspect=True,scale_to_bounds=True);bpy.ops.object.mode_set(mode='OBJECT');o.data.uv_layers.active.name='BakeUV'
 for key,o in joined.items():
     if key=='glow':continue
-    size=2048
-    im=bpy.data.images.new('Baked_'+key,width=size,height=size,alpha=False);im.colorspace_settings.name='sRGB'
+    if key == 'statue':
+        # Keep the imported UVs and color map. Combined baking leaves visible seams on this mesh.
+        source = o.data.materials[0]
+        shader = next(node for node in source.node_tree.nodes if node.type == 'BSDF_PRINCIPLED')
+        images[key] = shader.inputs['Base Color'].links[0].from_node.image
+        continue
+    im=bpy.data.images.new('Baked_'+key,width=2048,height=2048,alpha=False);im.colorspace_settings.name='sRGB'
     for mat in o.data.materials:
         if not mat:continue
         n=mat.node_tree.nodes
