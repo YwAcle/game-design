@@ -2,7 +2,6 @@ import * as THREE from 'three';
 
 const viewSky = `
   uniform sampler2D clouds, lunarDisc;
-  uniform float dusk, pitchDay;
   vec3 skyColor(vec3 ray) {
     ray = normalize(ray);
     vec2 uv = vec2(atan(ray.z, ray.x) / 6.283185 + .24, asin(clamp(ray.y, -1., 1.)) / 3.141593 + .5);
@@ -26,9 +25,7 @@ const viewSky = `
     vec3 sunset = mix(vec3(.99,.49,.25), vec3(.34,.19,.24), smoothstep(-.06,.63,ray.y));
     sunset = mix(sunset, vec3(.38,.185,.22), cloudBank*.73);
     sunset += vec3(.22,.085,.036)*cloudEdge;
-    vec3 day = mix(vec3(.91,.76,.55), vec3(.31,.52,.70), smoothstep(-.02,.66,ray.y));
-    day = mix(day, vec3(.89,.85,.78), cloudBank*.69);
-    return mix(mix(color,sunset,dusk),day,pitchDay);
+    return mix(color, sunset, .28 * horizon);
   }`;
 const vertex = `
   varying vec3 point;
@@ -45,7 +42,7 @@ export async function evening(scene) {
   texture.wrapS = THREE.RepeatWrapping;
   const clouds = {value:texture};
   const dome = new THREE.Mesh(new THREE.SphereGeometry(530,32,18),new THREE.ShaderMaterial({
-    side:THREE.BackSide,depthWrite:false,uniforms:{clouds,lunarDisc:{value:moon},skyAlpha:{value:1},dusk:{value:0},pitchDay:{value:0}},vertexShader:vertex,
+    side:THREE.BackSide,depthWrite:false,uniforms:{clouds,lunarDisc:{value:moon},skyAlpha:{value:1}},vertexShader:vertex,
     fragmentShader:viewSky+`
       uniform float skyAlpha;
       varying vec3 point;
@@ -61,5 +58,4 @@ export async function evening(scene) {
     dome.position.copy(camera.position);dome.updateMatrixWorld();
   };
   dome.frustumCulled = false;scene.add(dome);
-  return dome.material.uniforms;
 }

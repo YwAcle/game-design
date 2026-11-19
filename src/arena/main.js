@@ -12,7 +12,8 @@ import {movePlayer,inputVector,acceptNavigationKey} from './navigation.js';
 import {createMagic} from './magic.js';
 import './style.css';
 import '../shared/scene-shell.css';
-import {bindSceneShell,groundsEntrance} from '../shared/scene-shell.js';
+import {sceneViewFromQuery} from '../shared/memory-data.js';
+import {bindSceneShell,groundsEntrance,nearestView} from '../shared/scene-shell.js';
 const $=s=>document.querySelector(s),keys=new Set(),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const state=window.__arena={ready:false,error:null,frames:0,fps:0,drawCalls:0,triangles:0,mode:'orbit',magic:true};
 let renderer,scene,camera,composer,bloom,fxaa,orbit,magic,walk=false,drag=false,lastX=0,lastY=0,yaw=0,pitch=0,hidden=false,elapsed=0,previous=performance.now(),frameTimes=[];
@@ -37,7 +38,14 @@ async function init(){
   const response=await fetch('./assets/metadata.json');if(!response.ok)throw new Error(`Metadata HTTP ${response.status}`);const meta=await response.json();
   gltf.scene.traverse(o=>{if(o.isMesh)for(const m of Array.isArray(o.material)?o.material:[o.material]){if(m.map)m.map.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());}});
   scene.add(gltf.scene);magic=createMagic();scene.add(magic.group);progress(94,'正在唤醒魔咒余光…');
-  bindControls();bindSceneShell(stopWalk);if(groundsEntrance("arena"))await startWalk(false);await renderer.compileAsync(scene,camera);progress(100,'欢迎来到决斗俱乐部');
+  bindControls();
+  bindSceneShell(stopWalk, 'arena', () => state.mode === 'orbit'
+    ? document.querySelector('[data-view].active').dataset.view
+    : nearestView(camera.position, Object.entries(bookmarks).map(([id, view]) => [id, view.pos])));
+  const savedView = sceneViewFromQuery(location.search, 'arena');
+  if (savedView) setView(savedView);
+  else if (groundsEntrance('arena')) await startWalk(false);
+  await renderer.compileAsync(scene,camera);progress(100,'欢迎来到决斗俱乐部');
   state.loadMs=Math.round(performance.now()-start);state.assetTriangles=meta.triangles;state.ready=true;$('#explore').disabled=false;$('#loading').classList.add('done');$('#loading').setAttribute('aria-hidden','true');draco.dispose();renderer.setAnimationLoop(animate);
 }
 function syncAngles(){yaw=camera.rotation.y;pitch=camera.rotation.x;}

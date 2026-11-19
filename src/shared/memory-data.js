@@ -24,6 +24,18 @@ export function writeStoredState(storage, change) {
 export function sceneURL(id) { return Object.hasOwn(SCENES,id) ? SCENES[id].url : null; }
 export function sceneFromQuery(search) { const id=new URLSearchParams(search).get('write'); return sceneURL(id)?id:null; }
 
+const namedViews = {
+  hall: ['aisle', 'feast', 'window', 'arrival'],
+  arena: ['overview', 'court', 'gallery'],
+};
+function validSceneView(scene, view) {
+  return Boolean(sceneURL(scene) && (namedViews[scene] ?? ['0', '1', '2']).includes(view));
+}
+export function sceneViewFromQuery(search, scene) {
+  const view = new URLSearchParams(search).get('view');
+  return validSceneView(scene, view) ? view : null;
+}
+
 function validOutdoor(outdoor) {
   if (!outdoor || typeof outdoor.place !== 'string' || !/^[a-z][a-z0-9-]{0,31}$/.test(outdoor.place)
     || typeof outdoor.name !== 'string' || !outdoor.name.trim() || outdoor.name.length > 48
@@ -51,7 +63,10 @@ export function memoryDestination(memory) {
     return {name: memory.outdoor.name, url: 'world/?' + new URLSearchParams({memory: memory.id})};
   }
   const url = sceneURL(memory.scene);
-  return url ? {name: SCENES[memory.scene].name, url} : null;
+  if (!url) return null;
+  const view = memory.view;
+  const destination = validSceneView(memory.scene, view) ? url + (url.includes('?') ? '&' : '?') + 'view=' + view : url;
+  return {name: SCENES[memory.scene].name, url: destination};
 }
 
 export function validMemory(m) {
@@ -62,12 +77,14 @@ export function validMemory(m) {
     && houses.includes(m.house) && covers.includes(m.cover)
     && typeof m.created==='string' && Number.isFinite(Date.parse(m.created))
     && (m.scene===undefined || m.scene==='' || !!sceneURL(m.scene))
-    && (m.outdoor === undefined || (!m.scene && validOutdoor(m.outdoor))));
+    && (m.outdoor === undefined || (!m.scene && validOutdoor(m.outdoor)))
+    && (m.view === undefined || validSceneView(m.scene, m.view)));
 }
 function clean(m) {
   const {id,title,body,author,house,cover,created}=m;
   const record = {id,title,body,author,house,cover,created};
   if (m.scene) record.scene = m.scene;
+  if (m.view !== undefined) record.view = m.view;
   if (m.outdoor) {
     const {place, name, position} = m.outdoor;
     record.outdoor = {place, name, position};

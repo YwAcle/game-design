@@ -21,15 +21,20 @@ let layout, nav, renderer, orbit, scene, selected, nearby, walking = false, yaw 
 let destinations = {}, markers = [], drag, previous = 0, dirty = true;
 const pins = new Map();
 const places = new Map();
+const houseDoors = {
+  gryffindor: ['画像门', '画像转过脸来，等你报上今晚的口令。', '说出「炉火常明」', '画像点点头，露出门后的暖光。'],
+  ravenclaw: ['鹰形门环', '门环问，什么东西分给别人，自己也不会少？', '回答「知识」', '门环微微一响，门后的星图亮了起来。'],
+  hufflepuff: ['厨房旁的木桶', '桶箍上刻着一行小字，赫尔加·赫奇帕奇。', '按名字的节奏敲击', '木桶轻轻回响，桶盖向内打开。'],
+  slytherin: ['地窖暗门', '石缝里露出一点绿光，蛇纹下方等着一句低语。', '低声说「湖底微光」', '石门滑开，黑湖的绿光照到脚边。'],
+};
 let shownPlace, outdoorMemories = [];
 let route = null, stop = 0, portal = null, water, lastWater = 0;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const regionPins = ['hall','tower','boats','pitch','bridge','hut','forest','village','station','glass'];
 const temp = new THREE.Vector3();
 const moonColor = new THREE.Color(0xb5d7e3), eveningColor = new THREE.Color(0xffba89);
-const nightFog = new THREE.Color(0x3d585f), valleyFog = new THREE.Color(0xba8286);
-const pitchLight = new THREE.Color(0xffe0a8), pitchFog = new THREE.Color(0xb3a592);
-let skyUniforms, keyLight, ambient;
+const nightFog = new THREE.Color(0x3d585f), valleyFog = new THREE.Color(0x786477);
+let keyLight, ambient;
 
 async function json(url) {
   const res = await fetch(url);
@@ -77,6 +82,31 @@ function writeAtCurrentPosition() {
   location.href = '../?' + new URLSearchParams({outdoor: JSON.stringify(outdoor)}) + '#memories';
 }
 
+function openHouseDoor(id, href) {
+  const [name, prompt, action, reply] = houseDoors[id];
+  const dialog = $('house-door');
+  const button = $('door-action'), response = $('door-reply'), enter = $('door-enter');
+  dialog.dataset.house = id;
+  $('door-title').textContent = name;
+  $('door-prompt').textContent = prompt;
+  button.textContent = action;
+  button.hidden = false;
+  response.textContent = reply;
+  response.hidden = true;
+  enter.href = href;
+  enter.textContent = '进入' + layout.rooms[id] + ' →';
+  enter.hidden = true;
+  button.onclick = () => {
+    button.hidden = true;
+    response.hidden = false;
+    enter.hidden = false;
+    enter.focus();
+  };
+  enter.onclick = () => history.replaceState(null, '', '?from=' + portal.id);
+  keys.clear();
+  dialog.showModal();
+}
+
 function updateDoors() {
   const destination = walking && atDoor(nearby,eye.position.x,eye.position.z) ? nearby : null;
   if (destination !== portal) {
@@ -84,9 +114,16 @@ function updateDoors() {
     $('rooms').replaceChildren();
     for (const id of portal?.rooms ?? []) {
       const a=document.createElement('a');
-      a.href=destinations[id];
-      a.textContent='进入'+layout.rooms[id]+' ↗';
-      a.addEventListener('click',()=>history.replaceState(null,'','?from='+portal.id));
+      a.href=destinations[id] + (route?.id === 'arrival' && id === 'hall' ? '&route=arrival' : '');
+      a.textContent=houseDoors[id]?.[0] ?? ('进入'+layout.rooms[id]+' ↗');
+      a.addEventListener('click', event => {
+        if (houseDoors[id]) {
+          event.preventDefault();
+          openHouseDoor(id, a.href);
+        } else {
+          history.replaceState(null, '', '?from=' + portal.id);
+        }
+      });
       $('rooms').append(a);
     }
   }
@@ -116,7 +153,9 @@ function updateGuide() {
     stop++;
   }
   const complete=stop===route.stops.length;
-  $('waypoint').textContent=complete?'已抵达'+places.get(route.end).name:route.labels[stop];
+  $('waypoint').textContent=complete
+    ? (route.id === 'arrival' ? '进入礼堂，沿长桌之间向前走' : '已抵达'+places.get(route.end).name)
+    : route.labels[stop];
   $('remaining').textContent=complete?'':Math.ceil(Math.hypot(goal[0]-eye.position.x,goal[1]-eye.position.z))+' m';
   $('bearing').hidden=complete;
   if(!complete){
@@ -244,7 +283,7 @@ function move(dt) {
 }
 function frame(now) {
   const dt=Math.min(.05,(now-previous)*.001);previous=now;
-  if(walking && !directory.open) move(dt);
+  if(walking && !directory.open && !$('house-door').open) move(dt);
   if (walking && eye.position.z>40 && !reduced.matches && !directory.open && now-lastWater>=1000/60 - 1) {
     water.value=now*.001;lastWater=now;dirty=true;
   }
@@ -255,18 +294,13 @@ function frame(now) {
     const distanceToGardens = Math.hypot(eye.position.x-41,eye.position.z+38);
     const distanceToVillage = Math.hypot(eye.position.x+18,eye.position.z+79);
     const dusk = walking ? 1 - THREE.MathUtils.smoothstep(distanceToBridge, 13, 48) : 0;
-    const distanceToPitch = Math.hypot(eye.position.x + 92, eye.position.z + 34);
-    const pitchDay = walking ? 1 - THREE.MathUtils.smoothstep(distanceToPitch, 24, 41) : 0;
     const gardens = 1 - THREE.MathUtils.smoothstep(distanceToGardens, 17, 50);
     const village = 1 - THREE.MathUtils.smoothstep(distanceToVillage, 27, 56);
-    const twilight = walking ? Math.max(dusk, .48*gardens, .38*village) : .22;
-    const light = walking ? Math.max(pitchDay, .48*gardens, .37*village) : .56;
-    skyUniforms.dusk.value = twilight;
-    skyUniforms.pitchDay.value = walking ? pitchDay : .28;
-    keyLight.color.lerpColors(moonColor, eveningColor, twilight).lerp(pitchLight, light);
-    keyLight.intensity = THREE.MathUtils.lerp(1.05 + 1.65*twilight, 2.32, light);
-    ambient.intensity = THREE.MathUtils.lerp(.69 + .34*twilight, 1.22, light);
-    scene.fog.color.lerpColors(nightFog,valleyFog,twilight).lerp(pitchFog, light);
+    const light = walking ? Math.max(dusk, .42*gardens, .56*village) : .5;
+    keyLight.color.lerpColors(moonColor, eveningColor, .2 + .42*light);
+    keyLight.intensity = 1.48 + 1.1*light;
+    ambient.intensity = .72 + .24*light;
+    scene.fog.color.lerpColors(nightFog,valleyFog,.18 + .36*light);
     renderer.render(scene,walking?eye:mapCamera);
     if(walking){updateDoors();updateGuide();}else updateMarkers();
     dirty=false;
@@ -295,7 +329,7 @@ function controls() {
   $('enter').onclick=()=>walk(selected);$('map-toggle').onclick=overview;
   $('reset').onclick=reset;$('zoom-in').onclick=()=>zoom(.78);$('zoom-out').onclick=()=>zoom(1.28);
   document.addEventListener('keydown',e=>{
-    if(directory.open||e.ctrlKey||e.altKey||e.metaKey) return;
+    if(directory.open||$('house-door').open||e.ctrlKey||e.altKey||e.metaKey) return;
     if(e.code==='KeyM' && walking){overview();return;}
     if(!walking || !/^(Key[WASD]|Arrow(Up|Down|Left|Right)|Shift(Left|Right))$/.test(e.code))return;
     e.preventDefault();keys.add(e.code);
@@ -331,7 +365,7 @@ async function start() {
   renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));renderer.shadowMap.enabled=true;
   renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.shadowMap.autoUpdate=false;
   lightScene();
-  [layout,nav,destinations,skyUniforms]=await Promise.all([json('./layout.json'),json('./navigation.json'),json('./rooms.json'),evening(scene)]);
+  [layout,nav,destinations]=await Promise.all([json('./layout.json'),json('./navigation.json'),json('./rooms.json'),evening(scene)]);
   for(const p of layout.places)places.set(p.id,p);
   const decoder = new DRACOLoader().setDecoderPath('../assets/draco/');
   let gltf;

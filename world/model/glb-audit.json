@@ -1,5 +1,5 @@
 {
-  "file": "/tmp/hogwarts-campus/project/world/grounds.glb",
+  "file": "world/grounds.glb",
   "ok": true,
   "errors": [],
   "warnings": [
@@ -7,13 +7,13 @@
   ],
   "remoteUris": [],
   "localUris": [],
-  "bytes": 11788380,
-  "sha256": "9e039b005cc3f5a1f2e151bcfb7050e5e5dfc9591a340af507185d50c02a6c9c",
-  "meshes": 63,
-  "primitives": 326,
-  "meshTriangles": 1041553,
+  "bytes": 11916308,
+  "sha256": "e931b7a97847c4413f3e7e58a7ceaee80bf626b90f52df6480030b9aa3c1654d",
+  "meshes": 65,
+  "primitives": 351,
+  "meshTriangles": 1041739,
   "triangleCountScope": "mesh primitives only; instances not multiplied",
-  "materials": 160,
+  "materials": 185,
   "images": 64,
   "unlitMaterials": 0,
   "extensions": [

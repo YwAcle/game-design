@@ -1,6 +1,10 @@
 // Circle against furniture rectangles in the Hall's X/Z ground plane.
 export const OBSTACLES=[-4.65,-2.9,2.9,4.65].map(z=>({x0:-4.7,x1:20.1,z0:z-.94*.74,z1:z+.94*.74}));
 const R=.23;
+export const ARRIVAL_STOPS = [
+  { x: 1.8, z: 0, label: '沿长桌之间走进烛光，抬头看看悬浮蜡烛' },
+  { x: 12.5, z: 1.45, label: '走到右侧长桌旁，望向教师席' },
+];
 export function acceptNavigationKey(target,dialogOpen=false){
   return !dialogOpen&&!target?.isContentEditable&&!/^(INPUT|SELECT|TEXTAREA)$/.test(target?.tagName||'');
 }
