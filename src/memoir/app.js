@@ -1,4 +1,4 @@
-import {validMemory, mergeBackup, sceneURL, sceneFromQuery, SCENES, readStoredState, writeStoredState} from '../shared/memory-data.js';
+import {validMemory, mergeBackup, memoryDestination, outdoorFromQuery, sceneFromQuery, readStoredState, writeStoredState, STORAGE_KEY} from '../shared/memory-data.js';
 import {initSceneCatalog} from './scene-catalog.js';
 'use strict';
 initSceneCatalog();
@@ -6,7 +6,7 @@ initSceneCatalog();
 (() => {
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
-  const storageKey = 'hogwarts-always-v1';
+  const storageKey = STORAGE_KEY;
   const houses = {
     gryffindor: { name: '格兰芬多', color: '#c48b74', message: '格兰芬多的勇气，会陪你走过每一场冒险。' },
     slytherin: { name: '斯莱特林', color: '#8ebaa0', message: '斯莱特林的灯，永远为你留在黑湖深处。' },
@@ -29,19 +29,7 @@ initSceneCatalog();
   let storageAvailable = true;
   let corruptedStorage = false;
   try {
-    const raw = localStorage.getItem(storageKey);
-    if (raw) {
-      const saved = JSON.parse(raw);
-      if (!saved || saved.version !== 1 || !Array.isArray(saved.memories) || !saved.memories.every(validMemory)
-        || new Set(saved.memories.map(m => m.id)).size !== saved.memories.length) {
-        throw new Error('Invalid saved memories');
-      }
-      state.memories = saved.memories;
-      const ids = new Set([...examples, ...state.memories].map(memory => memory.id));
-      state.favorites = Array.isArray(saved.favorites) ? [...new Set(saved.favorites.filter(id => ids.has(id)))] : [];
-      state.house = Object.hasOwn(houses, saved.house) ? saved.house : '';
-      state.reducedMotion = typeof saved.reducedMotion === 'boolean' ? saved.reducedMotion : null;
-    }
+    Object.assign(state, readStoredState(localStorage.getItem(storageKey)));
   } catch (error) {
     storageAvailable = false;
     corruptedStorage = error instanceof SyntaxError || error.message === 'Invalid saved memories';
@@ -83,7 +71,7 @@ initSceneCatalog();
   function getMemory(id) { return allMemories().find(memory => memory.id === id); }
   function isMine(memory) { return state.memories.some(item => item.id === memory.id); }
   function houseLabel(memory) { return houses[memory.house]?.name || '一位相信魔法的巫师'; }
-  function categoryLabel(memory) { return isMine(memory) ? '我的魔法故事' + (sceneURL(memory.scene) ? ' · ' + SCENES[memory.scene].name : '') : '回忆灵感 · ' + memory.category; }
+  function categoryLabel(memory) { return isMine(memory) ? ['我的魔法故事', memoryDestination(memory)?.name].filter(Boolean).join(' · ') : '回忆灵感 · ' + memory.category; }
   function icon(symbol) {
     const node = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     node.classList.add('icon');
@@ -100,14 +88,26 @@ initSceneCatalog();
     return node;
   }
 
+  const query = new URLSearchParams(location.search);
+  const landmark = query.get('landmark');
+  const landmarkFilter = $('[data-filter="landmark"]');
+  let outdoor = outdoorFromQuery(query);
   let filter = 'all';
   function renderMemories() {
     const grid = $('#memory-grid');
-    const list = allMemories().filter(memory => filter === 'mine' ? isMine(memory) : filter === 'favorites' ? state.favorites.includes(memory.id) : true);
+    const list = allMemories().filter(memory => {
+      if (filter === 'landmark') return memory.outdoor?.place === landmark;
+      if (filter === 'mine') return isMine(memory);
+      if (filter === 'favorites') return state.favorites.includes(memory.id);
+      return true;
+    });
     grid.replaceChildren();
     $('#memory-count').textContent = allMemories().length;
     $('#empty-state').hidden = list.length > 0;
-    $('#empty-message').textContent = filter === 'favorites' ? '点一下故事右上角的爱心，就能把它珍藏起来。' : '把你的第一个故事，轻轻放进来。';
+    $('#empty-message').textContent = {
+      favorites: '点一下故事右上角的爱心，就能把它珍藏起来。',
+      landmark: '这处地点还没有保存的回忆。'
+    }[filter] ?? '把你的第一个故事，轻轻放进来。';
     for (const memory of list) {
       const article = element('article', 'memory-card');
       const open = element('button', 'memory-open');
@@ -119,7 +119,7 @@ initSceneCatalog();
       img.src = `assets/${memory.cover}.webp`;
       img.alt = '';
       img.loading = 'lazy';
-      cover.append(img, element('span', 'memory-category', isMine(memory) ? (sceneURL(memory.scene) ? SCENES[memory.scene].name : '我的故事') : '回忆灵感'));
+      cover.append(img, element('span', 'memory-category', isMine(memory) ? (memoryDestination(memory)?.name || '我的故事') : '回忆灵感'));
       const content = element('span', 'memory-content');
       const heading = element('strong', 'memory-title', memory.title);
       const excerpt = element('span', 'memory-excerpt', memory.body.replace(/\n+/g, ' '));
@@ -216,7 +216,9 @@ initSceneCatalog();
     event.preventDefault();
     const data = new FormData(event.target);
     const id = window.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-    const memory = { id: `memory-${id}`, author: String(data.get('author')).trim(), title: String(data.get('title')).trim(), body: String(data.get('body')).trim(), house: data.get('house'), cover: data.get('cover'), scene: data.get('scene'), created: new Date().toISOString() };
+    const fromWorld = data.get('scene') === 'outdoor' && outdoor;
+    const memory = { id: `memory-${id}`, author: String(data.get('author')).trim(), title: String(data.get('title')).trim(), body: String(data.get('body')).trim(), house: data.get('house'), cover: data.get('cover'), scene: fromWorld ? '' : data.get('scene'), created: new Date().toISOString() };
+    if (fromWorld) memory.outdoor = outdoor;
     const error = $('#form-error');
     if (!validMemory(memory)) {
       error.textContent = '请写下巫师名字、回忆标题和故事，内容不能只有空格。';
@@ -230,11 +232,17 @@ initSceneCatalog();
     }
     error.hidden = true;
     event.target.reset();
+    if (outdoor) {
+      $('#scene-input option[value=outdoor]').remove();
+      outdoor = null;
+      history.replaceState(null, '', location.pathname + '#memories');
+    }
     $('#character-count').textContent = '0 / 400';
     $('#write-dialog').close();
     $('[data-filter="mine"]').click();
     $('#memories').scrollIntoView({ behavior: motionReduced() ? 'instant' : 'smooth' });
     toast('你和霍格沃茨的这一页，已经好好收进回忆册。');
+    if (fromWorld) openMemory(memory.id);
   });
 
   let openedMemoryId = null;
@@ -249,9 +257,13 @@ initSceneCatalog();
     $('#detail-body').textContent = memory.body;
     $('#detail-author').textContent = `${memory.author} · ${isMine(memory) ? houseLabel(memory) : '示例故事'}`;
     $('#detail-date').textContent = memory.created ? formatDate(memory.created) : memory.dateLabel;
-    const destination=sceneURL(memory.scene);
-    $('#memory-return').hidden=!destination;
-    if(destination){ $('#memory-return').href=destination; $('#memory-return').textContent='重返'+SCENES[memory.scene].name+' ↗'; }
+    const destination = memoryDestination(memory);
+    const revisit = $('#memory-return');
+    revisit.hidden = !destination;
+    if (destination) {
+      revisit.href = destination.url;
+      revisit.textContent = '重返' + destination.name + ' ↗';
+    }
     $('#delete-memory').hidden = !isMine(memory);
     $('#delete-memory').textContent = '删除这段回忆';
     showDialog('#detail-dialog');
@@ -586,13 +598,27 @@ initSceneCatalog();
   }
   window.addEventListener('storage',event=>{if(event.key===storageKey||event.key===null)refreshSavedStories();});
   window.addEventListener('pageshow',event=>{if(event.persisted)refreshSavedStories();});
-  const arrival=sceneFromQuery(location.search);
-  if(arrival) {
-    $('#scene-input').value=arrival;
-    $(`[name="cover"][value="${arrival}"]`).checked=true;
-    $('#house-input').value=state.house;
+  if (landmark && /^[a-z][a-z0-9-]{0,31}$/.test(landmark)) {
+    const place = state.memories.find(memory => memory.outdoor?.place === landmark);
+    landmarkFilter.textContent = place ? place.outdoor.name + '的回忆' : '此地回忆';
+    landmarkFilter.hidden = false;
+    landmarkFilter.click();
+  }
+
+  const arrival = sceneFromQuery(query);
+  if (outdoor || arrival) {
+    if (outdoor) {
+      const option = element('option', '', outdoor.name);
+      option.value = 'outdoor';
+      $('#scene-input').append(option);
+      $('#scene-input').value = 'outdoor';
+    } else {
+      $('#scene-input').value = arrival;
+      $(`[name="cover"][value="${arrival}"]`).checked = true;
+      history.replaceState(null, '', location.pathname + '#memories');
+    }
+    $('#house-input').value = state.house;
     showDialog('#write-dialog');
-    history.replaceState(null,'',location.pathname+'#memories');
   }
 
   $('#render-note').textContent = renderer?.name === 'WebGL' ? '魔法粒子由 WebGL 在你的设备上绘制；离开画面或切到后台时会自动暂停。支持 Retina 屏幕。' : '当前设备使用轻量画面模式；回忆的阅读、保存和导出仍可使用。';

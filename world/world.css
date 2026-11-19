@@ -45,3 +45,8 @@ dialog{
   .head-actions button{padding:6px}
   .walking h1{overflow-wrap:anywhere}
 }
+
+.memory-actions{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px}
+.memory-actions:has(:not([hidden])){margin-top:8px}
+.memory-actions button{padding:5px 9px;margin-top:0}
+.memory-actions a{color:var(--gold);font-size:12px;text-underline-offset:3px}

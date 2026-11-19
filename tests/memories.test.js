@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {validMemory, mergeBackup, sceneURL, sceneFromQuery, writeStoredState} from '../src/shared/memory-data.js';
+import {validMemory, mergeBackup, memoryDestination, outdoorFromQuery, readStoredState, sceneURL, sceneFromQuery, writeStoredState} from '../src/shared/memory-data.js';
 const memory = (patch={}) => ({id:'memory-original',title:'长桌旁',body:'那一晚的烛光',author:'巫师',house:'',cover:'letter',created:'2026-11-17T00:00:00.000Z',...patch});
 const state = (memories=[]) => ({memories,favorites:[],house:''});
 const backup = (memories=[],patch={}) => ({version:1,memories,favorites:[],house:'',...patch});
@@ -41,6 +41,33 @@ test('scene navigation preserves old routes and rejects untrusted destinations',
   assert.equal(sceneURL('../outside'),null);assert.equal(sceneURL('__proto__'),null);
   assert.equal(sceneFromQuery('?write=hall'),'hall');
   assert.equal(sceneFromQuery('?write=https://evil.example'),null);
+});
+test('an outdoor story keeps its position and viewing direction through a backup', ()=>{
+  const outdoor = {place:'boats', name:'黑湖泊位', position:[36.2, 68.9, -.48, .06]};
+  const query = new URLSearchParams({outdoor: JSON.stringify({...outdoor, url:'https://example.com'})});
+  assert.deepEqual(outdoorFromQuery(query), outdoor);
+  const story = memory({outdoor});
+  const restored = mergeBackup(state(), backup([story]));
+  assert.deepEqual(readStoredState(JSON.stringify(backup(restored.memories))).memories, [story]);
+  assert.deepEqual(memoryDestination(story), {name:'黑湖泊位', url:'world/?memory=memory-original'});
+  assert.equal(mergeBackup(restored, backup([story])).added, 0);
+  assert.equal(mergeBackup(restored, backup([memory({outdoor:{...outdoor, position:[36.2, 68, -.48, .06]}})])).conflicts, 1);
+  assert.equal(memoryDestination(memory({scene:'hall'})).url, 'hall/');
+});
+test('invalid outdoor locations and ambiguous indoor/outdoor stories are rejected', ()=>{
+  const outdoor = {place:'path', name:'高地小径', position:[2, 7, .12, .08]};
+  assert.equal(validMemory(memory({scene:'hall', outdoor})), false);
+  for (const invalid of [
+    {...outdoor, place:'../../../'},
+    {...outdoor, name:''},
+    {...outdoor, position:[null, 7, .12, .08]},
+    {...outdoor, position:[201, 7, .12, .08]},
+    {...outdoor, position:[2, 7, 4, .08]}
+  ]) {
+    assert.equal(validMemory(memory({outdoor:invalid})), false);
+    assert.equal(outdoorFromQuery(new URLSearchParams({outdoor: JSON.stringify(invalid)})), null);
+  }
+  assert.equal(outdoorFromQuery('?outdoor=broken'), null);
 });
 test('writing from a restored page reads fresh stories before applying changes',()=>{
   let raw=JSON.stringify({...backup([memory()]),reducedMotion:null});

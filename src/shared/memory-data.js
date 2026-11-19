@@ -23,6 +23,37 @@ export function writeStoredState(storage, change) {
 }
 export function sceneURL(id) { return Object.hasOwn(SCENES,id) ? SCENES[id].url : null; }
 export function sceneFromQuery(search) { const id=new URLSearchParams(search).get('write'); return sceneURL(id)?id:null; }
+
+function validOutdoor(outdoor) {
+  if (!outdoor || typeof outdoor.place !== 'string' || !/^[a-z][a-z0-9-]{0,31}$/.test(outdoor.place)
+    || typeof outdoor.name !== 'string' || !outdoor.name.trim() || outdoor.name.length > 48
+    || !Array.isArray(outdoor.position) || outdoor.position.length !== 4) return false;
+  const [x, z, yaw, pitch] = outdoor.position;
+  return [x, z, yaw, pitch].every(Number.isFinite) && Math.abs(x) <= 200 && Math.abs(z) <= 200
+    && Math.abs(yaw) <= Math.PI && Math.abs(pitch) <= Math.PI / 2;
+}
+
+export function outdoorFromQuery(search) {
+  const value = new URLSearchParams(search).get('outdoor');
+  if (!value) return null;
+  try {
+    const outdoor = JSON.parse(value);
+    if (validOutdoor(outdoor)) {
+      const {place, name, position} = outdoor;
+      return {place, name, position};
+    }
+  } catch { /* A broken link can still open the memoir. */ }
+  return null;
+}
+
+export function memoryDestination(memory) {
+  if (memory.outdoor) {
+    return {name: memory.outdoor.name, url: 'world/?' + new URLSearchParams({memory: memory.id})};
+  }
+  const url = sceneURL(memory.scene);
+  return url ? {name: SCENES[memory.scene].name, url} : null;
+}
+
 export function validMemory(m) {
   return !!(m && typeof m==='object' && typeof m.id==='string' && /^memory-[\w-]{1,160}$/.test(m.id)
     && typeof m.title==='string' && m.title.trim().length>0 && m.title.length<=32
@@ -30,11 +61,18 @@ export function validMemory(m) {
     && typeof m.author==='string' && m.author.trim().length>0 && m.author.length<=24
     && houses.includes(m.house) && covers.includes(m.cover)
     && typeof m.created==='string' && Number.isFinite(Date.parse(m.created))
-    && (m.scene===undefined || m.scene==='' || !!sceneURL(m.scene)));
+    && (m.scene===undefined || m.scene==='' || !!sceneURL(m.scene))
+    && (m.outdoor === undefined || (!m.scene && validOutdoor(m.outdoor))));
 }
 function clean(m) {
   const {id,title,body,author,house,cover,created}=m;
-  return {id,title,body,author,house,cover,created,...(m.scene?{scene:m.scene}:{})};
+  const record = {id,title,body,author,house,cover,created};
+  if (m.scene) record.scene = m.scene;
+  if (m.outdoor) {
+    const {place, name, position} = m.outdoor;
+    record.outdoor = {place, name, position};
+  }
+  return record;
 }
 function signature(m) { const {id,...content}=clean(m); return JSON.stringify(content); }
 export function mergeBackup(current, backup) {

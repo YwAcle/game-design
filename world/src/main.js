@@ -5,9 +5,11 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { blackLake } from "./lake.js";
 import { evening } from "./sky.js";
 import { floorHeight, walkable, atDoor } from './navigation.mjs';
+import { readStoredState, STORAGE_KEY } from '../../src/shared/memory-data.js';
 
 const $ = id => document.getElementById(id);
 const canvas = $('view'), atlas = $('atlas'), directory = $('places');
+const placeCard = document.querySelector('.place');
 const viewport = window.visualViewport;
 const clamp = THREE.MathUtils.clamp;
 const keys = new Set();
@@ -19,6 +21,7 @@ let layout, nav, renderer, orbit, scene, selected, nearby, walking = false, yaw 
 let destinations = {}, markers = [], drag, previous = 0, dirty = true;
 const pins = new Map();
 const places = new Map();
+let shownPlace, outdoorMemories = [];
 let route = null, stop = 0, portal = null, water, lastWater = 0;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const regionPins = ['hall','tower','boats','pitch','bridge','hut','forest','village','station','glass'];
@@ -35,10 +38,43 @@ async function json(url) {
 }
 function floor(x, z) { return floorHeight(nav, layout.bridge, x, z); }
 function display(place) {
+  shownPlace = place;
   $('title').textContent = place?.name ?? '高地小径';
   $('english').textContent = place?.en ?? 'Highland Path';
   $('region').textContent = place?.region ?? '霍格沃茨周边';
   $('note').textContent = place?.note ?? '';
+  updateMemoryActions();
+}
+
+function updateMemoryActions() {
+  const place = shownPlace?.id ?? 'path';
+  const count = outdoorMemories.filter(memory => memory.outdoor.place === place).length;
+  $('write-memory').hidden = !walking;
+  const read = $('read-memories');
+  read.hidden = !count;
+  if (count) {
+    read.href = '../?' + new URLSearchParams({landmark: place}) + '#memories';
+    read.textContent = `此地回忆 ${count}`;
+  }
+}
+
+function refreshOutdoorMemories() {
+  // Storage may be disabled. The map can still load and be explored.
+  try {
+    outdoorMemories = readStoredState(localStorage.getItem(STORAGE_KEY)).memories.filter(memory => memory.outdoor);
+  } catch {
+    outdoorMemories = [];
+  }
+  updateMemoryActions();
+}
+
+function writeAtCurrentPosition() {
+  const outdoor = {
+    place: shownPlace?.id ?? 'path',
+    name: $('title').textContent,
+    position: [eye.position.x, eye.position.z, Math.atan2(Math.sin(yaw), Math.cos(yaw)), pitch]
+  };
+  location.href = '../?' + new URLSearchParams({outdoor: JSON.stringify(outdoor)}) + '#memories';
 }
 
 function updateDoors() {
@@ -61,6 +97,7 @@ function updateDoors() {
   $('rooms').classList.toggle('at-door',inFront);
   $('rooms').style.left=inFront?((temp.x+1)*50)+'%':'';
   $('rooms').style.top=inFront?((1-temp.y)*50)+'%':'';
+  $('rooms').style.bottom = inFront ? '' : `${atlas.getBoundingClientRect().bottom - placeCard.getBoundingClientRect().top + 8}px`;
 }
 
 function follow(itinerary) {
@@ -110,17 +147,30 @@ function zoom(factor) {
   offset.setLength(clamp(offset.length()*factor, orbit.minDistance, orbit.maxDistance));
   mapCamera.position.copy(orbit.target).add(offset); orbit.update(); dirty = true;
 }
-function walk(place, {at=place.at, look=place.look, tilt=place.id === 'boats' ? .045 : .03, returning=false}={}) {
+function walk(place, {at=place.at, look=place.look, tilt=place.id === 'boats' ? .045 : .03, returning=false, heading}={}) {
   walking = true; orbit.enabled = false; keys.clear();
   select(place);
   nearby = place;
   const [x,z] = at;
   eye.position.set(x, floor(x,z) + 1.65, z);
-  yaw = Math.atan2(x-look[0],z-look[1])+(returning?Math.PI:0); pitch=returning?0:tilt;
+  yaw = heading ?? (Math.atan2(x-look[0],z-look[1])+(returning?Math.PI:0)); pitch=returning?0:tilt;
   eye.rotation.set(pitch,yaw,0,'YXZ'); atlas.classList.add('walking');
   $('map-toggle').hidden = false; $('enter').hidden = true; $('touch').hidden = !mobile.matches;
   $('hint').textContent = mobile.matches ? '方向键移动 · 拖动画面转向' : 'WASD / 方向键移动 · 拖动转向 · M 全图';
   display(place);canvas.focus({preventScroll:true});dirty=true;
+}
+function revisitMemory(outdoor) {
+  const place = places.get(outdoor.place);
+  const fallback = place ?? layout.places[0];
+  const [x,z,heading,tilt] = outdoor.position;
+  if (!walkable(nav, layout.bridge, x, z)) {
+    walk(fallback);
+    return;
+  }
+  walk(fallback, {at: [x,z], heading, tilt});
+  if (!atDoor(place, x, z)) nearby = null;
+  display(place);
+  $('title').textContent = outdoor.name;
 }
 function overview() {
   route=null;updateGuide();walking=false;updateDoors();orbit.enabled=true;keys.clear();atlas.classList.remove('walking');
@@ -152,7 +202,7 @@ function createDirectory() {
 }
 function updateMarkers() {
   const w=canvas.clientWidth,h=canvas.clientHeight;
-  const card=document.querySelector('.place').getBoundingClientRect();
+  const card=placeCard.getBoundingClientRect();
   const map=canvas.getBoundingClientRect();
   const occupied=[]; const compact=w<680;
   const sorted=[...markers].sort((a,b)=>Number(b.p===selected)-Number(a.p===selected));
@@ -189,7 +239,7 @@ function move(dt) {
     const d=Math.hypot(p.at[0]-pos.x,p.at[1]-pos.z);
     if(d<distance){nearest=p;distance=d;}
   }
-  if(nearest!==nearby){nearby=nearest;display(nearby);}
+  if(nearest!==nearby || nearest!==shownPlace){nearby=nearest;display(nearby);}
   dirty=true;
 }
 function frame(now) {
@@ -241,6 +291,7 @@ function controls() {
   $('directory').onclick=()=>{keys.clear();directory.showModal();}; $('close').onclick=()=>directory.close();
   directory.addEventListener('click',e=>{if(e.target===directory && e.clientX<directory.getBoundingClientRect().left)directory.close();});
   $('arrival').onclick=()=>follow(layout.routes.find(r=>r.id==='arrival'));
+  $('write-memory').onclick=writeAtCurrentPosition;
   $('enter').onclick=()=>walk(selected);$('map-toggle').onclick=overview;
   $('reset').onclick=reset;$('zoom-in').onclick=()=>zoom(.78);$('zoom-out').onclick=()=>zoom(1.28);
   document.addEventListener('keydown',e=>{
@@ -311,11 +362,18 @@ async function start() {
   orbit=new OrbitControls(mapCamera,canvas);orbit.enablePan=false;orbit.minDistance=35;orbit.maxDistance=285;
   orbit.minPolarAngle=.09;orbit.maxPolarAngle=Math.PI*.46;orbit.addEventListener('change',()=>{dirty=true;});
   createDirectory();resize();controls();reset();
+  refreshOutdoorMemories();
+  window.addEventListener('pageshow', event => { if (event.persisted) refreshOutdoorMemories(); });
+  window.addEventListener('storage', event => {
+    if (event.key === STORAGE_KEY || event.key === null) refreshOutdoorMemories();
+  });
   const query=new URLSearchParams(location.search);
+  const memory=outdoorMemories.find(({id}) => id === query.get('memory'));
   const returning=places.get(query.get('from'));
   const view=layout.views.find(v=>v.id===query.get('view'));
   const trip=layout.routes.find(r=>r.id===query.get('route'));
-  if (view) {
+  if (memory) revisitMemory(memory.outdoor);
+  else if (view) {
     const near=layout.places.reduce((a,b)=>Math.hypot(b.at[0]-view.at[0],b.at[1]-view.at[1])<Math.hypot(a.at[0]-view.at[0],a.at[1]-view.at[1])?b:a);
     walk(near,{...view,tilt:view.pitch});
     $('title').textContent=view.name;

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#171e21"><title>霍格沃茨漫游地图 · 魔法留声</title>
-  <link rel="icon" href="data:,"><link rel="stylesheet" href="./world.css?v=viewport">
+  <link rel="icon" href="data:,"><link rel="stylesheet" href="./world.css?v=outdoor-memories">
 </head>
 <body>
   <main id="atlas" aria-label="霍格沃茨三维漫游地图">
@@ -21,6 +21,10 @@
       <p id="note">沿石板路穿过钟庭。西侧的长屋顶属于礼堂，北侧最高的尖塔标出天文教学区。</p>
       <button id="enter" class="gold" disabled>从这里出发 <span>→</span></button>
       <button id="arrival" class="trip-button">沿新生路线入校 →</button>
+      <div class="memory-actions">
+        <button id="write-memory" type="button" hidden>写下此刻</button>
+        <a id="read-memories" hidden></a>
+      </div>
     </section>
     <div id="rooms" aria-label="室内入口" hidden></div>
     <div id="guide" hidden><span id="bearing" aria-hidden="true">↑</span><span id="waypoint"></span><small id="remaining"></small></div>
@@ -34,6 +38,6 @@
   </main>
   <dialog id="places"><div class="drawer-head"><div><small>GAZETTEER</small><h2>地点目录</h2></div><button id="close" aria-label="关闭目录">×</button></div><h3 class="route-head">步行路线</h3><div id="routes"></div><div id="list"></div><a class="plan-link" href="./ground-plan.png" target="_blank" rel="noopener">查看完整平面图 ↗</a>　<a class="plan-link" href="./campus-comparison.jpg" target="_blank" rel="noopener">画风对照 ↗</a>　<a class="plan-link" href="./pitch-comparison.jpg" target="_blank" rel="noopener">球场对照 ↗</a>　<a class="plan-link" href="./CREDITS.md" target="_blank" rel="noopener">美术来源 ↗</a></dialog>
   <noscript>请启用 JavaScript 以查看三维地图。</noscript>
-  <script src="./world.js?v=campus1" defer></script>
+  <script src="./world.js?v=outdoor-memories" defer></script>
 </body>
 </html>
