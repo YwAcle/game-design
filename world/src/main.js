@@ -6,9 +6,11 @@ import { blackLake } from "./lake.js";
 import { evening } from "./sky.js";
 import { floorHeight, walkable, atDoor } from './navigation.mjs';
 import { readStoredState, STORAGE_KEY } from '../../src/shared/memory-data.js';
+import { drawTrailMap } from './trail-map.js';
 
 const $ = id => document.getElementById(id);
 const canvas = $('view'), atlas = $('atlas'), directory = $('places');
+const trailMap = $('trail-map'), houseDoor = $('house-door');
 const placeCard = document.querySelector('.place');
 const viewport = window.visualViewport;
 const clamp = THREE.MathUtils.clamp;
@@ -30,7 +32,8 @@ const houseDoors = {
 let shownPlace, outdoorMemories = [];
 let route = null, stop = 0, portal = null, water, lastWater = 0;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-const regionPins = ['hall','tower','boats','pitch','bridge','hut','forest','village','station','glass'];
+const regionPins = ['hall','tower','boats','pitch','bridge','hut','forest','village','station','glass',
+  'greenhouse','observatory','clearing','honeydukes','pumpkins','platform'];
 const temp = new THREE.Vector3();
 const moonColor = new THREE.Color(0xb5d7e3), eveningColor = new THREE.Color(0xffba89);
 const nightFog = new THREE.Color(0x3d585f), valleyFog = new THREE.Color(0x786477);
@@ -164,6 +167,17 @@ function updateGuide() {
   }
 }
 
+function openTrailMap() {
+  keys.clear();
+  const point = walking ? [eye.position.x, eye.position.z] : selected.at;
+  drawTrailMap($('trail-chart'), layout, nav, point, route, stop, walking ? yaw : null);
+  const locationName = (walking ? shownPlace?.name : selected.name) ?? '高地小径';
+  const next = route && route.labels[stop];
+  $('trail-map-status').textContent = [walking ? '当前位置 · ' + locationName : '选中地点 · ' + locationName,
+    next ? '下一站 · ' + next : route ? '已走完室外路线' : ''].filter(Boolean).join('　');
+  trailMap.showModal();
+}
+
 function select(place, focus = false) {
   selected = place;
   for (const [id, pin] of pins) pin.classList.toggle('selected', id === place.id);
@@ -283,7 +297,7 @@ function move(dt) {
 }
 function frame(now) {
   const dt=Math.min(.05,(now-previous)*.001);previous=now;
-  if(walking && !directory.open && !$('house-door').open) move(dt);
+  if(walking && !directory.open && !houseDoor.open && !trailMap.open) move(dt);
   if (walking && eye.position.z>40 && !reduced.matches && !directory.open && now-lastWater>=1000/60 - 1) {
     water.value=now*.001;lastWater=now;dirty=true;
   }
@@ -325,11 +339,12 @@ function controls() {
   $('directory').onclick=()=>{keys.clear();directory.showModal();}; $('close').onclick=()=>directory.close();
   directory.addEventListener('click',e=>{if(e.target===directory && e.clientX<directory.getBoundingClientRect().left)directory.close();});
   $('arrival').onclick=()=>follow(layout.routes.find(r=>r.id==='arrival'));
+  $('foot-map').onclick=openTrailMap;
   $('write-memory').onclick=writeAtCurrentPosition;
   $('enter').onclick=()=>walk(selected);$('map-toggle').onclick=overview;
   $('reset').onclick=reset;$('zoom-in').onclick=()=>zoom(.78);$('zoom-out').onclick=()=>zoom(1.28);
   document.addEventListener('keydown',e=>{
-    if(directory.open||$('house-door').open||e.ctrlKey||e.altKey||e.metaKey) return;
+    if(directory.open||houseDoor.open||trailMap.open||e.ctrlKey||e.altKey||e.metaKey) return;
     if(e.code==='KeyM' && walking){overview();return;}
     if(!walking || !/^(Key[WASD]|Arrow(Up|Down|Left|Right)|Shift(Left|Right))$/.test(e.code))return;
     e.preventDefault();keys.add(e.code);
@@ -380,6 +395,7 @@ async function start() {
     obj.castShadow=true;obj.receiveShadow=true;
     if(obj.material.name==='Lake') surface=obj;
     if(obj.material.name==='Water glint')obj.visible=false;
+    if(obj.material.name==='Pavilion glass') obj.castShadow=false;
     if(obj.material.name.startsWith('Silver fir')){
       obj.material.transparent=false;obj.material.alphaTest=.36;obj.material.depthWrite=true;
       obj.material.side=THREE.DoubleSide;obj.castShadow=false;
@@ -404,6 +420,7 @@ async function start() {
   const query=new URLSearchParams(location.search);
   const memory=outdoorMemories.find(({id}) => id === query.get('memory'));
   const returning=places.get(query.get('from'));
+  const landmark=places.get(query.get('place'));
   const view=layout.views.find(v=>v.id===query.get('view'));
   const trip=layout.routes.find(r=>r.id===query.get('route'));
   if (memory) revisitMemory(memory.outdoor);
@@ -414,8 +431,9 @@ async function start() {
     if(!atDoor(near,...view.at))nearby=null;
   } else if(returning)walk(returning,{returning:true});
   else if(trip)follow(trip);
+  else if(landmark)walk(landmark);
   else select(layout.places[0]);
-  $('loading').hidden=true;$('enter').disabled=false;
+  $('loading').hidden=true;$('enter').disabled=false;$('foot-map').disabled=false;
   new ResizeObserver(resize).observe(atlas);requestAnimationFrame(frame);
 }
 $('retry').onclick=()=>location.reload();

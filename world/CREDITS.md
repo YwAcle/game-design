@@ -44,3 +44,8 @@ Three.js r180 的 Reflector 生成岸景倒影。波纹贴图由本项目的方�
 - 禁林继续参考网易的禁林宣传插画。背景保留冷色树冠和少量暖点，前景用原创粗树干、偏斜枝杈和互相遮挡的树冠形成纵深。电影片场的粗树干提供尺度参考。版本采用原有网易图档。两次浏览器实景使用同一机位，官方插画的构图和照明另有差异。[禁林原图](https://nie.res.netease.com/r/pic/20221019/5dd216f5-8e05-420b-a8e5-e3fb5019efc9.jpg) · [电影片场](https://www.wbstudiotour.co.uk/the-experience/explore-the-tour/sets/the-forbidden-forest/)
 - 蜂蜜公爵使用现有霍格莫德村舍，增设原创绿漆凸窗、莓红珐琅嵌板、糖果和招牌。四处学院门道具与反馈台词为原创。叩桶、问答、画像守门和地下隐门取自学院入口描述。礼堂入校引导沿用原有《魔法觉醒》室内美术，电影分院段落用于选择观看方向和路线终点。[官方霍格莫德设定](https://www.harrypotter.com/fact-file/locations/hogsmeade) · [学院入口设定](https://www.harrypotter.com/writing-by-jk-rowling/hufflepuff-common-room) · [电影礼堂](https://www.wbstudiotour.co.uk/the-experience/explore-the-tour/sets/the-great-hall/)
 - 各区域共享带月光的暮色天空，廊桥和村街保留暖色局部照明。可编辑道具在 `model/Hogwarts_Grounds.blend` 的 `Campus · painted landmarks` 集合内。使用 `blender -b world/model/Hogwarts_Grounds.blend --python-exit-code 1 -P world/model/refine_campus.py` 重做该集合，再运行现有模型导出和贴图打包脚本。
+
+### 校园漫游地图
+
+- 沿用本项目已保存的《魔法觉醒》温室赛季画面和禁林宣传插画。温室内廊的玻璃骨架、栽培台与暖灯参考温室画面，植物造型、开放通道和位置为原创。禁林内环加了岩块、倒木和暖灯。南瓜地、露台与车站站名牌使用同一套模块色面，平面布局服务于连续步行。[游戏赛季画面](https://nie.v.netease.com/nie/2023/1010/cdab6a2770ecb48f0683b18a058bc1b6qt.mp4) · [禁林插画](https://nie.res.netease.com/r/pic/20221019/5dd216f5-8e05-420b-a8e5-e3fb5019efc9.jpg) · [片场温室](https://www.wbstudiotour.co.uk/the-experience/explore-the-tour/sets/professor-sprouts-greenhouse-2/)
+- 温室内廊、南瓜垄、观星望远镜、林深空地和月台陈设均可在同一个 Blender 源文件里编辑。细化脚本会更新导航障碍数据。网页路线和总图使用同一份 `layout.json`。

@@ -1,4 +1,4 @@
-# 魔法留声 · 霍格沃茨开放世界初版
+# 魔法留声 · 霍格沃茨校园漫游
 
 **[在线打开魔法留声](https://ywacle.github.io/game-design/)** · [直接进入开放地图](https://ywacle.github.io/game-design/world/)
 
@@ -6,7 +6,7 @@
 
 八处可漫游的霍格沃茨场景，与私人回忆录连接成一个网站。室内场景包括烛光礼堂、决斗场、魔药课教室、占卜课教室，以及格兰芬多、斯莱特林、拉文克劳、赫奇帕奇休息室。
 
-首页「探索霍格沃茨地图」进入同一个连续室外场景。15 个地点涵盖黑湖、城堡、西谷球场、温室、禁林与霍格莫德。选择地点后可步行，走近室内入口可进入八个旧场景，使用「返回室外地图」回到原入口。键鼠使用 WASD 或方向键移动，拖动转向，M 回到全图。触屏使用方向按钮。
+首页「探索霍格沃茨地图」进入同一个连续室外场景。21 个地点涵盖黑湖、城堡、西谷球场、温室、禁林与霍格莫德。选择地点后可步行，走近室内入口可进入八个旧场景，使用「返回室外地图」回到原入口。键鼠使用 WASD 或方向键移动，拖动转向，M 回到全图。触屏使用方向按钮。
 
 室外模型保存在 `world/model/Hogwarts_Grounds.blend`，内含可编辑建筑及已打包纹理。色彩与比例处理在 Blender 中完成。网页读取导出的 GLB。室外总图见 `world/ground-plan.png`，网页截图与参考对照位于 `world/preview.png` 和 `world/reference-comparison.jpg`，美术许可见 `world/CREDITS.md`。早期 Linux 回忆录单独保存在 `memoir-linux/`。
 
@@ -22,9 +22,13 @@
 
 ## 全地图
 
-15 处地标组成同一个可步行的室外世界，开放 8 个室内场景。地点目录中有六条导览。新生入校线从黑湖到礼堂，西线经廊桥到魁地奇球场，东线经温室和海格小屋到禁林，北线穿过霍格莫德到车站。北部环线可从禁林经车站和村庄走回城堡，城堡环线经过地下教室和学院塔楼入口。
+21 处地标组成同一个可步行的室外世界，连通 8 个独立室内场景。地点目录提供九条导览。行走时可打开右下角「路线图」，查看当前位置、朝向和下一站，关闭后接着走。
 
-室外尺度、建筑间距和路线按连续步行设计。温室、海格小屋、村庄与站屋以室外游览为主。蒸汽机车在月台边静态展示。画风参考《魔法觉醒》场景，城堡、山谷和各地标关系借用电影与片场设定。网页实景、出处与区别见 `world/campus-comparison.jpg` 和 `world/CREDITS.md`。
+「温室与南瓜地」穿过铜框玻璃内廊，再绕到海格小屋院旁。「禁林深处到月台」从林门经林深空地走向车站。「月台到霍格莫德」抵达蜂蜜公爵橱窗。观星露台从天文塔外侧小径步行可达。海格小屋和霍格莫德店铺提供室外观览，机车在月台边静态展示。
+
+- [完整地图总图](world/ground-plan.png) · [浏览器机位汇总](world/map-review.jpg)
+- 在线直达 [温室内廊](https://ywacle.github.io/game-design/world/?place=greenhouse) · [南瓜地](https://ywacle.github.io/game-design/world/?place=pumpkins) · [观星露台](https://ywacle.github.io/game-design/world/?place=observatory) · [禁林空地](https://ywacle.github.io/game-design/world/?place=clearing) · [蜂蜜公爵](https://ywacle.github.io/game-design/world/?place=honeydukes) · [列车月台](https://ywacle.github.io/game-design/world/?place=platform)
+- 在线步行 [温室与南瓜地](https://ywacle.github.io/game-design/world/?route=herbology) · [禁林深处到月台](https://ywacle.github.io/game-design/world/?route=forest-walk) · [月台到霍格莫德](https://ywacle.github.io/game-design/world/?route=village-walk)
 
 `world/ground-plan.png` 与网页路线共用 `layout.json` 和 `navigation.json`。编辑布局后可用 `python world/model/draw_plan.py` 重新绘图。该命令依赖 Pillow 和 Noto Serif CJK，也可以通过 `HOGWARTS_PLAN_FONT` 指定可用的中文字库。
 
