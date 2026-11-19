@@ -1,5 +1,6 @@
 """Add the painted shopfront, forest silhouettes and house door props to the editable campus."""
-from math import cos, pi, sin
+import json
+from math import atan2, cos, pi, sin
 from pathlib import Path
 from random import Random
 import bpy
@@ -188,6 +189,157 @@ for i in range(9):
     start = origin + Vector((-.06,0,(i-4)*.058)) + Vector((0,sin(i*.94)*.16,0))
     end = origin + Vector((-.06,0,(i-3)*.058)) + Vector((0,sin((i+1)*.94)*.16,0))
     beam("Dungeon · brass serpent",start,end,.035,.033,trim,6)
+
+
+# Clear the northern pavilion doorway by relocating the two cards of one fir.
+for name in ("Fir crowns 0", "Fir crowns 1"):
+    tree_cards = bpy.data.objects[name]
+    for face in tree_cards.data.polygons:
+        center = tree_cards.matrix_world @ face.center
+        if abs(center.x-50.89)<.15 and abs(center.y-51.28)<.15:
+            for index in face.vertices:
+                tree_cards.data.vertices[index].co += Vector((5.2,2.9,0))
+
+# Set the large path lamp to the side of the observatory rather than in its sightline.
+wayfinding = bpy.data.objects["Wayfinding lanterns"]
+for vertex in wayfinding.data.vertices:
+    point = wayfinding.matrix_world @ vertex.co
+    if abs(point.x-27.48)<.58 and abs(point.y-25.42)<.58:
+        vertex.co.x -= 2.6
+
+# East gardens: an original walk-through pavilion beside the existing glasshouses.
+glass = pigment("Pavilion glass", "98C5BA", .12)
+glass.surface_render_method = 'BLENDED'
+glass.node_tree.nodes.get("Principled BSDF").inputs["Alpha"].default_value = .23
+copper = pigment("Greenhouse aged bronze", "6E7152", .16)
+planter = pigment("Herb bench umber", "684738", .18)
+soil = pigment("Dark garden soil", "474032", .07)
+leaves = [pigment("Garden foliage " + name, tone, .08) for name, tone in
+          [("sage","789066"),("jade","477460"),("yellow","9FA068"),("fern","586D43")]]
+petals = [pigment("Glasshouse flowers " + name, tone, .28) for name, tone in
+          [("rose","C7808C"),("amber","E7BA63"),("lilac","9A86BE")]]
+ground = pigment("Warm clay paving", "827260", .15)
+lamp = pigment("Soft amber lantern glass", "CD8B46", 1.2)
+girth_left, girth_right = 48.55, 53.05
+sill, eave, ridge = 3.58, 6.28, 7.82
+south, north = 43, 52
+center = (girth_left+girth_right)/2
+details = []
+for x in (girth_left,girth_right):
+    # Glass and narrow framing leave the full central aisle open at both ends.
+    for y in (43,45.25,47.5,49.75,52):
+        box("Copper post",(x,y,(sill+eave)/2),(.115,.13,eave-sill),copper)
+    for ym in (44.125,46.375,48.625,50.875):
+        box("Side glazing",(x,ym,5.24),(.038,2.16,2.0),glass)
+        box("Low terracotta curb",(x,ym,3.83),(.21,2.22,.46),planter)
+    for z in (4.07,5.42,eave):
+        box("Long greenhouse rail",(x,(south+north)/2,z),(.13,north-south+.13,.09),copper)
+    details.append([x-.12,-north,x+.12,-south])
+
+for y in (south,45.25,47.5,49.75,north):
+    for x in (girth_left,girth_right):
+        beam("Gabled rafter",(x,y,eave),(center,y,ridge),.067,.048,copper,6)
+for edge in (girth_left,girth_right):
+    dx = center-edge
+    slope = ridge-eave
+    length = (dx*dx+slope*slope)**.5
+    pane = box("Roof glazing",((center+edge)/2,(south+north)/2,(eave+ridge)/2),
+               (length,north-south,.038),glass)
+    pane.rotation_euler.y = -atan2(slope,dx)
+box("Greenhouse ridge",(center,(south+north)/2,ridge),(.15,north-south+.2,.13),copper)
+
+for row in range(11):
+    y = 43.15+row*.78
+    for x in (50.10,51.02):
+        box("Worn clay aisle paver",(x,y,3.61+(y-43)*.018),(.87,.75,.15),ground,
+            random.uniform(-.025,.025))
+for x in (49.11,52.36):
+    for y in (44.1,46.3,48.6,50.8):
+        box("Herb trough",(x,y,4.2),(.67,1.96,.34),planter)
+        box("Herb soil",(x,y,4.38),(.58,1.85,.04),soil)
+        for yy in (y-.64,y+.01,y+.64):
+            xx = x+random.uniform(-.10,.10)
+            tip = (xx,yy,4.8+random.random()*.35)
+            beam("Herb stem",(xx,yy,4.4),tip,.023,.014,leaves[1],6)
+            for side in (-1,1):
+                shape("Long herb leaf",(xx+.19*side,yy,4.64),
+                      (.24,.14,.075),random.choice(leaves),random.random()*pi)
+            if random.random()<.62:
+                petal = random.choice(petals)
+                for index in range(5):
+                    angle = index*2*pi/5
+                    shape("Herb flower petal",(tip[0]+.083*cos(angle),tip[1]+.083*sin(angle),tip[2]),
+                          (.11,.062,.055),petal,angle)
+                shape("Herb flower center",(tip[0],tip[1],tip[2]+.03),(.058,.058,.045),trim)
+        details.append([x-.34,-y-.98,x+.34,-y+.98])
+for y in (43.25,51.73):
+    for x in (49.04,52.59):
+        box("Entry lantern copper cap",(x,y,5.96),(.26,.26,.10),copper)
+        box("Entry lantern amber light",(x,y,5.77),(.17,.17,.28),lamp)
+
+# Pumpkin rows stop either side of a clear path behind the keeper's cottage.
+pumpkin = [pigment("Pumpkin rind " + name, color, .10) for name, color in
+           [("ochre","B96C39"),("deep orange","A44F2C"),("peach","CD8750")]]
+for x,y,ground_height in [(60.6,21.6,3.42),(65.65,22.1,3.35),(63.9,24.15,3.38),(58.65,24.65,3.51)]:
+    box("Raised soil ridge",(x,y,ground_height+.05),(1.57,2.0,.18),soil,.12)
+    for dy in (-.6,.07,.64):
+        r=random.uniform(.22,.40)
+        px=x+random.uniform(-.43,.43)
+        for side in (-1,0,1):
+            shape("Pumpkin lobe",(px+side*r*.44,y+dy,ground_height+r*.60),
+                  (r*.74,r,r*.85),random.choice(pumpkin),random.random(),facets=2)
+        beam("Pumpkin stem",(px,y+dy,ground_height+r*1.28),
+             (px+.05,y+dy,ground_height+r*1.57),.035,.022,leaves[3],5)
+        shape("Broad pumpkin leaf",(px+.23,y+dy,ground_height+.18),(.3,.19,.075),leaves[3],dy)
+    details.append([x-.78,-y-1,x+.78,-y+1])
+
+# Watch the northern ridge from the same terrain height as the tower path.
+blue_stone = pigment("Observatory cool limestone","89847A",.10)
+metallic = pigment("Telescope brass","BFA16C",.20)
+for x in (26.7,27.77,28.84):
+    box("Observatory parapet",(x,25.35,11.85),(1.21,.43,1.03),blue_stone)
+    box("Observatory weathered capping",(x,25.35,12.42),(1.26,.59,.15),ground)
+details.append([26.1,-25.57,29.45,-25.13])
+beam("Telescope foot",(27.95,23.85,11.75),(27.95,23.85,12.61),.36,.14,blue_stone)
+beam("Brass telescope",(27.66,23.37,12.55),(28.42,24.69,13.31),.12,.23,metallic,12)
+beam("Telescope objective rim",(28.37,24.61,13.27),(28.46,24.77,13.36),.248,.248,copper,12)
+details.append([27.65,-24.17,28.25,-23.55])
+
+# Give the inner forest and station platform their own recognizable stopping places.
+moss = pigment("Forest moss dabs","657754",.12)
+rock = pigment("Forest granite shade","565E59",.05)
+for x,y,z,scale in [(95.15,81.2,3.25,(1.4,.88,.99)),(98.65,81.4,3.24,(1.13,.7,.86)),(99.9,79.4,3.23,(.8,1.1,.8))]:
+    shape("Glade granite",(x,y,z),scale,rock,y*.31)
+    shape("Rockcap moss",(x+.15,y-.08,z+.54),(scale[0]*.8,scale[1]*.72,.37),moss,y)
+    details.append([x-scale[0]*.65,-y-scale[1]*.68,x+scale[0]*.65,-y+scale[1]*.68])
+beam("Fallen tree in the glade",(95.3,81.4,3.39),(99.3,81.8,3.55),.52,.32,bark[1],9)
+
+box("Lantern base in the glade",(97.0,80.64,3.51),(.43,.41,.35),bark[1])
+box("Lantern glass in the glade",(97.0,80.64,3.85),(.19,.19,.28),lamp)
+box("Lantern cap in the glade",(97.0,80.64,4.02),(.29,.29,.07),copper)
+
+rail_sign = pigment("Station sign oxblood","672F36",.14)
+box("Station sign board",(12.8,90.04,5.59),(3.39,.16,.49),rail_sign)
+box("Station sign upper beading",(12.8,89.934,5.81),(3.39,.05,.048),trim)
+box("Station sign lower beading",(12.8,89.934,5.37),(3.39,.05,.048),trim)
+bpy.ops.object.text_add(location=(12.8,89.92,5.49),rotation=(pi/2,0,0))
+station_sign = place("Hogsmeade · station sign",paper)
+station_sign.data.body = "HOGSMEADE STATION"
+station_sign.data.align_x = 'CENTER'
+station_sign.data.size = .205
+for x in (11.22,14.38):
+    box("Station sign support",(x,90.04,4.63),(.14,.14,2.02),wood)
+for x in (9.4,14.7):
+    box("Platform bench seat",(x,89.31,4.33),(1.52,.57,.13),planter)
+    box("Platform bench back",(x,89.55,4.64),(1.52,.13,.38),wood_high)
+    for dx in (-.55,.55):
+        box("Platform bench leg",(x+dx,89.32,4.1),(.12,.42,.49),wood)
+    details.append([x-.76,-89.62,x+.76,-89.02])
+
+nav_path = Path(bpy.data.filepath).parents[1]/"navigation.json"
+navigation = json.loads(nav_path.read_text())
+navigation["detailBlocks"] = [[round(v,3) for v in block] for block in details]
+nav_path.write_text(json.dumps(navigation, separators=(",",":"))+"\n")
 
 bpy.context.preferences.filepaths.save_version = 0
 bpy.ops.wm.save_as_mainfile(filepath=str(Path(bpy.data.filepath)))

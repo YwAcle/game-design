@@ -47,8 +47,9 @@ export function walkable(nav, bridge, x, z) {
     return Math.abs(dx * tx + dz * tz) < half + .31 &&
       Math.abs(dx * tz - dz * tx) < depth;
   });
-  return !atTerrace && !nav.blocks.some(([left, top, right, bottom]) =>
-    x > left - .31 && x < right + .31 && z > top - .31 && z < bottom + .31);
+  const overlaps = ([left, top, right, bottom]) =>
+    x > left - .31 && x < right + .31 && z > top - .31 && z < bottom + .31;
+  return !atTerrace && !nav.blocks.some(overlaps) && !nav.detailBlocks?.some(overlaps);
 }
 
 export function atDoor(place,x,z) {

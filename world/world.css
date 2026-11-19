@@ -67,3 +67,28 @@ dialog{
 #house-door h2, #door-enter { color: var(--door-accent); }
 #house-door p { line-height: 1.7; margin: 16px 0; }
 #door-enter { display: inline-block; padding: 10px 0; }
+
+#foot-map { padding: 3px 9px; color: #f1d8a7; }
+footer #hint { flex: 1; }
+footer .scale { margin-inline-start: 10px; }
+#trail-map {
+  margin: auto;
+  inset: 0;
+  width: min(690px, calc(100% - 28px));
+  height: fit-content;
+  max-height: calc(100dvh - 28px);
+  overflow: auto;
+  border: 1px solid var(--line);
+  padding: clamp(12px, 3vw, 24px);
+}
+#trail-map .drawer-head { padding-bottom: 10px; }
+#trail-chart {
+  display: block;
+  width: 100%;
+  max-height: min(62dvh, 520px);
+  object-fit: contain;
+  margin-top: 10px;
+  background: #171f1d;
+}
+#trail-map-status { margin-top: 10px; line-height: 1.45; }
+#trail-map .plan-link { margin: 8px 0 0; }
