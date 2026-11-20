@@ -434,7 +434,7 @@ async function start() {
   const decoder = new DRACOLoader().setDecoderPath('../assets/draco/');
   let gltf;
   try {
-    gltf = await new GLTFLoader().setDRACOLoader(decoder).loadAsync('./grounds.glb');
+    gltf = await new GLTFLoader().setDRACOLoader(decoder).loadAsync('./grounds.glb?v=foundations');
   } finally {
     decoder.dispose();
   }
