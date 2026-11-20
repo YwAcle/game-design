@@ -49,3 +49,9 @@ Three.js r180 的 Reflector 生成岸景倒影。波纹贴图由本项目的方�
 
 - 沿用本项目已保存的《魔法觉醒》温室赛季画面和禁林宣传插画。温室内廊的玻璃骨架、栽培台与暖灯参考温室画面，植物造型、开放通道和位置为原创。禁林内环加了岩块、倒木和暖灯。南瓜地、露台与车站站名牌使用同一套模块色面，平面布局服务于连续步行。[游戏赛季画面](https://nie.v.netease.com/nie/2023/1010/cdab6a2770ecb48f0683b18a058bc1b6qt.mp4) · [禁林插画](https://nie.res.netease.com/r/pic/20221019/5dd216f5-8e05-420b-a8e5-e3fb5019efc9.jpg) · [片场温室](https://www.wbstudiotour.co.uk/the-experience/explore-the-tour/sets/professor-sprouts-greenhouse-2/)
 - 温室内廊、南瓜垄、观星望远镜、林深空地和月台陈设均可在同一个 Blender 源文件里编辑。细化脚本会更新导航障碍数据。网页路线和总图使用同一份 `layout.json`。
+
+### 草药温室换盆台
+
+- 盆栽采用 Nicholas 3D 的《Optimized Potted Plants》。选用了四种，调整比例和摆放，重调花盆颜色，并为网页共用一张带透明裁切的颜色图集。[Fab 原作](https://www.fab.com/listings/f37cf699-c332-49a3-ba04-d45575936802) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+- 小铲与手耙采用 Wahyu NT 的《Low Poly Garden Tools Pack》。工具调为实物大小，重配木柄与铁件颜色，分别置于桌面和下层搁板。[Fab 原作](https://www.fab.com/listings/a40982e5-0b0b-400c-bfe8-73a3698b88fc) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+- 自制木台、育苗盘和摆件保存在 `Hogwarts_Grounds.blend` 的 `Greenhouse · potting bench` 集合中。纹理已打包。运行 `refine_campus.py` 重新生成周围温室时会保留这组陈设和对应的碰撞范围。
