@@ -67,3 +67,18 @@ test('entry, outward return steps and surveyed stone treads are reachable',()=>{
     assert.ok(Math.abs(h-flight.profile[10])<.25);
   }
 });
+
+test('the secret passage connects two accessible approaches', () => {
+  const entrances = layout.places.filter(place => place.passage);
+  assert.equal(entrances.length, 2);
+  for (const place of entrances) {
+    const exit = layout.places.find(candidate => candidate.id === place.passage);
+    assert.equal(exit.passage, place.id);
+    assert.ok(walkable(nav, layout.bridge, ...exit.at));
+    const direction = place.door.map((v, i) => v - place.at[i]);
+    const t = 1 - 2.5 / Math.hypot(...direction);
+    const approach = place.at.map((v, i) => v + direction[i] * t);
+    assert.ok(atDoor(place, ...approach));
+    assert.ok(walkable(nav, layout.bridge, ...approach));
+  }
+});

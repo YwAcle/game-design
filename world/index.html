@@ -2,19 +2,19 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#171e21"><title>霍格沃茨漫游地图 · 魔法留声</title>
-  <link rel="icon" href="data:,"><link rel="stylesheet" href="./world.css?v=campus">
+  <meta name="theme-color" content="#171e21"><title>霍格沃茨与周边高地 · 魔法留声</title>
+  <link rel="icon" href="data:,"><link rel="stylesheet" href="./world.css?v=highlands">
 </head>
 <body>
   <main id="atlas" aria-label="霍格沃茨三维漫游地图">
     <canvas id="view" tabindex="0" aria-label="三维场景，拖动旋转视角"></canvas>
     <div class="vignette" aria-hidden="true"></div>
-    <div id="markers"></div>
+    <div id="markers"><span id="lake-label" hidden>黑湖</span></div>
     <header>
-      <a class="brand" href="../index.html"><span class="seal" aria-hidden="true">H</span><span>魔法留声<small>HOGWARTS, ALWAYS</small></span></a>
+      <a class="brand" href="../index.html" aria-label="霍格沃茨与周边高地，返回魔法留声"><span class="seal" aria-hidden="true">H</span><span>霍格沃茨与周边高地<small>HOGWARTS &amp; THE HIGHLANDS</small></span></a>
       <div class="head-actions"><button id="map-toggle" hidden>回到全图 <kbd>M</kbd></button><button id="directory" aria-haspopup="dialog">地点目录</button></div>
     </header>
-    <div class="compass" aria-hidden="true"><span>N</span><i>✥</i></div>
+    <div class="compass" aria-hidden="true"><i><span>N</span><span>E</span><span>S</span><span>W</span></i></div>
     <section class="place" aria-live="polite">
       <div class="folio"><span></span><b id="region">城堡高地</b></div>
       <h1 id="title">钟庭广场</h1><p id="english" lang="en">Clock Court</p>
@@ -33,10 +33,10 @@
       <button id="reset" aria-label="重置地图视角">⌖</button>
     </aside>
     <div id="touch" aria-label="移动方向" hidden><button data-key="KeyW" aria-label="前进">▲</button><button data-key="KeyA" aria-label="左移">◀</button><button data-key="KeyS" aria-label="后退">▼</button><button data-key="KeyD" aria-label="右移">▶</button></div>
-    <footer><span id="hint">拖动旋转 · 滚轮缩放 · 选择地标</span><button id="foot-map" aria-haspopup="dialog" disabled>路线图</button><span class="scale"><i></i><b id="scale">20 m</b></span></footer>
+    <footer><span id="hint">拖动旋转 · 滚轮缩放 · 选择地标</span><button id="foot-map" aria-haspopup="dialog" disabled>路线图</button><label class="exploration" for="explored"><span>已探索</span><b id="explored-count"></b><progress id="explored" value="0"></progress></label><span class="scale"><i></i><b id="scale">20 m</b></span></footer>
     <div class="loading" id="loading" role="status"><span>正在展开地图…</span><button id="retry" hidden>重新加载</button></div>
   </main>
-  <dialog id="places"><div class="drawer-head"><div><small>GAZETTEER</small><h2>地点目录</h2></div><button id="close" aria-label="关闭目录">×</button></div><h3 class="route-head">步行路线</h3><div id="routes"></div><div id="list"></div><a class="plan-link" href="./ground-plan.png" target="_blank" rel="noopener">查看完整平面图 ↗</a>　<a class="plan-link" href="./map-review.jpg" target="_blank" rel="noopener">地图实景 ↗</a>　<a class="plan-link" href="./pitch-comparison.jpg" target="_blank" rel="noopener">球场对照 ↗</a>　<a class="plan-link" href="./CREDITS.md" target="_blank" rel="noopener">美术来源 ↗</a></dialog>
+  <dialog id="places"><div class="drawer-head"><div><small>GAZETTEER</small><h2>地点目录</h2></div><button id="close" aria-label="关闭目录">×</button></div><h3 class="route-head">步行路线</h3><div id="routes"></div><div id="list"></div><a class="plan-link" href="./ground-plan.png" target="_blank" rel="noopener">查看完整平面图 ↗</a>　<a class="plan-link" href="./highlands-preview.jpg" target="_blank" rel="noopener">地图实景 ↗</a>　<a class="plan-link" href="./pitch-comparison.jpg" target="_blank" rel="noopener">球场对照 ↗</a>　<a class="plan-link" href="./CREDITS.md" target="_blank" rel="noopener">美术来源 ↗</a></dialog>
   <dialog id="house-door" aria-labelledby="door-title">
     <div class="drawer-head"><h2 id="door-title"></h2><form method="dialog"><button aria-label="关闭学院入口">×</button></form></div>
     <p id="door-prompt"></p>
@@ -51,6 +51,6 @@
     <a class="plan-link" href="./ground-plan.png" target="_blank" rel="noopener">打开带地标编号的总图 ↗</a>
   </dialog>
   <noscript>请启用 JavaScript 以查看三维地图。</noscript>
-  <script src="./world.js?v=campus" defer></script>
+  <script src="./world.js?v=highlands" defer></script>
 </body>
 </html>

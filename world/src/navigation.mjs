@@ -49,7 +49,7 @@ export function walkable(nav, bridge, x, z) {
   });
   const overlaps = ([left, top, right, bottom]) =>
     x > left - .31 && x < right + .31 && z > top - .31 && z < bottom + .31;
-  return !atTerrace && !nav.blocks.some(overlaps) && !nav.detailBlocks?.some(overlaps);
+  return !atTerrace && !nav.blocks.some(overlaps) && !nav.detailBlocks?.some(overlaps) && !nav.atlasBlocks?.some(overlaps);
 }
 
 export function atDoor(place,x,z) {

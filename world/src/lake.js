@@ -46,7 +46,9 @@ const surface = {
       vec2 bedUV = (p - toEye.xz * min(depth, 2.) * .72 + slope * min(depth, 2.)) * .81;
       vec3 stones = texture2D(bedMap, bedUV).rgb * vec3(.45,.57,.61);
       vec3 transmission = exp(-vec3(1.55,.73,.55) * depth / max(.30, incidence));
-      vec3 body = mix(vec3(.0024,.015,.018), stones, transmission);
+      float elevated = smoothstep(32., 96., cameraPosition.y);
+      vec3 deepWater = mix(vec3(.0024,.015,.018),vec3(.008,.070,.091),elevated);
+      vec3 body = mix(deepWater, stones, transmission);
       float fresnel = .035 + .965 * pow(1. - incidence, 4.);
       // Group the sky reflection into dark troughs and lit facets at lake scale.
       float crest = smoothstep(-.20,.26,swell.x + .35*chop.y);

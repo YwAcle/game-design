@@ -6,7 +6,7 @@
 
 八处可漫游的霍格沃茨场景，与私人回忆录连接成一个网站。室内场景包括烛光礼堂、决斗场、魔药课教室、占卜课教室，以及格兰芬多、斯莱特林、拉文克劳、赫奇帕奇休息室。
 
-首页「探索霍格沃茨地图」进入同一个连续室外场景。21 个地点涵盖黑湖、城堡、西谷球场、温室、禁林与霍格莫德。选择地点后可步行，走近室内入口可进入八个旧场景，使用「返回室外地图」回到原入口。键鼠使用 WASD 或方向键移动，拖动转向，M 回到全图。触屏使用方向按钮。
+首页「探索霍格沃茨地图」进入同一个连续室外场景。选择地点后可步行，走近室内入口可进入八个场景，使用「返回室外地图」回到原入口。键鼠使用 WASD 或方向键移动，拖动转向，M 回到全图。触屏使用方向按钮。
 
 室外模型保存在 `world/model/Hogwarts_Grounds.blend`，内含可编辑建筑及已打包纹理。色彩与比例处理在 Blender 中完成。网页读取导出的 GLB。室外总图见 `world/ground-plan.png`，网页截图与参考对照位于 `world/preview.png` 和 `world/reference-comparison.jpg`，美术许可见 `world/CREDITS.md`。早期 Linux 回忆录单独保存在 `memoir-linux/`。
 
@@ -22,17 +22,29 @@
 
 ## 全地图
 
-21 处地标组成同一个可步行的室外世界，连通 8 个独立室内场景。地点目录提供九条导览。行走时可打开右下角「路线图」，查看当前位置、朝向和下一站，关闭后接着走。
+30 处地标组成同一个可步行的室外世界，地点目录提供 13 条导览。地图用高位视角呈现黑湖群岛、城堡、禁林、球场与霍格莫德。行走时可打开「路线图」，查看当前位置、朝向和下一站。已到访地点会记在当前浏览器中。
+
+可从黑湖船屋出发沿岸走到湖边洞穴，从廊桥走到猫头鹰棚屋，或走猎场小径进林间营地。从霍格莫德向西会经过猪头酒吧、尖叫棚屋和山地遗迹，三把扫帚在车站方向。走近打人柳根下的舱口或尖叫棚屋的门，可以通过地道往返。酒吧和棚屋可从室外观览。
 
 「温室与南瓜地」穿过铜框玻璃内廊，再绕到海格小屋院旁。「禁林深处到月台」从林门经林深空地走向车站。「月台到霍格莫德」抵达蜂蜜公爵橱窗。观星露台从天文塔外侧小径步行可达。海格小屋和霍格莫德店铺提供室外观览，机车在月台边静态展示。
 
 草药温室北门旁有一张换盆台，摆着高低不一的草药盆栽、小铲和育苗盘。进入温室内廊后朝右看即可看到。 [同机位网页对照](world/greenhouse-comparison.jpg)
 
-- [完整地图总图](world/ground-plan.png) · [浏览器机位汇总](world/map-review.jpg)
+- [新版 3D 全图实景](world/highlands-preview.jpg) · [完整路线总图](world/ground-plan.png) · [早期浏览器机位汇总](world/map-review.jpg)
 - 在线直达 [温室内廊](https://ywacle.github.io/game-design/world/?place=greenhouse) · [南瓜地](https://ywacle.github.io/game-design/world/?place=pumpkins) · [观星露台](https://ywacle.github.io/game-design/world/?place=observatory) · [禁林空地](https://ywacle.github.io/game-design/world/?place=clearing) · [蜂蜜公爵](https://ywacle.github.io/game-design/world/?place=honeydukes) · [列车月台](https://ywacle.github.io/game-design/world/?place=platform)
 - 在线步行 [温室与南瓜地](https://ywacle.github.io/game-design/world/?route=herbology) · [禁林深处到月台](https://ywacle.github.io/game-design/world/?route=forest-walk) · [月台到霍格莫德](https://ywacle.github.io/game-design/world/?route=village-walk)
 
-`world/ground-plan.png` 与网页路线共用 `layout.json` 和 `navigation.json`。编辑布局后可用 `python world/model/draw_plan.py` 重新绘图。该命令依赖 Pillow 和 Noto Serif CJK，也可以通过 `HOGWARTS_PLAN_FONT` 指定可用的中文字库。
+`world/ground-plan.png` 与网页路线共用 `layout.json` 和 `navigation.json`。编辑布局后可用 `python3 world/model/draw_plan.py` 重新绘图。该命令依赖 Pillow 和 Noto Serif CJK，也可以通过 `HOGWARTS_PLAN_FONT` 指定可用的中文字库。
+
+在仓库根目录更新高地模型并导出网页资产。现有 Blender 源文件已包含重建所需的外部网格与纹理。
+
+```sh
+blender -b world/model/Hogwarts_Grounds.blend --python-exit-code 1 -P world/model/extend_atlas.py
+blender -b world/model/Hogwarts_Grounds.blend --python-exit-code 1 -P world/model/export.py
+python3 world/model/pack_textures.py
+python3 world/model/draw_plan.py
+npm run build
+```
 
 ## 在本地打开
 
