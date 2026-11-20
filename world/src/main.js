@@ -423,7 +423,7 @@ async function start() {
   renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));renderer.shadowMap.enabled=true;
   renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.shadowMap.autoUpdate=false;
   lightScene();
-  [layout,nav,destinations]=await Promise.all([json('./layout.json'),json('./navigation.json'),json('./rooms.json'),evening(scene)]);
+  [layout,nav,destinations]=await Promise.all([json('./layout.json?v=kitchen'),json('./navigation.json?v=kitchen'),json('./rooms.json'),evening(scene)]);
   for(const p of layout.places)places.set(p.id,p);
   try {
     for (const id of JSON.parse(localStorage.getItem(explorationKey) ?? '[]')) {
@@ -434,7 +434,7 @@ async function start() {
   const decoder = new DRACOLoader().setDecoderPath('../assets/draco/');
   let gltf;
   try {
-    gltf = await new GLTFLoader().setDRACOLoader(decoder).loadAsync('./grounds.glb?v=foundations');
+    gltf = await new GLTFLoader().setDRACOLoader(decoder).loadAsync('./grounds.glb?v=kitchen');
   } finally {
     decoder.dispose();
   }

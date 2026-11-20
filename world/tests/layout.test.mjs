@@ -68,6 +68,14 @@ test('entry, outward return steps and surveyed stone treads are reachable',()=>{
   }
 });
 
+test('the kitchen barrel approach is walkable and the casks stop movement', () => {
+  const kitchen = layout.places.find(place => place.id === 'kitchen');
+  const view = layout.views.find(view => view.id === 'kitchen-door');
+  assert.ok(atDoor(kitchen, ...view.at));
+  assert.ok(walkable(nav, layout.bridge, ...view.at));
+  assert.equal(walkable(nav, layout.bridge, ...kitchen.door), false);
+});
+
 test('the secret passage connects two accessible approaches', () => {
   const entrances = layout.places.filter(place => place.passage);
   assert.equal(entrances.length, 2);
