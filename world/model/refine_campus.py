@@ -253,8 +253,12 @@ for row in range(11):
     for x in (50.10,51.02):
         box("Worn clay aisle paver",(x,y,3.61+(y-43)*.018),(.87,.75,.15),ground,
             random.uniform(-.025,.025))
+has_potting_bench = bpy.data.collections.get("Greenhouse · potting bench") is not None
 for x in (49.11,52.36):
     for y in (44.1,46.3,48.6,50.8):
+        furnished = has_potting_bench and (x, y) == (52.36, 50.8)
+        if furnished:
+            before_trough = set(paint.objects)
         box("Herb trough",(x,y,4.2),(.67,1.96,.34),planter)
         box("Herb soil",(x,y,4.38),(.58,1.85,.04),soil)
         for yy in (y-.64,y+.01,y+.64):
@@ -271,6 +275,10 @@ for x in (49.11,52.36):
                     shape("Herb flower petal",(tip[0]+.083*cos(angle),tip[1]+.083*sin(angle),tip[2]),
                           (.11,.062,.055),petal,angle)
                 shape("Herb flower center",(tip[0],tip[1],tip[2]+.03),(.058,.058,.045),trim)
+        if furnished:
+            # Preserve the shared obstacle and the seeded layout of the other beds.
+            for obj in set(paint.objects) - before_trough:
+                bpy.data.objects.remove(obj, do_unlink=True)
         details.append([x-.34,-y-.98,x+.34,-y+.98])
 for y in (43.25,51.73):
     for x in (49.04,52.59):

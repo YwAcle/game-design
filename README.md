@@ -26,6 +26,8 @@
 
 「温室与南瓜地」穿过铜框玻璃内廊，再绕到海格小屋院旁。「禁林深处到月台」从林门经林深空地走向车站。「月台到霍格莫德」抵达蜂蜜公爵橱窗。观星露台从天文塔外侧小径步行可达。海格小屋和霍格莫德店铺提供室外观览，机车在月台边静态展示。
 
+草药温室北门旁有一张换盆台，摆着高低不一的草药盆栽、小铲和育苗盘。进入温室内廊后朝右看即可看到。 [同机位网页对照](world/greenhouse-comparison.jpg)
+
 - [完整地图总图](world/ground-plan.png) · [浏览器机位汇总](world/map-review.jpg)
 - 在线直达 [温室内廊](https://ywacle.github.io/game-design/world/?place=greenhouse) · [南瓜地](https://ywacle.github.io/game-design/world/?place=pumpkins) · [观星露台](https://ywacle.github.io/game-design/world/?place=observatory) · [禁林空地](https://ywacle.github.io/game-design/world/?place=clearing) · [蜂蜜公爵](https://ywacle.github.io/game-design/world/?place=honeydukes) · [列车月台](https://ywacle.github.io/game-design/world/?place=platform)
 - 在线步行 [温室与南瓜地](https://ywacle.github.io/game-design/world/?route=herbology) · [禁林深处到月台](https://ywacle.github.io/game-design/world/?route=forest-walk) · [月台到霍格莫德](https://ywacle.github.io/game-design/world/?route=village-walk)
