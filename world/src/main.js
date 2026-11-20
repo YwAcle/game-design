@@ -200,7 +200,7 @@ function zoom(factor) {
   offset.setLength(clamp(offset.length()*factor, orbit.minDistance, orbit.maxDistance));
   mapCamera.position.copy(orbit.target).add(offset); orbit.update(); dirty = true;
 }
-function walk(place, {at=place.at, look=place.look, tilt=place.id === 'boats' ? .045 : .03, returning=false, heading}={}) {
+function walk(place, {at=place.at, look=place.look, tilt=place.pitch ?? (place.id === 'boats' ? .045 : .03), returning=false, heading}={}) {
   walking = true; orbit.enabled = false; keys.clear();
   select(place);
   nearby = place;
