@@ -40,6 +40,7 @@
 
 ```sh
 blender -b world/model/Hogwarts_Grounds.blend --python-exit-code 1 -P world/model/extend_atlas.py
+blender -b world/model/Hogwarts_Grounds.blend --python-exit-code 1 -P world/model/ground_castle.py
 blender -b world/model/Hogwarts_Grounds.blend --python-exit-code 1 -P world/model/export.py
 python3 world/model/pack_textures.py
 python3 world/model/draw_plan.py
