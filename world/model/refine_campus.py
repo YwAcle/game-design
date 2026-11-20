@@ -277,20 +277,127 @@ for y in (43.25,51.73):
         box("Entry lantern copper cap",(x,y,5.96),(.26,.26,.10),copper)
         box("Entry lantern amber light",(x,y,5.77),(.17,.17,.28),lamp)
 
-# Pumpkin rows stop either side of a clear path behind the keeper's cottage.
-pumpkin = [pigment("Pumpkin rind " + name, color, .10) for name, color in
-           [("ochre","B96C39"),("deep orange","A44F2C"),("peach","CD8750")]]
-for x,y,ground_height in [(60.6,21.6,3.42),(65.65,22.1,3.35),(63.9,24.15,3.38),(58.65,24.65,3.51)]:
-    box("Raised soil ridge",(x,y,ground_height+.05),(1.57,2.0,.18),soil,.12)
-    for dy in (-.6,.07,.64):
-        r=random.uniform(.22,.40)
-        px=x+random.uniform(-.43,.43)
-        for side in (-1,0,1):
-            shape("Pumpkin lobe",(px+side*r*.44,y+dy,ground_height+r*.60),
-                  (r*.74,r,r*.85),random.choice(pumpkin),random.random(),facets=2)
-        beam("Pumpkin stem",(px,y+dy,ground_height+r*1.28),
-             (px+.05,y+dy,ground_height+r*1.57),.035,.022,leaves[3],5)
-        shape("Broad pumpkin leaf",(px+.23,y+dy,ground_height+.18),(.3,.19,.075),leaves[3],dy)
+# Replace the original stones and the later faceted fruit with a single planted patch.
+legacy_pumpkins = bpy.data.objects.get("Pumpkin patch")
+if legacy_pumpkins:
+    bpy.data.objects.remove(legacy_pumpkins, do_unlink=True)
+
+rind = pigment("Pumpkin painted rind", "FFFFFF")
+rind_shader = rind.node_tree.nodes.get("Principled BSDF")
+rind_shader.inputs["Roughness"].default_value = .76
+paint_colors = rind.node_tree.nodes.new("ShaderNodeVertexColor")
+paint_colors.layer_name = "Pumpkin paint"
+rind.node_tree.links.new(paint_colors.outputs["Color"], rind_shader.inputs["Base Color"])
+stalk = pigment("Pumpkin stalk", "74704A", .05)
+stalk_tip = pigment("Dry pumpkin stalk", "9A804C", .06)
+vine = pigment("Pumpkin vine", "586C3E", .08)
+patch_green = pigment("Pumpkin leaf muted green", "626F40", .09)
+patch_light = pigment("Pumpkin leaf lit green", "82915A", .09)
+earth = pigment("Pumpkin bed earth", "574636", .06)
+earth_light = pigment("Pumpkin bed dry soil", "66523A", .06)
+patch_rng = Random(420)
+
+
+def patch_mesh(name, vertices, faces, material, smooth=True):
+    mesh = bpy.data.meshes.new(name)
+    mesh.from_pydata(vertices, [], faces)
+    mesh.update()
+    obj = bpy.data.objects.new(name, mesh)
+    paint.objects.link(obj)
+    mesh.materials.append(material)
+    for face in mesh.polygons:
+        face.use_smooth = smooth
+    return mesh
+
+
+def pumpkin_fruit(x, y, foot, radius, height, color, ribs, phase):
+    around, bands = ribs * 6, 19
+    vertices = [(x, y, foot + height * .06)]
+    colors = [(*[value * .55 for value in color], 1)]
+    for band in range(1, bands):
+        t = pi * band / bands
+        lat = sin(t)
+        for i in range(around):
+            angle = 2*pi*i/around
+            rib = (.5 + .5*cos(ribs * angle + .48*cos(t)))**.85
+            width = lat**.74 * (1 + .15*rib) * (1 + .049*sin(3*angle+phase))
+            z = foot + height * ((1 - cos(t)) / 2 + .05*cos(t)**5 + .019*rib*lat)
+            vertices.append((x+radius*width*cos(angle+phase), y+radius*.91*width*sin(angle+phase), z))
+            stroke = sin(31*angle + 14*t + 2*sin(7*t)) * sin(22*t - 9*angle)
+            shade = .62 + .31*rib + .25*band/bands + .065*stroke + .072*sin(3*t + 3*angle)
+            red, green, blue = color
+            colors.append((red*shade, green*shade*(1+.11*sin(2*t+angle)), blue*shade, 1))
+    vertices.append((x, y, foot+height*.943))
+    colors.append((*color, 1))
+    top = len(vertices)-1
+    faces = []
+    for i in range(around):
+        following = (i+1)%around
+        faces.append((0, 1+following, 1+i))
+        for offset in range(1, top-around, around):
+            faces.append((offset+i, offset+following, offset+around+following, offset+around+i))
+        faces.append((top-around+i, top-around+following, top))
+    mesh = patch_mesh("Pumpkin · ribbed fruit", vertices, faces, rind)
+    attribute = mesh.color_attributes.new(name="Pumpkin paint", type='FLOAT_COLOR', domain='POINT')
+    attribute.data.foreach_set('color', [channel for rgba in colors for channel in rgba])
+    base = Vector((x,y,foot+height*.941))
+    sway = Vector((cos(phase),sin(phase),0))
+    elbow = base + sway*radius*.09 + Vector((0,0,radius*.23))
+    tip = elbow + sway*radius*.14 + Vector((0,0,radius*.14))
+    beam("Pumpkin · stalk base",base,elbow,radius*.10,radius*.067,stalk,7)
+    beam("Pumpkin · dry stalk tip",elbow,tip,radius*.071,radius*.054,stalk_tip,7)
+
+
+def pumpkin_leaf(anchor, angle, reach):
+    direction = Vector((cos(angle), sin(angle), 0))
+    side = Vector((-sin(angle), cos(angle), 0))
+    center = anchor + direction*reach*.54 + Vector((0, 0, reach*.26))
+    outline = [(0,0),(.09,-.43),(.35,-.51),(.46,-.39),(.70,-.35),
+               (.71,-.22),(1,0),(.75,.18),(.69,.37),(.46,.36),(.30,.51),(.12,.36)]
+    points = [center] + [anchor + reach*(direction*length+side*width) +
+                         Vector((0, 0, reach*(.10+.14*length-.14*abs(width)))) for length,width in outline]
+    faces = [(0, 1+i, 1+(i+1)%len(outline)) for i in range(len(outline))]
+    mesh = patch_mesh("Pumpkin · broad leaf", points, faces, patch_green, smooth=False)
+    mesh.materials.append(patch_light)
+    for index in (1,2,3,6,7,8):
+        mesh.polygons[index].material_index = 1
+    beam("Pumpkin · leaf midrib", points[1]+Vector((0,0,.01)), center+Vector((0,0,.01)),
+         reach*.023, reach*.012, vine, 5)
+
+
+for x,y,height,fruit in [
+    (60.6,21.6,3.42,[(-.05,-.54,.46,.59),(.16,.47,.35,.46)]),
+    (65.65,22.1,3.35,[(-.06,-.49,.44,.67),(.18,.47,.48,.59)]),
+    (63.9,24.15,3.38,[(.19,-.62,.36,.48),(-.08,.38,.58,.77)]),
+    (58.65,24.65,3.51,[(-.10,-.59,.33,.41),(.04,.40,.53,.67)]),
+]:
+    vertices = [(x, y, height+.12)]
+    count = 18
+    for scale, rise in ((.52,.105),(1,-.055)):
+        for i in range(count):
+            angle = 2*pi*i/count
+            edge = patch_rng.uniform(.89,1.06)
+            vertices.append((x+.77*scale*edge*cos(angle),y+1.01*scale*edge*sin(angle),
+                             height+rise+patch_rng.uniform(-.030,.025)))
+    mound_faces = [(0,i+1,(i+1)%count+1) for i in range(count)]
+    for i in range(count):
+        j=(i+1)%count
+        mound_faces.append((i+1,i+count+1,j+count+1,j+1))
+    mound = patch_mesh("Pumpkin · low soil mound",vertices,mound_faces,earth)
+    mound.materials.append(earth_light)
+    for face in mound.polygons:
+        face.material_index = int(patch_rng.random()<.29)
+
+    for dx,dy,radius,fruit_height in fruit:
+        color = patch_rng.choice(((.78,.197,.024),(.67,.135,.018),(.84,.262,.047),(.59,.173,.028)))
+        pumpkin_fruit(x+dx,y+dy,height+.043,radius,fruit_height,color,
+                      patch_rng.choice((8,9,10,11)),patch_rng.random()*2*pi)
+    start = Vector((x-.40,y-.78,height+.11))
+    for dy in (-.46,-.08,.31,.69):
+        end = Vector((x+patch_rng.uniform(-.53,-.21),y+dy,height+.115))
+        beam("Pumpkin · trailing vine",start,end,.019,.015,vine,6)
+        pumpkin_leaf(end,patch_rng.uniform(2.25,4.35),patch_rng.uniform(.28,.51))
+        start = end
     details.append([x-.78,-y-1,x+.78,-y+1])
 
 # Watch the northern ridge from the same terrain height as the tower path.

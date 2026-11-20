@@ -271,7 +271,7 @@
     },
     {"id": "observatory", "name": "天文塔观星露台", "en": "Astronomy Terrace", "at": [29, -23], "look": [28.1, -26.6], "region": "城堡高地", "note": "从天文塔外的小门廊走到露台，沿石栏望向温室和北部山脊。"},
     {"id": "greenhouse", "name": "草药温室内廊", "en": "Herbology Glasshouse", "at": [50, -47.7], "look": [50, -51.5], "region": "东侧原野", "note": "从两端入口都能走进铜框温室。中间通道两侧种着草药，北端小门接回林缘小径。"},
-    {"id": "pumpkins", "name": "海格的南瓜地", "en": "Hagrid’s Pumpkin Patch", "at": [62, -23.3], "look": [66, -25.4], "region": "东侧原野", "note": "沿着泥径穿过南瓜垄。小屋暖窗在东侧，西北的小路接回温室。"},
+    {"id": "pumpkins", "name": "海格的南瓜地", "en": "Hagrid’s Pumpkin Patch", "at": [62, -23.3], "look": [64.1, -23.8], "pitch": -0.28, "region": "东侧原野", "note": "沿着泥径穿过南瓜垄。小屋暖窗在东侧，西北的小路接回温室。"},
     {"id": "clearing", "name": "禁林深处空地", "en": "Forest Glade", "at": [97, -78.5], "look": [95, -81.5], "region": "北部林地", "note": "林径在苔岩和旧树根之间打开。沿西侧林径穿出去，可以去霍格莫德车站。"},
     {"id": "honeydukes", "name": "蜂蜜公爵橱窗", "en": "Honeydukes", "at": [-38.8, -73.25], "look": [-34.1, -76.35], "region": "北部村道", "note": "绿漆凸窗里摆着糖果和彩色糖罐，沿村街向东可去车站。"},
     {"id": "platform", "name": "特快列车月台", "en": "Hogwarts Express Platform", "at": [12, -88.4], "look": [12.5, -93.6], "region": "北部村道", "note": "站台能看到停靠的猩红机车。走到东端，沿小路可接回温室和禁林。"}
