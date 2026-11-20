@@ -35,6 +35,6 @@ await copyFile('REFERENCES.md','dist/REFERENCES.md');
 console.log('Built memoir, hall, arena, six interior routes and shared local resources.');
 
 await mkdir("dist/world", {recursive:true});
-for (const file of ["index.html","world.css","evening-sky.jpg","moon.webp","wind-waves.webp","lakebed.webp","grounds.glb","layout.json","navigation.json","ground-plan.png","rooms.json","Three-LICENSE.txt","CREDITS.md","reference-comparison.jpg","lake-comparison.jpg","style-comparison.jpg","pitch-comparison.jpg","campus-comparison.jpg","campus-preview.jpg","arrival-comparison.jpg","map-review.jpg"]) await copyFile("world/"+file,"dist/world/"+file);
+for (const file of ["index.html","world.css","evening-sky.jpg","moon.webp","wind-waves.webp","lakebed.webp","grounds.glb","layout.json","navigation.json","ground-plan.png","rooms.json","Three-LICENSE.txt","CREDITS.md","reference-comparison.jpg","lake-comparison.jpg","style-comparison.jpg","pitch-comparison.jpg","campus-comparison.jpg","campus-preview.jpg","arrival-comparison.jpg","map-review.jpg","highlands-preview.jpg"]) await copyFile("world/"+file,"dist/world/"+file);
 
 await build({entryPoints:['world/src/main.js'],outfile:'dist/world/world.js',bundle:true,minify:true,legalComments:'linked'});

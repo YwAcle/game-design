@@ -7,6 +7,7 @@ import { evening } from "./sky.js";
 import { floorHeight, walkable, atDoor } from './navigation.mjs';
 import { readStoredState, STORAGE_KEY } from '../../src/shared/memory-data.js';
 import { drawTrailMap } from './trail-map.js';
+import { addWoodlands } from './woodlands.js';
 
 const $ = id => document.getElementById(id);
 const canvas = $('view'), atlas = $('atlas'), directory = $('places');
@@ -33,11 +34,13 @@ let shownPlace, outdoorMemories = [];
 let route = null, stop = 0, portal = null, water, lastWater = 0;
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const regionPins = ['hall','tower','boats','pitch','bridge','hut','forest','village','station','glass',
-  'greenhouse','observatory','clearing','honeydukes','pumpkins','platform'];
+  'willow','shack','ruins','cave','camp','owlery','gamekeeper-trail'];
+const explored = new Set();
+const explorationKey = 'hogwarts-world-explored';
 const temp = new THREE.Vector3();
 const moonColor = new THREE.Color(0xb5d7e3), eveningColor = new THREE.Color(0xffba89);
 const nightFog = new THREE.Color(0x3d585f), valleyFog = new THREE.Color(0x786477);
-let keyLight, ambient;
+let keyLight, ambient, surveyLight;
 
 async function json(url) {
   const res = await fetch(url);
@@ -51,7 +54,19 @@ function display(place) {
   $('english').textContent = place?.en ?? 'Highland Path';
   $('region').textContent = place?.region ?? '霍格沃茨周边';
   $('note').textContent = place?.note ?? '';
+  if (walking && place && !explored.has(place.id)) {
+    explored.add(place.id);
+    pins.get(place.id)?.classList.add('visited');
+    renderExploration();
+    try { localStorage.setItem(explorationKey, JSON.stringify([...explored])); } catch {}
+  }
   updateMemoryActions();
+}
+
+function renderExploration() {
+  $('explored').max = layout.places.length;
+  $('explored').value = explored.size;
+  $('explored-count').textContent = explored.size + ' / ' + layout.places.length;
 }
 
 function updateMemoryActions() {
@@ -111,7 +126,7 @@ function openHouseDoor(id, href) {
 }
 
 function updateDoors() {
-  const destination = walking && atDoor(nearby,eye.position.x,eye.position.z) ? nearby : null;
+  const destination = walking ? layout.places.find(place=>atDoor(place,eye.position.x,eye.position.z)) ?? null : null;
   if (destination !== portal) {
     portal=destination;
     $('rooms').replaceChildren();
@@ -128,6 +143,20 @@ function updateDoors() {
         }
       });
       $('rooms').append(a);
+    }
+    if (portal?.passage) {
+      const tunnel = document.createElement('a');
+      const exit = places.get(portal.passage);
+      tunnel.href = '?place=' + exit.id;
+      tunnel.textContent = '穿过地道 · ' + exit.name + ' →';
+      tunnel.onclick = event => {
+        event.preventDefault();
+        route = null;
+        walk(exit, {returning:true});
+        updateGuide();
+        history.replaceState(null,'',tunnel.href);
+      };
+      $('rooms').append(tunnel);
     }
   }
   $('rooms').hidden=!portal;
@@ -191,8 +220,8 @@ function select(place, focus = false) {
 }
 function reset() {
   const narrow = atlas.clientWidth < 680;
-  orbit.target.set(narrow ? -9 : -6, 10, narrow ? -7 : -15);
-  mapCamera.position.copy(orbit.target).add(narrow ? new THREE.Vector3(64, 104, 123) : new THREE.Vector3(77, 114, 149));
+  orbit.target.set(narrow ? -6 : 1, 6, narrow ? -13 : -10);
+  mapCamera.position.copy(orbit.target).add(narrow ? new THREE.Vector3(-26, 233, -120) : new THREE.Vector3(-20, 240, -154));
   orbit.update(); dirty = true;
 }
 function zoom(factor) {
@@ -249,28 +278,35 @@ function createDirectory() {
   }
   for (const p of layout.places) {
     const el=document.createElement('button');el.className='pin';el.textContent=p.name;
+    if (explored.has(p.id)) el.classList.add('visited');
     el.onclick=()=>select(p,true);el.hidden=true;$('markers').append(el);pins.set(p.id,el);
     markers.push({p, el, pos:new THREE.Vector3(p.at[0],floor(...p.at)+3,p.at[1])});
   }
 }
 function updateMarkers() {
   const w=canvas.clientWidth,h=canvas.clientHeight;
+  const lake = temp.set(0,.2,104).project(mapCamera);
+  const lakeLabel = $('lake-label');
+  lakeLabel.hidden = lake.z >= 1 || Math.abs(lake.x) > .83 || Math.abs(lake.y) > .79;
+  lakeLabel.style.left = (lake.x+1)*w/2+'px';
+  lakeLabel.style.top = (1-lake.y)*h/2+'px';
   const card=placeCard.getBoundingClientRect();
   const map=canvas.getBoundingClientRect();
   const occupied=[]; const compact=w<680;
-  const sorted=[...markers].sort((a,b)=>Number(b.p===selected)-Number(a.p===selected));
+  const sorted=[...markers].sort((a,b)=>Number(b.p===selected)-Number(a.p===selected) ||
+    regionPins.indexOf(a.p.id)-regionPins.indexOf(b.p.id));
   for (const {p,el,pos} of sorted) {
     const projected=temp.copy(pos).project(mapCamera);
     const x=(projected.x+1)*w/2,y=(1-projected.y)*h/2;
     const selectedPin=p===selected;
-    const small=w<680?26:36;
+    const small=(compact?10:12)*p.name.length/2+13;
     const inUI=x>card.left-map.left-small && x<card.right-map.left+small &&
       y>card.top-map.top-8 && y<card.bottom-map.top+28;
-    const overlaps=occupied.some(([px,py])=>Math.abs(px-x)<(compact?62:83)&&Math.abs(py-y)<26);
+    const overlaps=occupied.some(([px,py,halfWidth])=>Math.abs(px-x)<small+halfWidth&&Math.abs(py-y)<28);
     const show=projected.z<1 && x>small && x<w-small && y>90 && y<h-60 && !inUI &&
        (selectedPin || (regionPins.includes(p.id) && !overlaps));
     el.hidden=!show;
-    if(show){el.style.left=x+'px';el.style.top=y+'px';occupied.push([x,y]);}
+    if(show){el.style.left=x+'px';el.style.top=y+'px';occupied.push([x,y,small]);}
   }
   const meters=55*2*orbit.getDistance()*Math.tan(mapCamera.fov*Math.PI/360)/h;
   $('scale').textContent=Math.round(meters)+' m';
@@ -303,7 +339,7 @@ function frame(now) {
   }
   if(dirty){
     // The elevated overview camera looks through much more atmosphere than a walker.
-    scene.fog.density = walking ? .0043 : .0022;
+    scene.fog.density = walking ? .0043 : .00128;
     const distanceToBridge = Math.hypot(eye.position.x+58,eye.position.z);
     const distanceToGardens = Math.hypot(eye.position.x-41,eye.position.z+38);
     const distanceToVillage = Math.hypot(eye.position.x+18,eye.position.z+79);
@@ -311,9 +347,10 @@ function frame(now) {
     const gardens = 1 - THREE.MathUtils.smoothstep(distanceToGardens, 17, 50);
     const village = 1 - THREE.MathUtils.smoothstep(distanceToVillage, 27, 56);
     const light = walking ? Math.max(dusk, .42*gardens, .56*village) : .5;
-    keyLight.color.lerpColors(moonColor, eveningColor, .2 + .42*light);
-    keyLight.intensity = 1.48 + 1.1*light;
-    ambient.intensity = .72 + .24*light;
+    keyLight.color.lerpColors(moonColor, eveningColor, walking ? .2 + .42*light : .38);
+    keyLight.intensity = walking ? 1.48 + 1.1*light : 3.5;
+    ambient.intensity = walking ? .72 + .24*light : 1.35;
+    surveyLight.visible = !walking;
     scene.fog.color.lerpColors(nightFog,valleyFog,.18 + .36*light);
     renderer.render(scene,walking?eye:mapCamera);
     if(walking){updateDoors();updateGuide();}else updateMarkers();
@@ -324,6 +361,9 @@ function frame(now) {
 function resize() {
   const w=canvas.clientWidth,h=canvas.clientHeight;
   renderer.setSize(w,h,false);
+  mapCamera.fov = THREE.MathUtils.radToDeg(2*Math.atan(
+    Math.tan(THREE.MathUtils.degToRad(41)/2) / Math.max(.51, Math.min(1, w/h))
+  ));
   for(const c of [mapCamera,eye]){c.aspect=w/h;c.updateProjectionMatrix();}
   dirty=true;
 }
@@ -369,6 +409,9 @@ function lightScene() {
   ambient = new THREE.HemisphereLight(0xc4d4dd,0x918783,.69);
   scene.add(ambient);
   const sun=new THREE.DirectionalLight(0xe0e9fc,1.48);sun.position.set(-33,42,-77);
+  surveyLight = new THREE.DirectionalLight(0xffecd2, 1.35);
+  surveyLight.position.set(87,127,-31);
+  scene.add(surveyLight);
   keyLight = sun;
   sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
   Object.assign(sun.shadow.camera,{left:-115,right:115,top:105,bottom:-105,near:1,far:310});sun.shadow.camera.updateProjectionMatrix();
@@ -382,6 +425,12 @@ async function start() {
   lightScene();
   [layout,nav,destinations]=await Promise.all([json('./layout.json'),json('./navigation.json'),json('./rooms.json'),evening(scene)]);
   for(const p of layout.places)places.set(p.id,p);
+  try {
+    for (const id of JSON.parse(localStorage.getItem(explorationKey) ?? '[]')) {
+      if (places.has(id)) explored.add(id);
+    }
+  } catch {}
+  renderExploration();
   const decoder = new DRACOLoader().setDecoderPath('../assets/draco/');
   let gltf;
   try {
@@ -396,6 +445,7 @@ async function start() {
     if(obj.material.name==='Lake') surface=obj;
     if(obj.material.name==='Water glint')obj.visible=false;
     if(obj.material.name==='Pavilion glass') obj.castShadow=false;
+    if(obj.material.name==='Highland turf and exposed shore') tintMeadows(obj.geometry);
     if(obj.material.name.startsWith('Silver fir')){
       obj.material.transparent=false;obj.material.alphaTest=.36;obj.material.depthWrite=true;
       obj.material.side=THREE.DoubleSide;obj.castShadow=false;
@@ -407,9 +457,10 @@ async function start() {
     scene.add(lamp);
   }
   scene.add(gltf.scene);
+  addWoodlands(scene, layout, nav);
   water = await blackLake(scene, nav, renderer, surface);
   renderer.shadowMap.needsUpdate=true;
-  orbit=new OrbitControls(mapCamera,canvas);orbit.enablePan=false;orbit.minDistance=35;orbit.maxDistance=285;
+  orbit=new OrbitControls(mapCamera,canvas);orbit.enablePan=false;orbit.minDistance=35;orbit.maxDistance=320;
   orbit.minPolarAngle=.09;orbit.maxPolarAngle=Math.PI*.46;orbit.addEventListener('change',()=>{dirty=true;});
   createDirectory();resize();controls();reset();
   refreshOutdoorMemories();
@@ -435,6 +486,19 @@ async function start() {
   else select(layout.places[0]);
   $('loading').hidden=true;$('enter').disabled=false;$('foot-map').disabled=false;
   new ResizeObserver(resize).observe(atlas);requestAnimationFrame(frame);
+}
+
+function tintMeadows(geometry) {
+  const {position, color} = geometry.attributes;
+  if (!color) return;
+  for (let i = 0; i < position.count; i++) {
+    const x = position.getX(i), z = position.getZ(i);
+    const slope = Math.max(0, geometry.attributes.normal.getY(i));
+    const patch = .5+.24*Math.sin(.093*x+.17*z)+.19*Math.cos(.11*x-.153*z);
+    const meadow = THREE.MathUtils.smoothstep(slope,.63,.94);
+    color.setXYZ(i,Math.min(1,color.getX(i)*(1+meadow*(.23+.62*patch))),
+      Math.min(1,color.getY(i)*(1+meadow*(.28+.70*patch))),color.getZ(i)*(1-meadow*.19));
+  }
 }
 $('retry').onclick=()=>location.reload();
 if (viewport) {

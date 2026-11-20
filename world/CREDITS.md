@@ -55,3 +55,10 @@ Three.js r180 的 Reflector 生成岸景倒影。波纹贴图由本项目的方�
 - 盆栽采用 Nicholas 3D 的《Optimized Potted Plants》。选用了四种，调整比例和摆放，重调花盆颜色，并为网页共用一张带透明裁切的颜色图集。[Fab 原作](https://www.fab.com/listings/f37cf699-c332-49a3-ba04-d45575936802) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 - 小铲与手耙采用 Wahyu NT 的《Low Poly Garden Tools Pack》。工具调为实物大小，重配木柄与铁件颜色，分别置于桌面和下层搁板。[Fab 原作](https://www.fab.com/listings/a40982e5-0b0b-400c-bfe8-73a3698b88fc) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 - 自制木台、育苗盘和摆件保存在 `Hogwarts_Grounds.blend` 的 `Greenhouse · potting bench` 集合中。纹理已打包。运行 `refine_campus.py` 重新生成周围温室时会保留这组陈设和对应的碰撞范围。
+
+### 霍格沃茨与周边高地
+
+- 以用户提供的全景为构图参考，让黑湖铺在城堡背后，禁林和海格小屋位于画面左侧，球场位于右侧，霍格莫德及铁路在近景。城堡与附属塔楼的比例参考电影微缩模型，湖水的青色和林地里零散的琥珀光参考《魔法觉醒》中文官网渡船与网易禁林插画。浏览器实景仍保留现有低多边形轮廓。湖岛、山地遗迹、林间营地及步行距离采用本项目的布局。[电影模型](https://www.wbstudiotour.co.uk/explore-the-tour/art-department/) · [游戏黑湖宣传图](https://www.harrypottermagicawakened.com/pc/gw/20201020114844/img/bg_1159d29.jpg) · [禁林插画](https://nie.res.netease.com/r/pic/20221019/5dd216f5-8e05-420b-a8e5-e3fb5019efc9.jpg)
+- 打人柳与尖叫棚屋的通道参考《哈利·波特与阿兹卡班的囚徒》第 17 章。酒馆参考同书第 10 章的三把扫帚，以及《哈利·波特与凤凰社》第 16 章的猪头酒吧。棚屋的歪斜屋檐、封窗木板和两个地道入口由本项目制作。[尖叫棚屋设定](https://www.harrypotter.com/fact-file/locations/the-shrieking-shack) · [霍格莫德设定](https://www.harrypotter.com/fact-file/locations/hogsmeade)
+- 猫头鹰棚屋与山地遗迹分别使用 Quaternius 的 `Roof_Tower_RoundTiles` 和 `Wall_UnevenBrick_Door_Round` 网格。在 Blender 中调整比例并套用已打包材质。猪头酒吧复用 KayKit 村舍，加上原创招牌和窗台。洞穴岩壁复用 Poly Haven 的 Coastal Cliff 02。三个来源均为 CC0。[Quaternius](https://quaternius.com/packs/medievalvillagemegakit.html) · [GitHub 上的 glTF 版本](https://github.com/J-Ponzo/gltf-medieval-village-megakit/tree/21104b4045261c28fc312360841ed1a7b0ac8782) · [KayKit](https://github.com/KayKit-Game-Assets/KayKit-Medieval-Hexagon-Pack-1.0) · [Poly Haven](https://polyhaven.com/a/coastal_cliff_02)
+- Blender 中的 `Atlas ·` 集合保存可编辑地标。网页共用一套有顶点色的远景冷杉网格，按树林用 Three.js 实例化。GLB 在本地打包。Chromium 桌面视口和窄屏模拟已检查地图加载、目录、导览起点、地道双向通过、礼堂入口及探索进度恢复。[浏览器全图](highlands-preview.jpg)

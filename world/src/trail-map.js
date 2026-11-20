@@ -25,7 +25,7 @@ export function drawTrailMap(canvas, layout, nav, position, route, stop, yaw) {
   }
 
   context.fillStyle = '#9c8b6d';
-  for (const [x1, z1, x2, z2] of [...nav.blocks, ...nav.detailBlocks]) {
+  for (const [x1, z1, x2, z2] of [...nav.blocks, ...nav.detailBlocks, ...nav.atlasBlocks]) {
     context.fillRect(...screen([x1, z1]), (x2 - x1) * scale, (z2 - z1) * scale);
   }
   function line(points, color, width) {
