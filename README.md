@@ -24,7 +24,9 @@
 
 30 处地标组成同一个可步行的室外世界，地点目录提供 13 条导览。地图用高位视角呈现黑湖群岛、城堡、禁林、球场与霍格莫德。行走时可打开「路线图」，查看当前位置、朝向和下一站。已到访地点会记在当前浏览器中。
 
-可从黑湖船屋出发沿岸走到湖边洞穴，从廊桥走到猫头鹰棚屋，或走猎场小径进林间营地。从霍格莫德向西会经过猪头酒吧、尖叫棚屋和山地遗迹，三把扫帚在车站方向。走近打人柳根下的舱口或尖叫棚屋的门，可以通过地道往返。酒吧和棚屋可从室外观览。
+可从黑湖船屋出发沿岸走到湖边洞穴，从廊桥走到猫头鹰棚屋的石阶，或走猎场小径进林间营地。从霍格莫德向西会经过猪头酒吧、尖叫棚屋和山地遗迹，三把扫帚在车站方向。走近打人柳根下的舱口或尖叫棚屋的门，可以通过地道往返。猫头鹰棚屋可登上门前平台，阁楼可在 Blender 源文件里查看。酒吧和棚屋可从室外观览。
+
+三处精修模型按米制装入地图。步行视角高 1.65 米，键盘默认步行，按住 Shift 跑步。可在本地地图用 `?place=willow`、`?place=shack`、`?place=owlery` 从小径走近。[网页第一人称实景](world/landmarks-walk.jpg)
 
 「温室与南瓜地」穿过铜框玻璃内廊，再绕到海格小屋院旁。「禁林深处到月台」从林门经林深空地走向车站。「月台到霍格莫德」抵达蜂蜜公爵橱窗。观星露台从天文塔外侧小径步行可达。海格小屋和霍格莫德店铺提供室外观览，机车在月台边静态展示。
 
@@ -41,6 +43,7 @@
 ```sh
 blender -b world/model/Hogwarts_Grounds.blend --python-exit-code 1 -P world/model/extend_atlas.py
 blender -b world/model/Hogwarts_Grounds.blend --python-exit-code 1 -P world/model/ground_castle.py
+blender -b world/model/Hogwarts_Grounds.blend --python-exit-code 1 -P world/model/place_landmarks.py
 blender -b world/model/Hogwarts_Grounds.blend --python-exit-code 1 -P world/model/export.py
 python3 world/model/pack_textures.py
 python3 world/model/draw_plan.py

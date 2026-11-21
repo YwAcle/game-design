@@ -1,7 +1,11 @@
 """Export the packed campus .blend into its adjacent web project (Blender 5.3)."""
 from pathlib import Path
 from tempfile import TemporaryDirectory
+import sys
 import bpy
+
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from bake_landmarks import bake_landmark
 
 scene_path = Path(bpy.data.filepath)
 castle = next(o for o in bpy.context.scene.objects if o.get("artist") == "Sebastian Holthausen")
@@ -13,6 +17,9 @@ castle.data.validate(clean_customdata=False)
 
 # Preserve editable linked modules in the .blend. Batch nearby modules in the web copy.
 for collection in bpy.data.collections:
+    if collection.get('study_transform'):
+        bake_landmark(collection)
+        continue
     objects = [obj for obj in collection.objects if obj.type == "MESH"]
     if " · " not in collection.name or len(objects) < 3:
         continue

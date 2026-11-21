@@ -60,7 +60,7 @@ for dy in range(0, map_height, 2):
 draw.ellipse((*xy(-104.6,-52.8),*xy(-79.4,-15.2)), fill='#aabf87', outline='#75845d', width=2)
 for x,z,tx,tz,half,_ in nav.get('standRails',[]):
     draw.line((xy(x-tx*half,z-tz*half),xy(x+tx*half,z+tz*half)),fill='#968466',width=5)
-for x1,z1,x2,z2 in [*nav['blocks'], *nav.get('detailBlocks', []), *nav['atlasBlocks']]:
+for x1,z1,x2,z2 in [*nav['blocks'], *nav.get('detailBlocks', []), *nav['atlasBlocks'], *nav['landmarkBlocks']]:
     a,b=xy(x1,z1),xy(x2,z2)
     if not (left <= a[0] <= left+map_width and top <= a[1] <= top+map_height):
         continue

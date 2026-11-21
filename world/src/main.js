@@ -19,6 +19,9 @@ const keys = new Set();
 const mobile = matchMedia('(pointer: coarse)');
 const mapCamera = new THREE.PerspectiveCamera(41, 1, .3, 900);
 const eye = new THREE.PerspectiveCamera(67, 1, .08, 750);
+const eyeHeight = 1.65;
+const walkSpeed = 1.85;
+const runSpeed = 5.5;
 eye.rotation.order = 'YXZ';
 let layout, nav, renderer, orbit, scene, selected, nearby, walking = false, yaw = 0, pitch = 0;
 let destinations = {}, markers = [], drag, previous = 0, dirty = true;
@@ -152,7 +155,8 @@ function updateDoors() {
       tunnel.onclick = event => {
         event.preventDefault();
         route = null;
-        walk(exit, {returning:true});
+        const exitView = layout.views.find(view=>view.id === exit.passageExit);
+        walk(exit, {...exitView,returning:true});
         updateGuide();
         history.replaceState(null,'',tunnel.href);
       };
@@ -161,7 +165,7 @@ function updateDoors() {
   }
   $('rooms').hidden=!portal;
   if (!portal) return;
-  temp.set(portal.door[0],floor(...portal.door)+2.5,portal.door[1]).project(eye);
+  temp.set(portal.door[0],floor(...portal.door)+(portal.doorHeight ?? 2.5),portal.door[1]).project(eye);
   const inFront=temp.z>0 && temp.z<1 && Math.abs(temp.x)<.81 && Math.abs(temp.y)<.66;
   $('rooms').classList.toggle('at-door',inFront);
   $('rooms').style.left=inFront?((temp.x+1)*50)+'%':'';
@@ -234,11 +238,11 @@ function walk(place, {at=place.at, look=place.look, tilt=place.pitch ?? (place.i
   select(place);
   nearby = place;
   const [x,z] = at;
-  eye.position.set(x, floor(x,z) + 1.65, z);
+  eye.position.set(x, floor(x,z) + eyeHeight, z);
   yaw = heading ?? (Math.atan2(x-look[0],z-look[1])+(returning?Math.PI:0)); pitch=returning?0:tilt;
   eye.rotation.set(pitch,yaw,0,'YXZ'); atlas.classList.add('walking');
   $('map-toggle').hidden = false; $('enter').hidden = true; $('touch').hidden = !mobile.matches;
-  $('hint').textContent = mobile.matches ? '方向键移动 · 拖动画面转向' : 'WASD / 方向键移动 · 拖动转向 · M 全图';
+  $('hint').textContent = mobile.matches ? '方向键移动 · 拖动画面转向' : 'WASD / 方向键 · Shift 跑步 · 拖动转向 · M 全图';
   display(place);canvas.focus({preventScroll:true});dirty=true;
 }
 function revisitMemory(outdoor) {
@@ -316,13 +320,13 @@ function move(dt) {
   const forward=Number(keys.has('KeyW')||keys.has('ArrowUp'))-Number(keys.has('KeyS')||keys.has('ArrowDown'));
   const strafe=Number(keys.has('KeyD')||keys.has('ArrowRight'))-Number(keys.has('KeyA')||keys.has('ArrowLeft'));
   if(!forward && !strafe) return;
-  const amount=dt*(keys.has('ShiftLeft')||keys.has('ShiftRight')?9:5.5)/Math.hypot(forward,strafe);
+  const amount=dt*(keys.has('ShiftLeft')||keys.has('ShiftRight')?runSpeed:walkSpeed)/Math.hypot(forward,strafe);
   const dx=(Math.cos(yaw)*strafe-Math.sin(yaw)*forward)*amount;
   const dz=(-Math.sin(yaw)*strafe-Math.cos(yaw)*forward)*amount;
   const pos=eye.position;
   if(walkable(nav,layout.bridge,pos.x+dx,pos.z))pos.x+=dx;
   if(walkable(nav,layout.bridge,pos.x,pos.z+dz))pos.z+=dz;
-  pos.y=floor(pos.x,pos.z)+1.65;
+  pos.y=floor(pos.x,pos.z)+eyeHeight;
   let nearest=null, distance=6.5;
   for(const p of layout.places){
     const d=Math.hypot(p.at[0]-pos.x,p.at[1]-pos.z);
@@ -423,7 +427,7 @@ async function start() {
   renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));renderer.shadowMap.enabled=true;
   renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.shadowMap.autoUpdate=false;
   lightScene();
-  [layout,nav,destinations]=await Promise.all([json('./layout.json?v=kitchen'),json('./navigation.json?v=kitchen'),json('./rooms.json'),evening(scene)]);
+  [layout,nav,destinations]=await Promise.all([json('./layout.json?v=landmarks'),json('./navigation.json?v=landmarks'),json('./rooms.json'),evening(scene)]);
   for(const p of layout.places)places.set(p.id,p);
   try {
     for (const id of JSON.parse(localStorage.getItem(explorationKey) ?? '[]')) {
@@ -434,7 +438,7 @@ async function start() {
   const decoder = new DRACOLoader().setDecoderPath('../assets/draco/');
   let gltf;
   try {
-    gltf = await new GLTFLoader().setDRACOLoader(decoder).loadAsync('./grounds.glb?v=kitchen');
+    gltf = await new GLTFLoader().setDRACOLoader(decoder).loadAsync('./grounds.glb?v=landmarks');
   } finally {
     decoder.dispose();
   }
@@ -454,6 +458,14 @@ async function start() {
   for (const [x,y,z] of layout.shoreLights) {
     const lamp = new THREE.PointLight(0xffc189, 12, 8);
     lamp.position.set(x,y+.20,z+.27);
+    scene.add(lamp);
+  }
+  for (const [id, dx, dz, height, energy] of [
+    ['willow',-4,-5,3.5,45], ['shack',2.9,1.5,2.05,17], ['owlery',1,.2,13.2,24]
+  ]) {
+    const [x,z] = places.get(id).look;
+    const lamp = new THREE.PointLight(0xffc589,energy,12);
+    lamp.position.set(x+dx,floor(x,z)+height,z+dz);
     scene.add(lamp);
   }
   scene.add(gltf.scene);
