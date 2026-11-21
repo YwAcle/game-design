@@ -83,10 +83,27 @@ test('the secret passage connects two accessible approaches', () => {
     const exit = layout.places.find(candidate => candidate.id === place.passage);
     assert.equal(exit.passage, place.id);
     assert.ok(walkable(nav, layout.bridge, ...exit.at));
+    const exitView = layout.views.find(view => view.id === exit.passageExit);
+    assert.ok(atDoor(exit, ...exitView.at));
+    assert.ok(walkable(nav, layout.bridge, ...exitView.at));
     const direction = place.door.map((v, i) => v - place.at[i]);
     const t = 1 - 2.5 / Math.hypot(...direction);
     const approach = place.at.map((v, i) => v + direction[i] * t);
     assert.ok(atDoor(place, ...approach));
     assert.ok(walkable(nav, layout.bridge, ...approach));
   }
+});
+
+test('owlery stairs take the player from the path to the landing and stop at the tower', () => {
+  const flight = nav.flights.find(flight => flight.site === 'owlery');
+  const point = distance => [
+    flight.cx - Math.sin(flight.angle) * distance,
+    flight.cz - Math.cos(flight.angle) * distance,
+  ];
+  for (let i = 0; i < 20; i++) {
+    const at = point(flight.length * (i / 20 - .5) + .01);
+    assert.ok(walkable(nav, layout.bridge, ...at));
+    assert.ok(Math.abs(floorHeight(nav, layout.bridge, ...at) - flight.profile[i]) < .02);
+  }
+  assert.equal(walkable(nav, layout.bridge, ...point(flight.length / 2 + .2)), false);
 });

@@ -1,12 +1,16 @@
 """Add the outer landmarks and trails to the packed Hogwarts grounds."""
 import json
 import os
+import sys
 from math import cos, exp, pi, sin
 from pathlib import Path
 from random import Random
 
 import bpy
 from mathutils import Vector
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from atlas_paths import draw_paths
 
 WORLD = Path(bpy.data.filepath).parents[1]
 layout = json.loads((WORLD / 'layout.json').read_text())
@@ -61,7 +65,6 @@ stone, slate, moss, oak, wood, iron, brass, amber, canvas, heather = [
     ]
 ]
 brick = bpy.data.materials['MI_UnevenBrick.007']
-planks = bpy.data.materials['Jetty | rain-darkened oak']
 shore_rock = bpy.data.materials['coastal_cliff_02']
 
 primitives = {}
@@ -171,97 +174,6 @@ block(x-1, y-.55, 5, 2.95)
 for dx, dy in [(-3, 3), (3.8, -1.95), (-4, -5), (-6, -6), (6, -7)]:
     shape(group, 'Rockfall by the water', 'rock', (x+dx, y+dy, max(.2, ground(x+dx,y+dy))),
           (1.35, .96, .76), slate, rng.random())
-
-group = collection('Owlery')
-x, y, h = site('owlery')
-block(x, y, 3.9, 3.9)
-for level, radius, low, high, material in [
-    (0, 3.8, -.35, .45, slate), (1, 3.47, .35, 8.5, brick), (2, 3.68, 8.41, 8.86, stone),
-]:
-    bpy.ops.mesh.primitive_cylinder_add(vertices=14, radius=radius, depth=high-low,
-                                        location=(x, y, h+(low+high)/2))
-    obj = bpy.context.object
-    obj.name = 'Owlery masonry course ' + str(level)
-    obj.data.materials.append(material)
-    if level == 1:
-        for face in obj.data.polygons:
-            if len(face.vertices) != 4:
-                continue
-            u = face.index * .57
-            for index, uv in zip(face.loop_indices,[(u,0),(u+.57,0),(u+.57,3),(u,3)]):
-                obj.data.uv_layers.active.data[index].uv = uv
-    for parent in list(obj.users_collection):
-        parent.objects.unlink(obj)
-    group.objects.link(obj)
-module(group, 'Roof_Tower_RoundTiles', (x,y,h+8.6), (8.2,8.2,6.4))
-for z in (.65,4.45,8.26):
-    for i in range(14):
-        theta = (i+.5)*2*pi/14
-        shape(group,'Owlery projecting stringcourse','box',
-              (x+3.43*cos(theta),y+3.43*sin(theta),h+z),
-              (1.63,.27,.18),brick,theta+pi/2)
-for theta in (i*2*pi/7 for i in range(7)):
-    for z, width, high in [(3.1,.48,1.32),(6.65,.67,1.9)]:
-        for depth, color, extra in [(3.42, stone, .16),(3.5, iron, 0)]:
-            shape(group, 'Owl roost window', 'box',
-                  (x+depth*cos(theta), y+depth*sin(theta), h+z),
-                  (width+extra, .20, high+extra), color, theta+pi/2)
-    shape(group, 'Owl landing sill', 'box', (x+3.5*cos(theta),y+3.5*sin(theta),h+5.68),
-          (.99,.64,.19), stone, theta+pi/2)
-
-group = collection('Whomping Willow')
-x, y, h = site('willow')
-block(x, y, 1.45, 1.45)
-base = Vector((x,y,h-.2))
-trunk = [base+Vector(p) for p in [(0,0,0),(-.6,.25,2.6),(.4,0,5.2),(.95,.17,7.7),(1.55,1.3,9.2)]]
-for a, b, radius in zip(trunk,trunk[1:],(1.25,1.01,.79,.45)):
-    beam(group, 'Kinked willow trunk', a, b, radius, oak)
-for i in range(9):
-    theta = i*2*pi/9 + rng.uniform(-.24,.24)
-    root_x, root_y = x+2.6*cos(theta), y+2.6*sin(theta)
-    beam(group, 'Exposed willow root',base+Vector((0,0,.62)),
-         (root_x,root_y,ground(root_x,root_y)+.06), .29, oak)
-    a = trunk[2+(i%2)]
-    arm = Vector((cos(theta),sin(theta),0))
-    b = a+arm*2.8+Vector((0,0,rng.uniform(.2,2.5)))
-    c = b+arm*2.5+Vector((0,0,rng.uniform(-3,1.9)))
-    beam(group,'Heavy willow branch',a,b,rng.uniform(.26,.48),oak)
-    beam(group,'Bent willow branch',b,c,.23,oak)
-    for j in range(3):
-        end = c+arm*rng.uniform(.9,2.0)+Vector((rng.uniform(-1.8,1.8),rng.uniform(-1.8,1.8),rng.uniform(-1.6,1.5)))
-        beam(group,'Tapered willow branch',c,end,.13,oak,'spike')
-        if (i+j)%3 == 0:
-            shape(group,'Sparse willow leaves','rock',end,(1.10,.72,.37),moss,theta)
-px, pz = places['willow']['door']
-py = -pz
-shape(group,'Buried passage hatch','box',(px,py,ground(px,py)+.12),(1.08,1.36,.16),planks,.5)
-shape(group,'Iron hatch ring','rock',(px,py,ground(px,py)+.26),(.18,.13,.055),brass)
-
-group = collection('Shrieking Shack')
-x, y, h = site('shack')
-block(x, y, 3.5, 2.7)
-shape(group,'Stone footings','box',(x,y,h+.17),(7.0,5.4,.78),brick)
-for i in range(11):
-    for edge in (-1,1):
-        shape(group,'Overlapping facade board','box',(x,y+edge*2.6,h+.61+i*.27),
-              (6.86,.23,.32),rng.choice([planks,wood,planks]),rng.uniform(-.025,.025))
-        shape(group,'Split gable board','box',(x+edge*3.38,y,h+.61+i*.27),
-              (.20,5.18,.32),rng.choice([wood,planks]))
-for edge in (-1,1):
-    for i in range(6):
-        shape(group,'Buckled roof tile course','box',(x,y+edge*(i+.6)*.52,h+5.27-i*.32),
-              (7.66,.79,.37),rng.choice([slate,slate,wood])).rotation_euler.x = -edge*.63
-for dx,dy in [(3.5,-1.24),(3.5,1.48),(-3.5,-.73)]:
-    shape(group,'Boarded-up window recess','box',(x+dx,y+dy,h+2.4),(.23,.95,1.28),iron)
-    for theta in (-.38,.27):
-        shape(group,'Diagonal window plank','box',(x+dx+(.15 if dx>0 else -.15),y+dy,h+2.4),
-              (.1,1.34,.22),oak).rotation_euler.x=theta
-shape(group,'Passage door and bolt','box',(x+3.55,y,h+1.46),(.17,1.16,2.24),wood)
-shape(group,'Passage bolt','box',(x+3.66,y+.31,h+1.23),(.12,.19,.09),brass)
-shape(group,'Crooked chimney','box',(x-2.15,y+.68,h+5.23),(.81,.84,2.35),brick).rotation_euler.y=.12
-for side in (-1,1):
-    beam(group,'Shack roof verge',(x+3.56,y,h+5.54),(x+3.56,y+side*3.03,h+3.59),.13,oak)
-shape(group,'Iron lantern above the passage','box',(x+3.78,y-.75,h+2.6),(.17,.16,.23),amber)
 
 group = collection('Highland ruins')
 x, y, h = site('ruins')
@@ -419,30 +331,8 @@ for start, delta, normal in [
     for color, item in zip(colors,data.data):
         item.color=color
 
-# Render the new walking paths directly from their navigation polyline.
 group = collection('Highland paths')
-path_mat = pigment('Atlas crushed sandstone trail','977e5d',.07)
-landmarks = {'cave','owlery','willow','shack','ruins','camp','gamekeeper-trail','broomsticks','hogs-head'}
-for trail in layout['trails']:
-    if not any(isinstance(point,str) and point in landmarks for point in trail):
-        continue
-    vertices, faces = [], []
-    for p,q in zip(trail,trail[1:]):
-        a,b=(Vector(places[v]['at'] if isinstance(v,str) else v) for v in (p,q))
-        vector=b-a
-        along=vector.normalized()
-        across=Vector((-along.y,along.x))
-        steps=max(2,int(vector.length*2))
-        offset=len(vertices)
-        for i in range(steps+1):
-            center=a.lerp(b,i/steps)
-            for j in (-1,0,1):
-                x,z=center+across*j*(.52+.12*sin(i*.62))
-                vertices.append((x,-z,ground(x,-z)+.038))
-        for i in range(steps):
-            edge=offset+i*3
-            faces.extend([(edge+j,edge+j+1,edge+j+4,edge+j+3) for j in (0,1)])
-    mesh(group,'Contoured trail',vertices,faces,path_mat)
+draw_paths(group, layout, places, ground, bpy.data.materials['Dirt'])
 
 nav['atlasBlocks'] = [[round(v,3) for v in bounds] for bounds in blocks]
 nav_path.write_text(json.dumps(nav, separators=(',', ':'))+'\n')

@@ -16,6 +16,16 @@ function onPier(pier, x, z) {
   return Math.abs(x - pier.x) <= pier.width / 2 && z >= pier.z0 && z <= pier.z1;
 }
 
+function stairProgress(stair, x, z) {
+  const dx = x - stair.cx, dz = z - stair.cz;
+  if (Math.abs(dx) > 4 || Math.abs(dz) > 4) return;
+  const c = Math.cos(stair.angle), s = Math.sin(stair.angle);
+  const across = dx*c - dz*s, along = -dx*s - dz*c;
+  if (Math.abs(across) <= stair.width/2 && Math.abs(along) <= stair.length/2) {
+    return along/stair.length + .5;
+  }
+}
+
 export function floorHeight(nav, bridge, x, z) {
   if (onPier(nav.pier, x, z)) return Math.max(.85, terrain(nav, nav.pier.x, nav.pier.z0));
   if (x >= bridge.x0 && x <= bridge.x1 && Math.abs(z - bridge.z) <= bridge.width / 2) {
@@ -27,12 +37,9 @@ export function floorHeight(nav, bridge, x, z) {
   }
   const base = terrain(nav, x, z);
   for (const stair of nav.flights ?? []) {
-    const dx=x-stair.cx, dz=z-stair.cz;
-    if (Math.abs(dx)>4 || Math.abs(dz)>4) continue;
-    const c=Math.cos(stair.angle), s=Math.sin(stair.angle);
-    const across=dx*c-dz*s, along=-dx*s-dz*c;
-    if (Math.abs(across)>stair.width/2 || Math.abs(along)>stair.length/2) continue;
-    const t=clamp(along/stair.length+.5,0,1)*(stair.profile.length-1);
+    const progress = stairProgress(stair,x,z);
+    if (progress === undefined) continue;
+    const t=progress*(stair.profile.length-1);
     const i=Math.min(Math.floor(t),stair.profile.length-2);
     return Math.max(base,stair.profile[i]+(stair.profile[i+1]-stair.profile[i])*(t-i));
   }
@@ -49,7 +56,9 @@ export function walkable(nav, bridge, x, z) {
   });
   const overlaps = ([left, top, right, bottom]) =>
     x > left - .31 && x < right + .31 && z > top - .31 && z < bottom + .31;
-  return !atTerrace && !nav.blocks.some(overlaps) && !nav.detailBlocks?.some(overlaps) && !nav.atlasBlocks?.some(overlaps);
+  if (atTerrace || nav.blocks.some(overlaps) || nav.detailBlocks?.some(overlaps) || nav.atlasBlocks?.some(overlaps)) return false;
+  return !nav.landmarkBlocks?.some(overlaps) ||
+    !!nav.flights?.some(stair=>stair.site === 'owlery' && stairProgress(stair,x,z) !== undefined);
 }
 
 export function atDoor(place,x,z) {

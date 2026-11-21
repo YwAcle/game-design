@@ -537,7 +537,7 @@ def owlery():
         return 2.015-.022*(z-11.45)
     levels=[(1.55,10.36),(10.36,11.49),(11.49,14.73)]
     for side in range(sides):
-        windows=[(0,1.68,3.07,.43)] if side==0 else []
+        windows=[(0,1.57,3.81,.55)] if side==0 else []
         if side%2==0:
             windows.extend([(0,5.02,6.45,.245),(.035,8.1,9.08,.21)])
         elif side in [1,3,5,7]:
@@ -602,9 +602,10 @@ def owlery():
                 mesh('Deep recessed door or pane',back,[tuple(range(count))],[backing])
             if base<2:
                 for j in range(5):
-                    u=center+(j-2)*.138
-                    block('Entry door oak board',side,u-.064,u+.064,base,head+.045,r-.227,wood[1],.087)
-                block('Door hinge rail',side,center-.35,center+.35,base+.32,base+.40,r-.17,wood[0],.09)
+                    u=center+(j-2)*.193
+                    block('Entry door oak board',side,u-.093,u+.093,base,head+.032,r-.227,wood[1],.087)
+                for z in (base+.42,head-.26):
+                    block('Door hinge rail',side,center-.477,center+.477,z,z+.08,r-.17,wood[0],.09)
             else:
                 overhang=.40 if roost else .13
                 block('Stone landing shelf' if roost else 'Perch sill',side,
@@ -623,7 +624,7 @@ def owlery():
                             p=panel(side,center-width*.72,-.135,z,r)
                             q=panel(side,center+width*.73,-.135,z+sign*.34,r)
                             limb('Lead diagonal in the amber window',[(*p,.017),(*q,.017)],wood[:1],5)
-        for level in [1.58,3.30,6.59,9.68,10.34,11.40,12.76,14.62]:
+        for level in [1.49,3.99,6.59,9.68,10.34,11.40,12.76,14.62]:
             r=radius(level)+.13
             w=r*(sqrt(2)-1)+.035
             block('Projecting masonry belt',side,-w,w,level-.10,level+.08,r,ash[2],.29)
